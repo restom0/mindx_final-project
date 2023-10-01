@@ -6,7 +6,7 @@ const path = require("path");
 const app = express();
 const port = 3000;
 
-const db = require("./config/db");
+const db = require("./config/database");
 // HTTP logger
 app.use(morgan("combined"));
 app.use(express.static(path.join(__dirname, "public")));
