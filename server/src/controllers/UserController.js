@@ -18,7 +18,7 @@ class UserController {
       }
 
       const queryResult = await User.getUser(username, userpassword);
-
+      console.log(queryResult);
       if (queryResult) {
         return res.json({
           apitoken: queryResult.apitoken,
@@ -32,8 +32,47 @@ class UserController {
       return res.status(500).json({ error: "Server error" });
     }
   }
-  async addAccount(req, res) {}
-  async removeAccount(req, res) {}
+  async addAccount(req, res) {
+    try {
+      const { username, userpassword } = req.query;
+      if (!username || username == "") {
+        return res.status(400).json({ error: "username is required" });
+      }
+      if (!userpassword || userpassword == "") {
+        return res.status(400).json({ error: "userpassword is required" });
+      }
+      const queryResult = await User.addUser(username, userpassword);
+      if (queryResult) {
+        return res.json({
+          check: true,
+        });
+      } else {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({ error: "Server error" });
+    }
+  }
+  async removeAccount(req, res) {
+    try {
+      const { apitoken } = req.query;
+      if (!apitoken || apitoken == "") {
+        return res.status(400).json({ error: "apitoken is required" });
+      }
+      const queryResult = await User.removeTask(apitoken);
+      if (queryResult) {
+        return res.json({
+          check: true,
+        });
+      } else {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({ error: "Server error" });
+    }
+  }
 }
 
 module.exports = new UserController();
