@@ -1,0 +1,103 @@
+
+@media only screen and (min-width: 400px){
+
+.login {
+    width: 350px;
+}
+}
+.login{
+    background-color: rgb(186, 73, 73);
+    min-height: 100vh;
+    width: 100%;
+    color: white;
+    transition: background-color 0.5s ease-in-out 0s;
+    padding-bottom: 12px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form{
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 30px 0px;
+}
+
+.login-form img{
+    width: 280px;
+    overflow-clip-margin: content-box;
+    overflow: clip;
+}
+
+.login-form-text{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    opacity: 0.8;
+    letter-spacing: 0.05em;
+    margin-top: 18px;
+    margin-bottom: 38px;
+}
+
+.login-form-input{
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: rgb(196, 196, 196) 0px 1px 0px;
+    padding: 8px 18px 32px;
+    box-sizing: border-box;
+    width: 350px;
+    
+}
+
+.login-form-input button{
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 2px 2px;
+    opacity: 0.9;
+    font-size: 14px;
+    padding: 12px;
+    min-width: 70px;
+    background-color: white;
+    color: rgb(119, 119, 119);
+    font-weight: bold;
+    letter-spacing: 0.02em;
+    width: 100%;
+    border: 1px solid rgb(238, 238, 238);
+}
+
+.login-form-input img {
+    width: 18px;
+    margin-right: 8px;
+}
+
+.login-form-space{
+    display: flex;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    margin: 18px 0px;
+}
+
+.spacing{
+    width: 42%;
+    height: 1px;
+    background-color: rgb(235, 235, 235);
+}
+.spacing-text{
+    color: rgb(196, 196, 196);
+}

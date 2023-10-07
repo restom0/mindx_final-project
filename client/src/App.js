@@ -12,6 +12,8 @@ function App() {
         <Route path="/todo" element={<Todo />} />
         <Route path="/report" element={<Reportpage />} />
       </Routes>
+
+      
     </BrowserRouter>
   );
 }
