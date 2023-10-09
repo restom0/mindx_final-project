@@ -1,4 +1,4 @@
-.form-item-text{
-    width: 20%;
-    
+.ant-form-item-control-input{
+    max-width: 300px;
+    width: 300px;
 }
