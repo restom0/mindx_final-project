@@ -13,7 +13,9 @@ const onFinishFailed = (errorInfo) => {
 
 
 const FormLogin = () => (
+  <div>
   <Form
+    className='form-login'
     name="basic"
     labelCol={{ span: 8 }}
     wrapperCol={{ span: 16 }}
@@ -49,12 +51,12 @@ const FormLogin = () => (
       <Checkbox>Lưu mật khẩu</Checkbox>
     </Form.Item>
 
-    <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+    
+  </Form>;
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
-    </Form.Item>
-  </Form>
-);
+  </div>)
+
 
 export default FormLogin;
