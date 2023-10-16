@@ -1,33 +1,43 @@
-
-.Page-Welcome{
+.Page-Welcome {
     max-width: 620px;
     margin: auto;
     padding: 0 12px;
-    padding-top: 100px;
+    padding-top: 50px;
 }
-.Page-Welcome--H1{
+
+.Page-Welcome--H1 {
     color: hsl(357, 50%, 22%);
     padding-bottom: 24px;
 }
-.Page-Welcome--H2{
+
+.Page-Welcome--H2 {
     color: hsl(357, 50%, 22%);
     padding-bottom: 24px;
 }
-.Page-Welcome--H2::after{
+
+.Page-Welcome--H2::after {
     content: "";
     display: block;
     width: 24px;
     padding-top: 8px;
-    border-bottom: 4px solid #f05b56;
+    border-bottom: 4px solid hsl(357, 50%, 22%);
     opacity: 0.6;
 }
-.Page-Welcome--H4{
+
+.Page-Welcome--H4 {
     color: hsl(357, 12%, 42%);
     font-weight: 500;
     padding-bottom: 24px;
 }
-.Page-Welcome--H4 a {
-    color: hsl(2, 66%, 58%);
+
+.Page-Welcome--H4#light a {
+    color: hsl(357, 50%, 22%);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.Page-Welcome--H4#dark a {
+    color: rgb(186, 73, 73);
     text-decoration: none;
     font-weight: 700;
 }
