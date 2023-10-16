@@ -118,17 +118,19 @@ const TodoPage = () => {
     return (
         <Container>
             <ThemeContext.Provider value={{ theme, toggleTheme }}>
-                <Header theme={theme} toggleTheme={toggleTheme} />
-                <Container className="mb-5" id={theme}>
-                    <Container>
-                        <Row className="row justify-content-center" id={theme}>
-                            <h1 className="text-center mb-4">Todo App</h1>
-                            <TodoHeader addTodo={addTodo} theme={theme} toggleTheme={toggleTheme} />
-                            <TodoList todos={todos} updateTodo={updateTodo} editTodoName={editTodoName} editTodoType={editTodoType} deleleTodo={deleteTodo} theme={theme} />
-                            <TodoFooter todos={todos} calculateRemainingTasks={calculateRemainingTasks} />
-                        </Row>
+                <div id={theme}>
+                    <Header theme={theme} toggleTheme={toggleTheme} />
+                    <Container className="mb-5" id={theme}>
+                        <Container>
+                            <Row className="row justify-content-center" id={theme}>
+                                <h1 className="text-center mb-4">Todo App</h1>
+                                <TodoHeader addTodo={addTodo} theme={theme} toggleTheme={toggleTheme} />
+                                <TodoList todos={todos} updateTodo={updateTodo} editTodoName={editTodoName} editTodoType={editTodoType} deleleTodo={deleteTodo} theme={theme} />
+                                <TodoFooter todos={todos} calculateRemainingTasks={calculateRemainingTasks} />
+                            </Row>
+                        </Container>
                     </Container>
-                </Container>
+                </div>
             </ThemeContext.Provider>
         </Container>
     );

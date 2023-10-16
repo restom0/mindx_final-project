@@ -11,19 +11,17 @@ const Reportpage = () => {
         setTheme((cur) => (cur === 'light' ? 'dark' : 'light'));
     }
     return (
-        <Container>
-            <ThemeContext.Provider value={{ theme, toggleTheme }}>
-                <Header theme={theme} toggleTheme={toggleTheme} />
-                <Container className="mb-5" id={theme}>
-                    <Container>
-                        <Row className="row justify-content-center" id={theme}>
-                            <h1 className="text-center mb-4">Report</h1>
-                            <Report />
-                        </Row>
-                    </Container>
+        <ThemeContext.Provider value={{ theme, toggleTheme }}>
+            <div id={theme}>
+                <Container style={{ width: '532.28px', height: '100vh', padding: 0 }} id={theme}>
+                    <Header theme={theme} toggleTheme={toggleTheme} />
+                    <div className="justify-content-center" id={theme}>
+                        <h1 className="text-center mb-4">Report</h1>
+                        <Report theme={theme} />
+                    </div>
                 </Container>
-            </ThemeContext.Provider>
-        </Container>
+            </div>
+        </ThemeContext.Provider >
     )
 }
 

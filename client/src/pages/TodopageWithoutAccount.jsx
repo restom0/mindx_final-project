@@ -1,11 +1,10 @@
-import React, { useState, createContext } from 'react'
+import React, { createContext, useState } from 'react'
 import Header from '../components/Header'
-
-import Welcome from './Welcome'
-import Login from './Login';
+import TodoWithoutAccount from '../components/TodoWithoutAccount';
+import '../css/todo.css'
 import { Container } from 'react-bootstrap';
 export const ThemeContext = createContext(null);
-function Home() {
+function TodopageWithoutAccount() {
     const [theme, setTheme] = useState('light');
     const toggleTheme = () => {
         setTheme((cur) => (cur === 'light' ? 'dark' : 'light'));
@@ -13,16 +12,13 @@ function Home() {
     return (
         <ThemeContext.Provider value={{ theme, toggleTheme }}>
             <div id={theme}>
-                <Container style={{ width: '532.28px', padding: 0 }} >
+                <Container style={{ width: '532.28px', padding: 0 }} id={theme}>
                     <Header theme={theme} toggleTheme={toggleTheme} />
-                    <Welcome theme={theme} />
+                    <TodoWithoutAccount theme={theme} toggleTheme={toggleTheme} />
                 </Container>
             </div>
         </ThemeContext.Provider>
-
     )
-
 }
 
-
-export default Home
+export default TodopageWithoutAccount
