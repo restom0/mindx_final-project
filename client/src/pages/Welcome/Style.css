@@ -1,0 +1,33 @@
+
+.Page-Welcome{
+    max-width: 620px;
+    margin: auto;
+    padding: 0 12px;
+    padding-top: 100px;
+}
+.Page-Welcome--H1{
+    color: hsl(357, 50%, 22%);
+    padding-bottom: 24px;
+}
+.Page-Welcome--H2{
+    color: hsl(357, 50%, 22%);
+    padding-bottom: 24px;
+}
+.Page-Welcome--H2::after{
+    content: "";
+    display: block;
+    width: 24px;
+    padding-top: 8px;
+    border-bottom: 4px solid #f05b56;
+    opacity: 0.6;
+}
+.Page-Welcome--H4{
+    color: hsl(357, 12%, 42%);
+    font-weight: 500;
+    padding-bottom: 24px;
+}
+.Page-Welcome--H4 a {
+    color: hsl(2, 66%, 58%);
+    text-decoration: none;
+    font-weight: 700;
+}
