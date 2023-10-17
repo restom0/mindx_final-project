@@ -1,7 +1,7 @@
 {
   "name": "hcmut_spss",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "beautiful": "prettier --single-quote --trailing-comma all --write 'src/**/*.{js,json,scss}'",
     "start": "nodemon ./bin/www",
