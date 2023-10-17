@@ -26,6 +26,22 @@ const FormRegister = () => {
       toast.addEventListener("mouseleave", Swal.resumeTimer);
     },
   });
+  const [loadings, setLoadings] = useState([]);
+
+  const enterLoading = (index) => {
+    setLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+    setTimeout(() => {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 1500);
+  };
   const register = () => {
     var data = new URLSearchParams();
     data.append("username", username);
@@ -86,7 +102,7 @@ const FormRegister = () => {
         type="primary"
         htmlType="submit"
         className="btn-form"
-        onClick={register}
+        loading={loadings[1]} onClick={() => { register(); enterLoading(1) }}
       >
         Đăng ký
       </Button>

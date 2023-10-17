@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import { Button, CloseButton, Col, ListGroup, Row } from "react-bootstrap";
+import { CloseButton, Col, ListGroup, Row } from "react-bootstrap";
+import { Button, Checkbox } from "antd";
+
 import Swal from "sweetalert2";
 import "boxicons";
 import '../css/todo.css'
@@ -89,15 +91,15 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
             <Row>
                 <Col className="col-1 mt-1">
                     {item.isCompleted === 0 ? (
-                        <input
-                            className="form-check-input"
+                        <Checkbox
+                            //     className="form-check-input"
                             type="checkbox"
                             onChange={(e) => updateTodo(item.id, e)}
                             name=""
                             id=""
                         />
                     ) : (
-                        <input type="checkbox" checked disabled name="" id="" />
+                        <Checkbox type="checkbox" checked disabled name="" id="" />
                     )}
                 </Col>
                 <Col className="col-5 mt-1"><Col className='col-md-4'>
@@ -116,13 +118,13 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                     <Col className="col-4 mt-1"><s>{item.estPomodoro}</s></Col> :
                     <Col className="col-4 mt-1">{item.estPomodoro}</Col>}
                 <Col className="col-1">
-                    <button
+                    <Button
                         className="btn btn-danger btn-sm"
                         disabled={isLoading1}
                         onClick={() => deleteTodo(item.id)}
                     >
                         {isLoading1 ? "..." : <box-icon name="trash" color="#ffffff"></box-icon>}
-                    </button>
+                    </Button>
                 </Col>
             </Row>
         </ListGroup.Item >
@@ -207,7 +209,8 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                         });
                     }
                 })
-            } else if (result.isDenied) { }
+            } else if (result.isDenied) {
+            }
         });
     };
     const deleteAll = () => {
@@ -334,8 +337,8 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                                                             />
                                                         </Col>
                                                         <Col className='col'>
-                                                            <Button variant='light' onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number - 1) >= 1 ? parseInt(isNaN(number) ? 1 : number - 1) : 1)}><box-icon name='chevron-down'></box-icon></Button>
-                                                            <Button variant='light' onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number + 1))}><box-icon name='chevron-up'></box-icon></Button>
+                                                            <Button variant='light' size="large" onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number - 1) >= 1 ? parseInt(isNaN(number) ? 1 : number - 1) : 1)}><box-icon name='chevron-down'></box-icon></Button>
+                                                            <Button variant='light' size="large" onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number + 1))}><box-icon name='chevron-up'></box-icon></Button>
                                                         </Col>
                                                     </Row>
                                                     <Row>
@@ -343,13 +346,13 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                                                             <Button variant='secondary' className='w-100' onClick={() => setAddTask(!addTask)}>Hủy</Button>
                                                         </Col>
                                                         <Col>
-                                                            <button
-                                                                className="btn btn-primary w-100"
-                                                                disabled={isLoading || item.length === 0 ? true : false || type.length === 0 ? true : false || number === 0 ? true : false || isNaN(number) ? true : false}
+                                                            <Button
+                                                                className="w-100" type="primary"
+                                                                disabled={isLoading || item.length === 0 ? true : false || type.length === 0 ? true : false || number === 0 ? true : false || isNaN(number) ? true : false} loading={isLoading}
                                                                 onClick={() => (!isLoading ? handleClick() : null, addTodo())}
                                                             >
-                                                                {isLoading ? "Loading…" : "Thêm"}
-                                                            </button>
+                                                                <b>{isLoading ? "Loading…" : "Thêm"}</b>
+                                                            </Button>
                                                         </Col>
                                                     </Row>
                                                 </div>
@@ -358,7 +361,7 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                                     </Row>
                                     :
                                     <Row>
-                                        <Button variant='primary' className='w-100' onClick={() => setAddTask(!addTask)}>Thêm Task</Button>
+                                        <Button type='primary' className='w-100' onClick={() => setAddTask(!addTask)}>Thêm Task</Button>
                                     </Row>
                             }
                         </div>
@@ -381,19 +384,24 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                             <Col></Col>
                             <Col align="end">
                                 {todo.length === 0 ? (
-                                    <button
+                                    <Button
                                         disabled
-                                        className="btn btn-danger w-100"
+                                        size="large"
+                                        type="danger"
+                                        className="w-100"
                                         onClick={deleteAll}
                                     >
                                         Xóa tất cả
-                                    </button>
+                                    </Button>
                                 ) : (
-                                    <button className="btn btn-danger w-100" onClick={deleteAll}
-                                        disabled={isLoading2}
+                                    <Button size="large"
+                                        className="btn btn-danger w-100"
+                                        onClick={deleteAll}
+                                        loading={isLoading2}
+                                        style={{ color: "white" }}
                                     >
-                                        {isLoading2 ? "Loading..." : "Xóa tất cả"}
-                                    </button>)}
+                                        <b>{isLoading2 ? "Loading..." : "Xóa tất cả"}</b>
+                                    </Button>)}
                             </Col>
                         </Row>
                     </Row>
