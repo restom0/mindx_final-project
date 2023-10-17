@@ -344,7 +344,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                                     </Row>
                                     :
                                     <Row>
-                                        <Button type='primary' className='w-100' onClick={() => setAddTask(!addTask)}>Thêm Task</Button>
+                                        <Button type='primary' size="large" className='w-100' onClick={() => setAddTask(!addTask)}>Thêm Task</Button>
                                     </Row>
                             }
                         </div>
