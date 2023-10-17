@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 
-import "./style.css";
+import "../css/Login_Register.css";
 import Swal from "sweetalert2";
 
 const onFinish = (values) => {
@@ -12,7 +12,7 @@ const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
-const FormLogin = () => {
+const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const Toast = Swal.mixin({
@@ -101,4 +101,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default Login;

@@ -15,8 +15,8 @@ class TaskController {
       queryResult.forEach((el) => {
         var task = new Object();
         task.id = el.id;
-        task.name = el.taskname;
-        task.type = el.tasktype;
+        task.taskname = el.taskname;
+        task.tasktype = el.tasktype;
         task.estPomodoro = el.estPomodoro;
         task.isCompleted = el.isCompleted;
         result.push(task);
@@ -115,6 +115,25 @@ class TaskController {
       return res.status(500).json({ error: "Server error" });
     }
   }
+  async removeAllTask(req, res) {
+    try {
+      const { apitoken } = req.query;
+      if (!apitoken || apitoken == "") {
+        return res.status(400).json({ error: "apitoken is required" });
+      }
+      const queryResult = await Task.removeAllTask(apitoken);
+      if (queryResult) {
+        return res.json({
+          check: true,
+        });
+      } else {
+        return res.status(400).json({ error: "Invalid credentials" });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      return res.status(500).json({ error: "Server error" });
+    }
+  }
   async statusTask(req, res) {
     try {
       const { id, apitoken } = req.query;
@@ -145,12 +164,11 @@ class TaskController {
       }
       const queryResult = await Task.statDailyTask(apitoken);
       var result = [];
-      console.log(queryResult);
       queryResult.forEach((el) => {
         var task = new Object();
         task.estPomodoro = el.estPomodoro;
-        task.finishAtDay = new Date(el.finishAt).getDay();
-        task.finishAtMonth = new Date(el.finishAt).getMonth();
+        task.finishAtDay = new Date(el.finishAt).getDate();
+        task.finishAtMonth = new Date(el.finishAt).getMonth() + 1;
         task.finishAtYear = new Date(el.finishAt).getFullYear();
         result.push(task);
       });
