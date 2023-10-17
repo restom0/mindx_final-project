@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const TaskController = require("../controllers/TaskController");
+const TaskController = require("../src/controllers/TaskController");
 router.get("/", TaskController.getTasks);
 router.post("/add", TaskController.addTask);
 router.post("/edit", TaskController.editTask);
