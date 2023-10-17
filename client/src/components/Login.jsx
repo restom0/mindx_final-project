@@ -15,6 +15,22 @@ const onFinishFailed = (errorInfo) => {
 const Login = () => {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [loadings, setLoadings] = useState([]);
+
+  const enterLoading = (index) => {
+    setLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+    setTimeout(() => {
+      setLoadings((prevLoadings) => {
+        const newLoadings = [...prevLoadings];
+        newLoadings[index] = false;
+        return newLoadings;
+      });
+    }, 1500);
+  };
   const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -94,8 +110,8 @@ const Login = () => {
         </Form.Item>
       </Form>
       ;
-      <Button type="primary" htmlType="submit" onClick={login}>
-        Đăng nhập
+      <Button type="primary" htmlType="submit" loading={loadings[1]} onClick={() => { login(); enterLoading(1) }}>
+        <span>Đăng nhập</span>
       </Button>
     </div>
   );
