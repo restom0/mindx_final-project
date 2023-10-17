@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import '../css/todo.css'
 import { Container } from 'react-bootstrap';
 import TodoWithAccount from '../components/TodoWithAccount';
+import Introduction from '../components/Introduction';
 export const ThemeContext = createContext(null);
 function TodopageWithAccount() {
     const [theme, setTheme] = useState('light');
@@ -17,6 +18,7 @@ function TodopageWithAccount() {
                     <TodoWithAccount theme={theme} toggleTheme={toggleTheme} />
                 </Container>
             </div>
+            <Introduction />
         </ThemeContext.Provider>
     )
 }

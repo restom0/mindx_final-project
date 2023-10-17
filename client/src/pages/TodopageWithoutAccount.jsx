@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import TodoWithoutAccount from '../components/TodoWithoutAccount';
 import '../css/todo.css'
 import { Container } from 'react-bootstrap';
+import Introduction from '../components/Introduction';
 export const ThemeContext = createContext(null);
 function TodopageWithoutAccount() {
     const [theme, setTheme] = useState('light');
@@ -17,6 +18,7 @@ function TodopageWithoutAccount() {
                     <TodoWithoutAccount theme={theme} toggleTheme={toggleTheme} />
                 </Container>
             </div>
+            <Introduction />
         </ThemeContext.Provider>
     )
 }
