@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Nav from "react-bootstrap/Nav";
 import Container from "react-bootstrap/Container";
-import { Button, CloseButton, Col, ListGroup, Row } from "react-bootstrap";
+import { CloseButton, Col, ListGroup, Row } from "react-bootstrap";
+import { Button, Checkbox } from "antd";
 import Swal from "sweetalert2";
 import "boxicons";
 import '../css/todo.css'
@@ -82,7 +83,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
             <Row>
                 <Col className="col-1 mt-1">
                     {item.isCompleted === false ? (
-                        <input
+                        <Checkbox
                             className="form-check-input"
                             type="checkbox"
                             onChange={(e) => updateTodo(item.id, e)}
@@ -90,7 +91,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                             id=""
                         />
                     ) : (
-                        <input type="checkbox" checked disabled name="" id="" />
+                        <Checkbox type="checkbox" checked disabled name="" id="" />
                     )}
                 </Col>
                 <Col className="col-5 mt-1"><Col className='col-md-4'>
@@ -107,13 +108,13 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                 </Col></Col>
                 <Col className="col-4 mt-1">{item.estPomodoro}</Col>
                 <Col className="col-1">
-                    <button
+                    <Button
                         className="btn btn-danger btn-sm"
                         disabled={isLoading1}
                         onClick={() => deleteTodo(item.id)}
                     >
                         {isLoading1 ? "..." : <box-icon name="trash" color="#ffffff"></box-icon>}
-                    </button>
+                    </Button>
                 </Col>
             </Row>
         </ListGroup.Item >
@@ -317,8 +318,8 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                                                             />
                                                         </Col>
                                                         <Col className='col'>
-                                                            <Button variant='light' onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number - 1) >= 1 ? parseInt(isNaN(number) ? 1 : number - 1) : 1)}><box-icon name='chevron-down'></box-icon></Button>
-                                                            <Button variant='light' onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number + 1))}><box-icon name='chevron-up'></box-icon></Button>
+                                                            <Button variant='light' size="large" onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number - 1) >= 1 ? parseInt(isNaN(number) ? 1 : number - 1) : 1)}><box-icon name='chevron-down'></box-icon></Button>
+                                                            <Button variant='light' size="large" onClick={() => setNumber(parseInt(isNaN(number) ? 1 : number + 1))}><box-icon name='chevron-up'></box-icon></Button>
                                                         </Col>
                                                     </Row>
                                                     <Row>
@@ -326,13 +327,15 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                                                             <Button variant='secondary' className='w-100' onClick={() => setAddTask(!addTask)}>Hủy</Button>
                                                         </Col>
                                                         <Col>
-                                                            <button
-                                                                className="btn btn-primary w-100"
+                                                            <Button
+                                                                type="primary"
+                                                                className="w-100"
                                                                 disabled={isLoading || item.length === 0 ? true : false || type.length === 0 ? true : false || number === 0 ? true : false || isNaN(number) ? true : false}
                                                                 onClick={() => (!isLoading ? handleClick() : null, addTodo())}
+                                                                loading={isLoading}
                                                             >
                                                                 {isLoading ? "Loading…" : "Thêm"}
-                                                            </button>
+                                                            </Button>
                                                         </Col>
                                                     </Row>
                                                 </div>
@@ -341,7 +344,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                                     </Row>
                                     :
                                     <Row>
-                                        <Button variant='primary' className='w-100' onClick={() => setAddTask(!addTask)}>Thêm Task</Button>
+                                        <Button type='primary' className='w-100' onClick={() => setAddTask(!addTask)}>Thêm Task</Button>
                                     </Row>
                             }
                         </div>
@@ -364,19 +367,22 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                             <Col></Col>
                             <Col align="end">
                                 {todo.length === 0 ? (
-                                    <button
+                                    <Button
                                         disabled
+                                        size="large"
                                         className="btn btn-danger w-100"
                                         onClick={deleteAll}
                                     >
-                                        Xóa tất cả
-                                    </button>
+                                        <span>Xóa tất cả</span>
+                                    </Button>
                                 ) : (
-                                    <button className="btn btn-danger w-100" onClick={deleteAll}
+                                    <Button className="btn btn-danger w-100" onClick={deleteAll}
+                                        size="large"
                                         disabled={isLoading2}
+                                        loading={isLoading2}
                                     >
                                         {isLoading2 ? "Loading..." : "Xóa tất cả"}
-                                    </button>)}
+                                    </Button>)}
                             </Col>
                         </Row>
                     </Row>
