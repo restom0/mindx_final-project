@@ -1,8 +1,7 @@
 import React, { useState, createContext } from 'react'
 import Header from '../components/Header'
 
-import Welcome from './Welcome'
-import Login from './Login';
+import Introduction from '../components/Introduction'
 import { Container } from 'react-bootstrap';
 export const ThemeContext = createContext(null);
 function Home() {
@@ -15,7 +14,7 @@ function Home() {
             <div id={theme}>
                 <Container style={{ width: '532.28px', padding: 0 }} >
                     <Header theme={theme} toggleTheme={toggleTheme} />
-                    <Welcome theme={theme} />
+                    <Introduction theme={theme} />
                 </Container>
             </div>
         </ThemeContext.Provider>

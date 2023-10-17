@@ -1,6 +1,6 @@
-import "./Style.css";
+import "../css/Introduction.css";
 
-const Welcome = ({ theme }) => {
+const Introduction = ({ theme }) => {
   return (
     <div className="Page-Welcome" id={theme} style={{ width: "508.28px" }}>
       <h1 id={theme} className="Page-Welcome--H1">
@@ -154,4 +154,4 @@ const Welcome = ({ theme }) => {
   );
 };
 
-export default Welcome;
+export default Introduction;

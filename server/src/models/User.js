@@ -19,9 +19,8 @@ class User {
   }
   async addUser(username, password) {
     const apiToken = generateRandomString(10);
-    const query1 =
-      "SELECT * FROM users WHERE username = ? AND userpassword = ?";
-    const [rows1] = await pool.query(query1, [username, password]);
+    const query1 = "SELECT * FROM users WHERE username = ?";
+    const [rows1] = await pool.query(query1, [username]);
     if (rows1.length == 0) {
       const query =
         "INSERT INTO users (username, userpassword, apitoken, idRole) VALUES (?, ?, ?, 1)";

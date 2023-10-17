@@ -1,7 +1,6 @@
-import FormRegister from "../../components/antdsgn/formRes";
-import "./style.css";
-
-const Register = () => {
+import Register from "../components/Register";
+import "../css/Register.css";
+const Registerpage = () => {
   return (
     <div className="register">
       <div className="register-form">
@@ -15,7 +14,7 @@ const Register = () => {
             <div className="spacing"></div>
             <div className="spacing"></div>
           </div>
-          <FormRegister />
+          <Register />
         </div>
         <div className="register-form-bottom">
           <span>
@@ -30,4 +29,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Registerpage;

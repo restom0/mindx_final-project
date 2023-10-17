@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input } from "antd";
 
-import "./style.css";
+import "../css/Login_Register.css";
 import Swal from "sweetalert2";
 
 const onFinish = (values) => {

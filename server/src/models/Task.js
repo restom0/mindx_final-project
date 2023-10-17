@@ -42,6 +42,13 @@ class Task {
     const [rows] = await pool.query(query, [id]);
     return rows;
   }
+  async removeAllTask(token) {
+    const query1 = "SELECT id FROM users WHERE users.apitoken = ?";
+    const [rows1] = await pool.query(query1, [token]);
+    const query = "DELETE FROM task WHERE userid = ?";
+    const [rows] = await pool.query(query, rows1[0].id);
+    return rows;
+  }
   async statusTask(id) {
     const query = "SELECT * FROM task WHERE id = ?";
     const [rows] = await pool.query(query, [id]);

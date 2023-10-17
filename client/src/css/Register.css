@@ -1,11 +1,10 @@
-
-@media only screen and (min-width: 400px){
+@media only screen and (min-width: 400px) {
+    .register {
+        width: 350px;
+    }
+}
 
 .register {
-    width: 350px;
-}
-}
-.register{
     background-color: rgb(186, 73, 73);
     min-height: 100vh;
     width: 100%;
@@ -19,7 +18,7 @@
     align-items: center;
 }
 
-.register-form{
+.register-form {
     display: flex;
     -webkit-box-pack: center;
     justify-content: center;
@@ -30,7 +29,7 @@
     padding: 30px 0px;
 }
 
-.register-form-bottom{
+.register-form-bottom {
     margin-top: 24px;
     font-size: 16px;
     color: rgba(255, 255, 255, 0.8);
@@ -41,13 +40,13 @@
     flex-direction: column;
 }
 
-.register-form img{
+.register-form img {
     width: 280px;
     overflow-clip-margin: content-box;
     overflow: clip;
 }
 
-.register-form-text{
+.register-form-text {
     text-align: center;
     font-size: 18px;
     font-weight: 600;
@@ -58,7 +57,7 @@
     margin-bottom: 38px;
 }
 
-.register-form-input{
+.register-form-input {
     background-color: white;
     border-radius: 8px;
     box-shadow: rgb(196, 196, 196) 0px 1px 0px;
@@ -66,10 +65,10 @@
     box-sizing: border-box;
     width: 350px;
     padding-top: 28px;
-    
+
 }
 
-.register-form-input button{
+.register-form-input button {
     display: flex;
     -webkit-box-align: center;
     align-items: center;
@@ -96,7 +95,7 @@
     margin-right: 8px;
 }
 
-.register-form-space{
+.register-form-space {
     display: flex;
     -webkit-box-pack: justify;
     justify-content: space-between;
@@ -105,11 +104,12 @@
     margin: 18px 0px;
 }
 
-.spacing{
+.spacing {
     width: 42%;
     height: 1px;
     background-color: rgb(235, 235, 235);
 }
-.spacing-text{
+
+.spacing-text {
     color: rgb(196, 196, 196);
 }

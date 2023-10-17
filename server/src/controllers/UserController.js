@@ -21,6 +21,7 @@ class UserController {
       console.log(queryResult);
       if (queryResult) {
         return res.json({
+          check: true,
           apitoken: queryResult.apitoken,
           idRole: queryResult.idRole,
         });
