@@ -10,11 +10,4 @@ const pool = mysql
 if (pool) {
   console.log("Connect successfully");
 }
-// async function getNotes() {
-//   const [rows] = await pool.query("SELECT * FROM users");
-//   if (rows) {
-//     console.log("Connect successfully");
-//   }
-// }
-// const rows = getNotes();
 module.exports = pool;
