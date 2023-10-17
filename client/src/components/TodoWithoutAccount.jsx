@@ -9,7 +9,6 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
     const [todo, setTodo] = useState([]);
     const [item, setItem] = useState('');
     const [item1, setItem1] = useState('');
-    const [edit, setEdit] = useState(false);
     const [id, setId] = useState(0);
     const [currentPage, setCurrentPage] = useState(-1);
     const [addTask, setAddTask] = useState(false);
@@ -78,7 +77,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
         setItem1(old);
         getTodo();
     }
-    const todoList = todo.map((item, index) => (
+    const todoList = todo.map((item) => (
         <ListGroup.Item key={item.id} id={theme}>
             <Row>
                 <Col className="col-1 mt-1">
@@ -198,8 +197,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                     localStorage.setItem("todo", JSON.stringify(item));
                     changepage(currentPage);
                 });
-            } else if (result.isDenied) {
-            }
+            } else if (result.isDenied) { }
         });
     };
     const deleteAll = () => {
@@ -244,16 +242,6 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
         }
         setCurrentPage(isCompleted);
         setTodo(filteredItems);
-    };
-    const editTodoType = (id, text) => {
-        setTodo(
-            todo.map((todo) => {
-                if (todo.id === id) {
-                    todo.tasktype = text;
-                }
-                return todo;
-            })
-        );
     };
     return (
         <div>
@@ -358,21 +346,6 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                             }
                         </div>
                     </form >
-                    {/* <Row className="mt-3" id={theme}>
-                        <Col className="col-9" id={theme}>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Todo"
-                                onChange={(e) => setItem(e.target.value)}
-                                id=""
-                                value={item}
-                            />
-                        </Col>
-                        <Col className="col-3">
-
-                        </Col>
-                    </Row> */}
                     <Row className="mt-3 mb-3" id={theme}>
                         {todo && <ListGroup style={{ paddingRight: 0 }}>
                             <ListGroup.Item id={theme}>

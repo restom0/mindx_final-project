@@ -1,7 +1,7 @@
 import React, { useState, createContext } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from '../components/Header';
-import { Container, Row } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import Report from '../components/Report';
 import Introduction from '../components/Introduction';
 

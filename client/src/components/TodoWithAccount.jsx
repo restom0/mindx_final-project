@@ -12,7 +12,6 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
     const [todo, setTodo] = useState([]);
     const [item, setItem] = useState('');
     const [item1, setItem1] = useState('');
-    const [edit, setEdit] = useState(false);
     const [id, setId] = useState(0);
     const [currentPage, setCurrentPage] = useState(-1);
     const [addTask, setAddTask] = useState(false);
@@ -85,38 +84,7 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
         setId(id)
         setItem1(old);
     }
-    const editTodoType = (id, text) => {
-        // setTodos(
-        //     todos.map((todo) => {
-        //         if (todo.id === id) {
-        //             todo.text = text;
-        //         }
-        //         return todo;
-        //     })
-        // );
-        var data = new URLSearchParams();
-        data.append('apitoken', localStorage.getItem('apitoken'));
-        data.append('id', id);
-        data.append('tasktype', text);
-        fetch('http://localhost:3000/task/edit?' + data, {
-            method: 'POST',
-        }).then((res) => res.json()).then((res) => {
-            if (res.check === true) {
-                setId(0);
-                Toast.fire({
-                    icon: "success",
-                    title: "Add successfully",
-                }).then(() => { getTodo(); setItem1('') });
-            }
-            else {
-                Toast.fire({
-                    icon: "error",
-                    title: res.error,
-                })
-            }
-        })
-    };
-    const todoList = todo.map((item, index) => (
+    const todoList = todo.map((item) => (
         <ListGroup.Item key={item.id} id={theme}>
             <Row>
                 <Col className="col-1 mt-1">
@@ -168,7 +136,6 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
         data.append('taskname', item);
         data.append('tasktype', type);
         data.append('estPomodoro', number);
-        // setTodos((prevTodos) => [...prevTodos, newTodo]);
         fetch('http://localhost:3000/task/add?' + data, {
             method: 'POST'
         }).then((res) => res.json()).then((res) => {
@@ -240,8 +207,7 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                         });
                     }
                 })
-            } else if (result.isDenied) {
-            }
+            } else if (result.isDenied) { }
         });
     };
     const deleteAll = () => {
@@ -397,21 +363,6 @@ const TodoWithAccount = ({ theme, toggleTheme }) => {
                             }
                         </div>
                     </form >
-                    {/* <Row className="mt-3" id={theme}>
-                        <Col className="col-9" id={theme}>
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Todo"
-                                onChange={(e) => setItem(e.target.value)}
-                                id=""
-                                value={item}
-                            />
-                        </Col>
-                        <Col className="col-3">
-
-                        </Col>
-                    </Row> */}
                     <Row className="mt-3 mb-3" id={theme}>
                         {todo && <ListGroup style={{ paddingRight: 0 }}>
                             <ListGroup.Item id={theme}>

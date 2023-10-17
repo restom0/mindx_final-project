@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/restom0/nodejs_blog.git"
+    "url": "git+https://github.com/restom0/mindx_final-project/tree/main/server"
   },
   "author": "restom0",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/restom0/nodejs_blog/issues"
+    "url": "https://github.com/restom0/mindx_final-project/tree/main/server"
   },
-  "homepage": "https://github.com/restom0/nodejs_blog#readme",
+  "homepage": "https://github.com/restom0/mindx_final-project/tree/main/server",
   "dependencies": {
     "chart.js": "^4.4.0",
     "cookie-parser": "^1.4.6",
