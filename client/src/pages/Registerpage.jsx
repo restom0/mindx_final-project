@@ -8,7 +8,7 @@ const Registerpage = () => {
           src="https://pomofocus.io/images/brandlogo-white.png"
           alt="logo"
         ></img>
-        <div className="register-form-text">Đăng ký tài khoản</div>
+        <div className="register-form-text">Đăng ký</div>
         <div className="register-form-input">
           <div className="register-form-space">
             <div className="spacing"></div>

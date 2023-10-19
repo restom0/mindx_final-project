@@ -26,7 +26,7 @@ class UserController {
           idRole: queryResult.idRole,
         });
       } else {
-        return res.status(400).json({ error: "Invalid credentials" });
+        return res.status(400).json({ error: "Tài khoản không tồn tại" });
       }
     } catch (error) {
       console.error("Error:", error);
@@ -48,7 +48,7 @@ class UserController {
           check: true,
         });
       } else {
-        return res.status(400).json({ error: "Invalid credentials" });
+        return res.status(400).json({ error: "Tài khoản đã tồn tại" });
       }
     } catch (error) {
       console.error("Error:", error);
