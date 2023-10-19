@@ -84,16 +84,16 @@ const Login = () => {
         layout="vertical"
       >
         <Form.Item
-          label="Username"
-          name="Username"
-          rules={[{ required: true, message: "Hãy nhập email!" }]}
+          label="Tài khoản"
+          name="username"
+          rules={[{ required: true, message: "Hãy nhập tài khoản!" }]}
           onChange={(e) => setUserName(e.target.value)}
         >
           <Input className="form-item-input" />
         </Form.Item>
 
         <Form.Item
-          label="Password "
+          label="Password"
           name="password"
           rules={[{ required: true, message: "Hãy nhập mật khẩu!" }]}
           onChange={(e) => setPassword(e.target.value)}

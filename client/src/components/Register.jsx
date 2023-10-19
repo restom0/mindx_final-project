@@ -81,20 +81,20 @@ const FormRegister = () => {
         layout="vertical"
       >
         <Form.Item
-          label="Username"
-          name="Username"
-          rules={[{ required: true, message: "Hãy nhập username!" }]}
+          label="Tài khoản"
+          name="username"
+          rules={[{ required: true, message: "Hãy nhập tài khoản!" }]}
           onChange={(e) => setUserName(e.target.value)}
         >
           <Input className="form-item-input" />
         </Form.Item>
         <Form.Item
           label="Password"
-          name="Password"
-          rules={[{ required: true, message: "Hãy nhập password!" }]}
+          name="password"
+          rules={[{ required: true, message: "Hãy nhập mật khẩu!" }]}
           onChange={(e) => setPassword(e.target.value)}
         >
-          <Input className="form-item-input" />
+          <Input.Password className="form-item-input" />
         </Form.Item>
       </Form.Item>
       ;
