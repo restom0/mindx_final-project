@@ -86,7 +86,7 @@ const Report = ({ theme }) => {
         }
     };
 
-    const labels = date.map((stat) => `${stat.month + 1}/${stat.day}`);
+    const labels = date.map((stat) => `${stat.month}/${stat.day}`);
     const data = {
         labels,
         datasets: [{
