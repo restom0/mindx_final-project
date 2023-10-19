@@ -51,6 +51,7 @@ const Report = ({ theme }) => {
         if (date.estPomodoro !== 0) {
             streak++;
         }
+        streak = 0;
     })
     useEffect(() => {
         getTodo();
