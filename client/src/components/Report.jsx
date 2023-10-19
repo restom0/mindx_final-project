@@ -48,10 +48,13 @@ const Report = ({ theme }) => {
         }
     }
     date.map((date) => {
-        if (date.estPomodoro !== 0) {
+        if (date.estPomodoro === 0) {
+            streak = 0;
+        }
+        else {
             streak++;
         }
-        streak = 0;
+
     })
     useEffect(() => {
         getTodo();
