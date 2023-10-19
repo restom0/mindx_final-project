@@ -22,11 +22,11 @@ const Header = ({ theme, toggleTheme }) => {
     const logout = () => {
         Swal.fire({
             icon: "question",
-            title: "Bạn muốn đăng xuất?",
+            title: "Bạn muốn đăng xuất ?",
             showDenyButton: true,
             showCancelButton: false,
             confirmButtonText: "Đăng xuất",
-            denyButtonText: `Cancel`,
+            denyButtonText: `Hủy`,
         }).then((result) => {
             if (result.isConfirmed) {
                 Toast.fire({

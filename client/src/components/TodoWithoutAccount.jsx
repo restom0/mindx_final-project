@@ -94,7 +94,7 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                         <Checkbox type="checkbox" checked disabled name="" id="" />
                     )}
                 </Col>
-                <Col className="col-5 mt-1"><Col className='col-md-4'>
+                <Col className="col-6 mt-1"><Col className='col-md-4'>
                     {
                         item.edit === true ?
                             <input type="text" value={item1} onChange={(e) => (setItem1(e.target.value))} onKeyDown={editTodoName} />
@@ -106,8 +106,8 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                             )
                     }
                 </Col></Col>
-                <Col className="col-4 mt-1">{item.estPomodoro}</Col>
-                <Col className="col-1">
+                <Col className="col-3 mt-1">{item.estPomodoro}</Col>
+                <Col className="col-2">
                     <Button
                         className="btn btn-danger btn-sm"
                         disabled={isLoading1}
@@ -151,17 +151,17 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
     const deleteTodo = (i) => {
         Swal.fire({
             icon: "question",
-            title: "Delete this todo?",
+            title: "Xóa task này ?",
             showDenyButton: true,
             showCancelButton: false,
-            confirmButtonText: "Delete",
-            denyButtonText: `Cancel`,
+            confirmButtonText: "Xóa",
+            denyButtonText: `Hủy`,
         }).then((result) => {
             if (result.isConfirmed) {
                 setLoading1(true);
                 Toast.fire({
                     icon: "success",
-                    title: "Delete successfully",
+                    title: "Xóa thành công",
                 }).then(() => {
                     var temp = JSON.parse(localStorage.getItem("todo"));
                     temp = temp.filter((todo) => todo.id !== i);
@@ -178,16 +178,16 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
     const updateTodo = (i, e) => {
         Swal.fire({
             icon: "question",
-            title: "Finish this todo?",
+            title: "Hoàn thành task này ?",
             showDenyButton: true,
             showCancelButton: false,
-            confirmButtonText: "Confirm",
-            denyButtonText: `Cancel`,
+            confirmButtonText: "Xác nhận",
+            denyButtonText: `Hủy`,
         }).then((result) => {
             if (result.isConfirmed) {
                 Toast.fire({
                     icon: "success",
-                    title: "Finish successfully",
+                    title: "Thực hiện thành công",
                 }).then(() => {
                     var item = JSON.parse(localStorage.getItem("todo"));
                     item.map((todo) => {
@@ -204,17 +204,17 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
     const deleteAll = () => {
         Swal.fire({
             icon: "question",
-            title: "Delete all todos?",
+            title: "Xóa hết task ?",
             showDenyButton: true,
             showCancelButton: false,
-            confirmButtonText: "Delete All",
-            denyButtonText: `Cancel`,
+            confirmButtonText: "Xóa hết task ?",
+            denyButtonText: `Hủy`,
         }).then((result) => {
             setLoading2(true);
             if (result.isConfirmed) {
                 Toast.fire({
                     icon: "success",
-                    title: "Delete successfully",
+                    title: "Xóa hết thành công",
                 }).then(() => {
                     localStorage.removeItem("todo");
                     setTodo([]);
@@ -356,9 +356,9 @@ const TodoWithoutAccount = ({ theme, toggleTheme }) => {
                                     <Col className="col-1 mt-1">
                                         <b>#</b>
                                     </Col>
-                                    <Col className="col-5 mt-1"><b>Tên task</b></Col>
+                                    <Col className="col-6 mt-1"><b>Tên task</b></Col>
                                     <Col className="col-3 mt-1"><b>Pomo</b></Col>
-                                    <Col className="col-3">
+                                    <Col className="col-2">
                                     </Col>
                                 </Row>
                             </ListGroup.Item >
