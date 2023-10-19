@@ -17,7 +17,7 @@ const Loginpage = () => {
             src="https://pomofocus.io/images/brandlogo-white.png"
             alt="logo"
           ></img>
-          <div className="login-form-text">Login</div>
+          <div className="login-form-text">Đăng nhập</div>
           <div className="login-form-input">
             <div className="login-form-space">
               <div className="spacing"></div>
