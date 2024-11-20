@@ -26,7 +26,7 @@
     "express-handlebars": "^7.1.2",
     "http-error": "^0.0.6",
     "http-errors": "^2.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "lint-staged": "^14.0.1",
     "module-name": "^0.0.1-security",
     "mongoose": "^7.5.3",
