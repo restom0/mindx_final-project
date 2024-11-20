@@ -27,7 +27,7 @@
     "http-error": "^0.0.6",
     "http-errors": "^2.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^14.0.1",
+    "lint-staged": "^15.2.10",
     "module-name": "^0.0.1-security",
     "mongoose": "^7.5.3",
     "morgan": "^1.10.0",
