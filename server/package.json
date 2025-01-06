@@ -29,7 +29,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.2.11",
     "module-name": "^0.0.1-security",
-    "mongoose": "^8.9.2",
+    "mongoose": "^8.9.3",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.12.0",
