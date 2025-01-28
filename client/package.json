@@ -10,7 +10,7 @@
     "bootstrap": "^5.3.3",
     "boxicons": "^2.1.4",
     "react": "^19.0.0",
-    "react-bootstrap": "^2.10.6",
+    "react-bootstrap": "^2.10.8",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.1.3",
