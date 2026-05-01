@@ -1,0 +1,19 @@
+{
+  "health.ok": "Server is healthy.",
+  "todo.list.success": "Todos loaded.",
+  "todo.detail.success": "Todo loaded.",
+  "todo.created": "Todo created.",
+  "todo.updated": "Todo updated.",
+  "todo.deleted": "Todo deleted.",
+  "todo.cleared": "Todos deleted.",
+  "todo.notFound": "Todo not found.",
+  "focus.created": "Focus session saved.",
+  "habit.list.success": "Habits loaded.",
+  "habit.created": "Habit created.",
+  "habit.checked": "Habit check-in saved.",
+  "ai.breakdown.success": "Task breakdown generated.",
+  "errors.validation": "Request validation failed.",
+  "errors.invalidField": "Invalid field value.",
+  "errors.notFound": "Route not found.",
+  "errors.server": "Something went wrong."
+}

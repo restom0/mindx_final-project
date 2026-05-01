@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Todo {
+  id               String         @id @default(cuid())
+  title            String
+  description      String         @default("")
+  completed        Boolean        @default(false)
+  priority         Priority       @default(MEDIUM)
+  important        Boolean        @default(false)
+  status           TodoStatus     @default(TODO)
+  category         String         @default("General")
+  dueDate          DateTime?
+  reminderAt       DateTime?
+  recurrenceType   RecurrenceType @default(NONE)
+  repeatRule       Json?
+  estimatedMinutes Int?
+  attachments      Json           @default("[]")
+  locationReminder Json?
+  ownerId          String?
+  assigneeId       String?
+  sharedWith       Json           @default("[]")
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  version          Int            @default(1)
+
+  subtasks      Subtask[]
+  comments      TaskComment[]
+  activities    ActivityLog[]
+  focusSessions FocusSession[]
+
+  @@index([completed])
+  @@index([priority])
+  @@index([status])
+  @@index([dueDate])
+  @@index([createdAt])
+  @@index([updatedAt])
+}
+
+model Subtask {
+  id        String   @id @default(cuid())
+  todoId    String
+  title     String
+  completed Boolean  @default(false)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  todo Todo @relation(fields: [todoId], references: [id], onDelete: Cascade)
+
+  @@index([todoId])
+}
+
+model FocusSession {
+  id              String    @id @default(cuid())
+  todoId          String?
+  mode            FocusMode @default(FOCUS)
+  durationMinutes Int
+  startedAt       DateTime  @default(now())
+  completedAt     DateTime?
+
+  todo Todo? @relation(fields: [todoId], references: [id], onDelete: SetNull)
+
+  @@index([todoId])
+  @@index([startedAt])
+}
+
+model Habit {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @default("")
+  cadence     String   @default("daily")
+  color       String   @default("#137f7a")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  checkIns HabitCheckIn[]
+}
+
+model HabitCheckIn {
+  id        String   @id @default(cuid())
+  habitId   String
+  date      DateTime
+  completed Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  habit Habit @relation(fields: [habitId], references: [id], onDelete: Cascade)
+
+  @@unique([habitId, date])
+  @@index([habitId])
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  todoId    String
+  authorId  String?
+  body      String
+  mentions  Json     @default("[]")
+  createdAt DateTime @default(now())
+
+  todo Todo @relation(fields: [todoId], references: [id], onDelete: Cascade)
+
+  @@index([todoId])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  todoId    String?
+  actorId   String?
+  action    String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  todo Todo? @relation(fields: [todoId], references: [id], onDelete: SetNull)
+
+  @@index([todoId])
+  @@index([createdAt])
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum TodoStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  DONE
+}
+
+enum RecurrenceType {
+  NONE
+  DAILY
+  WEEKLY
+  MONTHLY
+  CUSTOM
+}
+
+enum FocusMode {
+  FOCUS
+  SHORT_BREAK
+}

@@ -1,0 +1,19 @@
+{
+  "health.ok": "El servidor funciona correctament.",
+  "todo.list.success": "Tasques carregades.",
+  "todo.detail.success": "Tasca carregada.",
+  "todo.created": "Tasca creada.",
+  "todo.updated": "Tasca actualitzada.",
+  "todo.deleted": "Tasca eliminada.",
+  "todo.cleared": "Tasques eliminades.",
+  "todo.notFound": "No s'ha trobat la tasca.",
+  "focus.created": "Sessio de focus desada.",
+  "habit.list.success": "Habits carregats.",
+  "habit.created": "Habit creat.",
+  "habit.checked": "Check-in de l'habit desat.",
+  "ai.breakdown.success": "Desglossament de tasca generat.",
+  "errors.validation": "La validacio de la peticio ha fallat.",
+  "errors.invalidField": "Valor de camp invalid.",
+  "errors.notFound": "Ruta no trobada.",
+  "errors.server": "Alguna cosa ha fallat."
+}

@@ -1,0 +1,19 @@
+{
+  "health.ok": "El servidor esta saludable.",
+  "todo.list.success": "Todos cargados.",
+  "todo.detail.success": "Todo cargado.",
+  "todo.created": "Todo creado.",
+  "todo.updated": "Todo actualizado.",
+  "todo.deleted": "Todo eliminado.",
+  "todo.cleared": "Todos eliminados.",
+  "todo.notFound": "Todo no encontrado.",
+  "focus.created": "Sesion de enfoque guardada.",
+  "habit.list.success": "Habitos cargados.",
+  "habit.created": "Habito creado.",
+  "habit.checked": "Check-in de habito guardado.",
+  "ai.breakdown.success": "Desglose de tarea generado.",
+  "errors.validation": "La validacion de la solicitud fallo.",
+  "errors.invalidField": "Valor de campo no valido.",
+  "errors.notFound": "Ruta no encontrada.",
+  "errors.server": "Algo salio mal."
+}

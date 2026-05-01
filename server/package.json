@@ -1,43 +1,44 @@
 {
-  "name": "hcmut_spss",
-  "version": "1.0.0",
+  "name": "mindx-todo-server",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Express Todo API with Prisma, PostgreSQL, Redis cache, i18n, and Swagger.",
   "main": "index.js",
   "scripts": {
-    "beautiful": "prettier --single-quote --trailing-comma all --write 'src/**/*.{js,json,scss}'",
-    "start": "nodemon ./bin/www",
-    "watch": "node-sass --watch src/resources/scss/app.scss src/public/css/app.css",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "build": "prisma generate",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "seed": "prisma db seed",
+    "check": "node --check index.js && node --check src/server.js && node --check src/app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/restom0/mindx_final-project/tree/main/server"
+  "prisma": {
+    "seed": "node prisma/seed.js"
   },
-  "author": "restom0",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/restom0/mindx_final-project/tree/main/server"
+  "engines": {
+    "node": ">=20.19.0"
   },
-  "homepage": "https://github.com/restom0/mindx_final-project/tree/main/server",
   "dependencies": {
-    "chart.js": "^4.4.7",
-    "cookie-parser": "^1.4.7",
-    "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "express-handlebars": "^8.0.1",
-    "http-error": "^0.0.6",
-    "http-errors": "^2.0.0",
-    "husky": "^9.1.7",
-    "lint-staged": "^15.4.3",
-    "module-name": "^0.0.1-security",
-    "mongoose": "^8.9.5",
-    "morgan": "^1.10.0",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.12.0",
-    "node-sass": "^9.0.0",
-    "path": "^0.12.7",
-    "prettier": "^3.4.2",
-    "react-chartjs-2": "^5.3.0"
+    "@prisma/client": "^7.8.0",
+    "@prisma/adapter-pg": "^7.8.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "ioredis": "^5.10.1",
+    "morgan": "^1.10.1",
+    "pg": "^8.20.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^4.4.1"
   },
-  "keywords": [],
-  "description": ""
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^7.8.0"
+  },
+  "overrides": {
+    "@hono/node-server": "^2.0.1"
+  }
 }

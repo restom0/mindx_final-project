@@ -1,0 +1,19 @@
+{
+  "health.ok": "Der Server ist fehlerfrei.",
+  "todo.list.success": "Todos geladen.",
+  "todo.detail.success": "Todo geladen.",
+  "todo.created": "Todo erstellt.",
+  "todo.updated": "Todo aktualisiert.",
+  "todo.deleted": "Todo geloescht.",
+  "todo.cleared": "Todos geloescht.",
+  "todo.notFound": "Todo nicht gefunden.",
+  "focus.created": "Fokus-Sitzung gespeichert.",
+  "habit.list.success": "Gewohnheiten geladen.",
+  "habit.created": "Gewohnheit erstellt.",
+  "habit.checked": "Gewohnheits-Check-in gespeichert.",
+  "ai.breakdown.success": "Aufgabenaufschluesselung erstellt.",
+  "errors.validation": "Die Anfragevalidierung ist fehlgeschlagen.",
+  "errors.invalidField": "Ungueltiger Feldwert.",
+  "errors.notFound": "Route nicht gefunden.",
+  "errors.server": "Etwas ist schiefgelaufen."
+}

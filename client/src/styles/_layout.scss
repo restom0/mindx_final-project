@@ -1,0 +1,141 @@
+@use "mixins" as *;
+
+.app-shell {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: var(--space-4);
+
+  @include tablet {
+    padding: var(--space-6);
+  }
+
+  &__main {
+    padding-top: var(--space-6);
+  }
+
+  &__music {
+    position: sticky;
+    bottom: var(--space-4);
+    z-index: 3;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-5);
+  }
+}
+
+.topbar {
+  display: grid;
+  gap: var(--space-4);
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+
+  @include desktop {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  &__nav,
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    align-items: center;
+  }
+
+  &__nav {
+    a {
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-3);
+      color: var(--color-muted);
+      font-weight: 700;
+
+      &.active {
+        background: var(--color-primary-soft);
+        color: var(--color-primary-strong);
+      }
+    }
+  }
+
+  &__actions {
+    @include desktop {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-primary-strong);
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.hero {
+  display: grid;
+  gap: var(--space-5);
+  align-items: end;
+  margin-bottom: var(--space-6);
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--color-primary-soft) 72%, transparent), transparent),
+  var(--color-surface);
+
+  @include tablet {
+    grid-template-columns: minmax(0, 1fr) auto;
+    padding: var(--space-8);
+  }
+
+  &--compact {
+    @include tablet {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__content {
+    display: grid;
+    gap: var(--space-3);
+
+    span {
+      color: var(--color-accent);
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 15ch;
+      margin: 0;
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      line-height: 0.96;
+    }
+
+    p {
+      max-width: 62ch;
+      margin: 0;
+      color: var(--color-muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+  }
+}
+
+.dashboard-grid,
+.insights-grid {
+  display: grid;
+  gap: var(--space-5);
+
+  @include desktop {
+    grid-template-columns: minmax(0, 1fr) 22rem;
+    align-items: start;
+  }
+}
+
+.side-stack {
+  display: grid;
+  gap: var(--space-5);
+}

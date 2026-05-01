@@ -1,0 +1,19 @@
+{
+  "health.ok": "Il server e in salute.",
+  "todo.list.success": "Todo caricati.",
+  "todo.detail.success": "Todo caricato.",
+  "todo.created": "Todo creato.",
+  "todo.updated": "Todo aggiornato.",
+  "todo.deleted": "Todo eliminato.",
+  "todo.cleared": "Todo eliminati.",
+  "todo.notFound": "Todo non trovato.",
+  "focus.created": "Sessione focus salvata.",
+  "habit.list.success": "Abitudini caricate.",
+  "habit.created": "Abitudine creata.",
+  "habit.checked": "Check-in abitudine salvato.",
+  "ai.breakdown.success": "Scomposizione attivita generata.",
+  "errors.validation": "La validazione della richiesta non e riuscita.",
+  "errors.invalidField": "Valore del campo non valido.",
+  "errors.notFound": "Route non trovata.",
+  "errors.server": "Qualcosa e andato storto."
+}

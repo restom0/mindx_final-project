@@ -1,0 +1,19 @@
+{
+  "health.ok": "Le serveur est operationnel.",
+  "todo.list.success": "Todos charges.",
+  "todo.detail.success": "Todo charge.",
+  "todo.created": "Todo cree.",
+  "todo.updated": "Todo mis a jour.",
+  "todo.deleted": "Todo supprime.",
+  "todo.cleared": "Todos supprimes.",
+  "todo.notFound": "Todo introuvable.",
+  "focus.created": "Session de focus enregistree.",
+  "habit.list.success": "Habitudes chargees.",
+  "habit.created": "Habitude creee.",
+  "habit.checked": "Pointage d'habitude enregistre.",
+  "ai.breakdown.success": "Decoupage de tache genere.",
+  "errors.validation": "La validation de la requete a echoue.",
+  "errors.invalidField": "Valeur de champ invalide.",
+  "errors.notFound": "Route introuvable.",
+  "errors.server": "Une erreur est survenue."
+}
