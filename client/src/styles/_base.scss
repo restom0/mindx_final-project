@@ -21,7 +21,7 @@ body {
   radial-gradient(circle at top right, color-mix(in srgb, var(--color-accent-soft) 40%, transparent), transparent 30rem),
   var(--color-bg);
   color: var(--color-text);
-  font-family: var(--font-sans);
+  font-family: var(--font-sans), serif;
 }
 
 button,
