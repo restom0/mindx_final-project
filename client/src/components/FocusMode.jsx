@@ -9,9 +9,12 @@ const modes = {
   break: 5 * 60
 };
 
+const getModeSeconds = (mode) => modes[mode] ?? modes.focus;
+
 const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const rest = seconds % 60;
+  const totalSeconds = Number.isFinite(seconds) && seconds > 0 ? Math.floor(seconds) : 0;
+  const minutes = Math.floor(totalSeconds / 60);
+  const rest = totalSeconds % 60;
   return `${String(minutes).padStart(2, "0")}:${String(rest).padStart(2, "0")}`;
 };
 
@@ -22,7 +25,7 @@ function FocusMode({task, onRecord}) {
   const [running, setRunning] = useState(false);
 
   useEffect(() => {
-    setSecondsLeft(modes[mode]);
+    setSecondsLeft(getModeSeconds(mode));
     setRunning(false);
   }, [mode, task?.id]);
 
@@ -36,14 +39,16 @@ function FocusMode({task, onRecord}) {
         if (value <= 1) {
           window.clearInterval(interval);
           setRunning(false);
-          onRecord({
-            todoId: task?.id || null,
-            mode: mode === "focus" ? "focus" : "short_break",
-            durationMinutes: mode === "focus" ? 25 : 5,
-            completedTask: false,
-            startedAt: new Date(Date.now() - modes[mode] * 1000).toISOString(),
-            completedAt: new Date().toISOString()
-          });
+          if (typeof onRecord === "function") {
+            onRecord({
+              todoId: task?.id || null,
+              mode: mode === "focus" ? "focus" : "short_break",
+              durationMinutes: mode === "focus" ? 25 : 5,
+              completedTask: false,
+              startedAt: new Date(Date.now() - getModeSeconds(mode) * 1000).toISOString(),
+              completedAt: new Date().toISOString()
+            });
+          }
           return 0;
         }
         return value - 1;
@@ -53,7 +58,10 @@ function FocusMode({task, onRecord}) {
     return () => window.clearInterval(interval);
   }, [mode, onRecord, running, task?.id]);
 
-  const progress = useMemo(() => Math.round(((modes[mode] - secondsLeft) / modes[mode]) * 100), [mode, secondsLeft]);
+  const progress = useMemo(() => {
+    const totalSeconds = getModeSeconds(mode);
+    return totalSeconds > 0 ? Math.round(((totalSeconds - secondsLeft) / totalSeconds) * 100) : 0;
+  }, [mode, secondsLeft]);
 
   return (
     <Card className="focus-mode">
@@ -84,12 +92,19 @@ function FocusMode({task, onRecord}) {
         <Button icon={running ? <Pause size={16}/> : <Play size={16}/>} onClick={() => setRunning(!running)}>
           {running ? t("music.pause") : t("music.play")}
         </Button>
-        <Button icon={<RotateCcw size={16}/>} variant="secondary" onClick={() => setSecondsLeft(modes[mode])}>
+        <Button icon={<RotateCcw size={16}/>} variant="secondary" onClick={() => {
+          setRunning(false);
+          setSecondsLeft(getModeSeconds(mode));
+        }}>
           {t("advanced.reset")}
         </Button>
         <Button
           variant="secondary"
-          onClick={() =>
+          onClick={() => {
+            if (typeof onRecord !== "function") {
+              return;
+            }
+
             onRecord({
               todoId: task?.id || null,
               mode: "focus",
@@ -97,8 +112,8 @@ function FocusMode({task, onRecord}) {
               completedTask: true,
               startedAt: new Date(Date.now() - 25 * 60 * 1000).toISOString(),
               completedAt: new Date().toISOString()
-            })
-          }
+            });
+          }}
         >
           {t("advanced.saveSession")}
         </Button>

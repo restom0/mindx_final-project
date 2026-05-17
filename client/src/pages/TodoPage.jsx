@@ -41,6 +41,7 @@ function TodoPage() {
   const [editingTodo, setEditingTodo] = useState(null);
   const [focusTask, setFocusTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const todoItems = Array.isArray(todos) ? todos : [];
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -51,12 +52,12 @@ function TodoPage() {
   }, [dispatch, filters, language]);
 
   const stats = useMemo(() => {
-    const completed = todos.filter((todo) => todo.completed).length;
+    const completed = todoItems.filter((todo) => todo.completed).length;
     return {
       completed,
-      active: todos.length - completed
+      active: todoItems.length - completed
     };
-  }, [todos]);
+  }, [todoItems]);
 
   const openCreateModal = () => {
     setEditingTodo(null);
@@ -103,7 +104,11 @@ function TodoPage() {
     }
   };
 
-  const handleMoveTask = async (id, changes) => {
+  const handleMoveTask = async (id, changes = {}) => {
+    if (!id) {
+      return;
+    }
+
     const normalizedChanges = {
       ...changes,
       completed: changes.status === "DONE" ? true : changes.completed
@@ -117,14 +122,22 @@ function TodoPage() {
   };
 
   const handleApplyAi = async (result) => {
+    const title = result?.title?.trim();
+    if (!title) {
+      return;
+    }
+
+    const checklist = Array.isArray(result?.checklist) ? result.checklist : [];
+    const subtasks = Array.isArray(result?.subtasks) ? result.subtasks : [];
+
     try {
       await dispatch(
         createTodo({
-          title: result.title,
-          description: result.checklist.join("\n"),
-          priority: result.priority.toLowerCase(),
-          estimatedMinutes: result.estimatedMinutes,
-          subtasks: result.subtasks.map((title, index) => ({title, completed: false, sortOrder: index}))
+          title,
+          description: checklist.join("\n"),
+          priority: typeof result?.priority === "string" ? result.priority.toLowerCase() : "medium",
+          estimatedMinutes: Number(result?.estimatedMinutes) || 25,
+          subtasks: subtasks.map((item, index) => ({title: item, completed: false, sortOrder: index}))
         })
       ).unwrap();
       dispatch(fetchTodos());
@@ -134,6 +147,10 @@ function TodoPage() {
   };
 
   const handleRecordFocus = (session) => {
+    if (!session || typeof session !== "object") {
+      return;
+    }
+
     dispatch(recordFocusSession(session));
     todoApi.createFocusSession(session, language).catch(() => undefined);
   };
@@ -158,7 +175,7 @@ function TodoPage() {
               <h2>{t("todo.title")}</h2>
               <p>{t("todo.summary", {active: stats.active, completed: stats.completed})}</p>
             </div>
-            {meta ? <span className="meta-pill">{t("todo.total", {total: meta.total})}</span> : null}
+            {meta ? <span className="meta-pill">{t("todo.total", {total: meta?.total ?? 0})}</span> : null}
           </div>
 
           <TodoToolbar/>
@@ -168,7 +185,7 @@ function TodoPage() {
             <Skeleton rows={5}/>
           ) : (
             <TodoList
-              todos={todos}
+              todos={todoItems}
               onDelete={handleDelete}
               onEdit={(todo) => {
                 setEditingTodo(todo);

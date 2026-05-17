@@ -8,7 +8,10 @@ const initialFilters = {
   order: "desc"
 };
 
-const getLanguage = (state) => state.settings.language;
+const getLanguage = (state) => state?.settings?.language ?? "en";
+const getErrorMessage = (action) => action?.payload ?? action?.error?.message ?? "Request failed";
+const getResponseItems = (payload) => (Array.isArray(payload?.data) ? payload.data : []);
+const getResponseMeta = (payload) => (payload?.meta && typeof payload.meta === "object" ? payload.meta : null);
 
 export const fetchTodos = createAsyncThunk("todos/fetch", async (_, {getState, rejectWithValue}) => {
   const state = getState();
@@ -87,52 +90,56 @@ const todosSlice = createSlice({
       })
       .addCase(fetchTodos.fulfilled, (state, action) => {
         state.status = "succeeded";
-        state.items = action.payload.data;
-        state.meta = action.payload.meta;
+        state.items = getResponseItems(action.payload);
+        state.meta = getResponseMeta(action.payload);
       })
       .addCase(fetchTodos.rejected, (state, action) => {
         state.status = "failed";
-        state.error = action.payload;
+        state.error = getErrorMessage(action);
       })
       .addCase(createTodo.pending, (state) => {
         state.saving = true;
       })
       .addCase(createTodo.fulfilled, (state, action) => {
         state.saving = false;
-        state.items.unshift(action.payload.data);
+        if (action.payload?.data) {
+          state.items.unshift(action.payload.data);
+        }
       })
       .addCase(createTodo.rejected, (state, action) => {
         state.saving = false;
-        state.error = action.payload;
+        state.error = getErrorMessage(action);
       })
       .addCase(updateTodo.pending, (state) => {
         state.saving = true;
       })
       .addCase(updateTodo.fulfilled, (state, action) => {
         state.saving = false;
-        const index = state.items.findIndex((todo) => todo.id === action.payload.data.id);
+        const updatedTodo = action.payload?.data;
+        const index = state.items.findIndex((todo) => todo.id === updatedTodo?.id);
         if (index >= 0) {
-          state.items[index] = action.payload.data;
+          state.items[index] = updatedTodo;
         }
       })
       .addCase(updateTodo.rejected, (state, action) => {
         state.saving = false;
-        state.error = action.payload;
+        state.error = getErrorMessage(action);
       })
       .addCase(deleteTodo.fulfilled, (state, action) => {
-        state.items = state.items.filter((todo) => todo.id !== action.payload.id);
+        const deletedId = action.payload?.id;
+        state.items = state.items.filter((todo) => todo.id !== deletedId);
       })
       .addCase(deleteTodo.rejected, (state, action) => {
-        state.error = action.payload;
+        state.error = getErrorMessage(action);
       });
   }
 });
 
 export const {resetTodoError, setFilter, setSearch, setSort} = todosSlice.actions;
-export const selectTodos = (state) => state.todos.items;
-export const selectTodoFilters = (state) => state.todos.filters;
-export const selectTodoStatus = (state) => state.todos.status;
-export const selectTodoSaving = (state) => state.todos.saving;
-export const selectTodoError = (state) => state.todos.error;
-export const selectTodoMeta = (state) => state.todos.meta;
+export const selectTodos = (state) => state?.todos?.items ?? [];
+export const selectTodoFilters = (state) => state?.todos?.filters ?? initialFilters;
+export const selectTodoStatus = (state) => state?.todos?.status ?? "idle";
+export const selectTodoSaving = (state) => state?.todos?.saving ?? false;
+export const selectTodoError = (state) => state?.todos?.error ?? "";
+export const selectTodoMeta = (state) => state?.todos?.meta ?? null;
 export default todosSlice.reducer;

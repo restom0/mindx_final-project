@@ -1,13 +1,29 @@
 const {sendSuccess} = require("../common/response");
 const {todoService} = require("../services/todo.service");
 
+const translate = (req, key) => {
+  if (typeof req?.t === "function") {
+    return req.t(key);
+  }
+
+  return key;
+};
+
+const getTranslator = (req) => {
+  if (typeof req?.t === "function") {
+    return req.t;
+  }
+
+  return (key) => key;
+};
+
 const todoController = {
   async list(req, res) {
     const result = await todoService.list(req.validated.query);
 
     return sendSuccess(
       res,
-      req.t("todo.list.success"),
+      translate(req, "todo.list.success"),
       result.items,
       {
         page: result.page,
@@ -19,47 +35,47 @@ const todoController = {
   },
 
   async detail(req, res) {
-    const todo = await todoService.detail(req.validated.params.id, req.t);
-    return sendSuccess(res, req.t("todo.detail.success"), todo);
+    const todo = await todoService.detail(req.validated.params.id, getTranslator(req));
+    return sendSuccess(res, translate(req, "todo.detail.success"), todo);
   },
 
   async create(req, res) {
     const todo = await todoService.create(req.validated.body);
-    return sendSuccess(res, req.t("todo.created"), todo, undefined, 201);
+    return sendSuccess(res, translate(req, "todo.created"), todo, undefined, 201);
   },
 
   async update(req, res) {
     const todo = await todoService.update(
       req.validated.params.id,
       req.validated.body,
-      req.t
+      getTranslator(req)
     );
-    return sendSuccess(res, req.t("todo.updated"), todo);
+    return sendSuccess(res, translate(req, "todo.updated"), todo);
   },
 
   async remove(req, res) {
-    const todo = await todoService.remove(req.validated.params.id, req.t);
-    return sendSuccess(res, req.t("todo.deleted"), todo);
+    const todo = await todoService.remove(req.validated.params.id, getTranslator(req));
+    return sendSuccess(res, translate(req, "todo.deleted"), todo);
   },
 
   async clear(req, res) {
     const result = await todoService.clear();
-    return sendSuccess(res, req.t("todo.cleared"), {count: result.count});
+    return sendSuccess(res, translate(req, "todo.cleared"), {count: result.count});
   },
 
   async createFocusSession(req, res) {
     const session = await todoService.createFocusSession(req.validated.body);
-    return sendSuccess(res, req.t("focus.created"), session, undefined, 201);
+    return sendSuccess(res, translate(req, "focus.created"), session, undefined, 201);
   },
 
   async listHabits(req, res) {
     const habits = await todoService.listHabits();
-    return sendSuccess(res, req.t("habit.list.success"), habits);
+    return sendSuccess(res, translate(req, "habit.list.success"), habits);
   },
 
   async createHabit(req, res) {
     const habit = await todoService.createHabit(req.validated.body);
-    return sendSuccess(res, req.t("habit.created"), habit, undefined, 201);
+    return sendSuccess(res, translate(req, "habit.created"), habit, undefined, 201);
   },
 
   async checkInHabit(req, res) {
@@ -67,12 +83,12 @@ const todoController = {
       req.validated.params.habitId,
       req.validated.body.date
     );
-    return sendSuccess(res, req.t("habit.checked"), checkIn);
+    return sendSuccess(res, translate(req, "habit.checked"), checkIn);
   },
 
   async aiBreakdown(req, res) {
     const result = todoService.getAiBreakdown(req.validated.body);
-    return sendSuccess(res, req.t("ai.breakdown.success"), result);
+    return sendSuccess(res, translate(req, "ai.breakdown.success"), result);
   }
 };
 

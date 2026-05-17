@@ -1,14 +1,77 @@
 import {createSlice} from "@reduxjs/toolkit";
 
+const defaultHabits = [
+  {id: "habit-focus", title: "Deep work", checkIns: [], cadence: "daily"},
+  {id: "habit-review", title: "Daily review", checkIns: [], cadence: "daily"}
+];
+
+const readStorage = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+};
+
 const readJson = (key, fallback) => {
   try {
-    return JSON.parse(localStorage.getItem(key)) || fallback;
+    const raw = readStorage(key);
+    if (!raw) {
+      return fallback;
+    }
+
+    const parsed = JSON.parse(raw);
+    return parsed ?? fallback;
   } catch {
     return fallback;
   }
 };
 
-const save = (key, value) => localStorage.setItem(key, JSON.stringify(value));
+const save = (key, value) => {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Ignore storage write failures and keep the in-memory state.
+  }
+};
+
+const ensureArray = (value) => (Array.isArray(value) ? value : []);
+const readNumber = (key, fallback) => {
+  const value = Number(readStorage(key));
+  return Number.isFinite(value) ? value : fallback;
+};
+const normalizeHabits = (value) => {
+  const habits = ensureArray(value)
+    .map((habit, index) => ({
+      id: habit?.id || `habit-${index + 1}`,
+      title: habit?.title || "",
+      cadence: habit?.cadence || "daily",
+      checkIns: ensureArray(habit?.checkIns)
+        .filter((checkIn) => typeof checkIn?.date === "string")
+        .map((checkIn) => ({
+          date: checkIn.date,
+          completed: Boolean(checkIn.completed)
+        }))
+    }))
+    .filter((habit) => habit.title);
+
+  return habits.length ? habits : defaultHabits;
+};
+const normalizeSessions = (value) =>
+  ensureArray(value).map((session, index) => ({
+    id: session?.id || `focus-${index + 1}`,
+    todoId: session?.todoId ?? null,
+    mode: session?.mode || "focus",
+    durationMinutes: Number(session?.durationMinutes) || 0,
+    completedTask: Boolean(session?.completedTask),
+    startedAt: session?.startedAt || null,
+    completedAt: session?.completedAt || null
+  }));
+const normalizeBadges = (value) =>
+  ensureArray(value)
+    .filter((badge) => typeof badge === "string")
+    .map((badge) => badge.trim())
+    .filter(Boolean);
 
 const congratulations = [
   "Nice finish. That one counts.",
@@ -18,14 +81,11 @@ const congratulations = [
 ];
 
 const initialState = {
-  habits: readJson("mindx-habits", [
-    {id: "habit-focus", title: "Deep work", checkIns: [], cadence: "daily"},
-    {id: "habit-review", title: "Daily review", checkIns: [], cadence: "daily"}
-  ]),
-  focusSessions: readJson("mindx-focus-sessions", []),
-  badges: readJson("mindx-badges", []),
-  level: Number(localStorage.getItem("mindx-level") || 1),
-  score: Number(localStorage.getItem("mindx-score") || 0),
+  habits: normalizeHabits(readJson("mindx-habits", defaultHabits)),
+  focusSessions: normalizeSessions(readJson("mindx-focus-sessions", [])),
+  badges: normalizeBadges(readJson("mindx-badges", [])),
+  level: readNumber("mindx-level", 1),
+  score: readNumber("mindx-score", 0),
   lastCongratulation: ""
 };
 
@@ -33,8 +93,12 @@ const syncProgress = (state) => {
   save("mindx-habits", state.habits);
   save("mindx-focus-sessions", state.focusSessions);
   save("mindx-badges", state.badges);
-  localStorage.setItem("mindx-level", String(state.level));
-  localStorage.setItem("mindx-score", String(state.score));
+  try {
+    localStorage.setItem("mindx-level", String(state.level));
+    localStorage.setItem("mindx-score", String(state.score));
+  } catch {
+    // Ignore storage write failures and keep the in-memory state.
+  }
 };
 
 const productivitySlice = createSlice({
@@ -42,9 +106,14 @@ const productivitySlice = createSlice({
   initialState,
   reducers: {
     addHabit(state, action) {
+      const title = action.payload?.title?.trim();
+      if (!title) {
+        return;
+      }
+
       state.habits.push({
         id: `habit-${Date.now()}`,
-        title: action.payload.title,
+        title,
         cadence: "daily",
         checkIns: []
       });
@@ -53,7 +122,12 @@ const productivitySlice = createSlice({
     checkInHabit(state, action) {
       const habit = state.habits.find((item) => item.id === action.payload);
       const today = new Date().toISOString().slice(0, 10);
-      if (habit && !habit.checkIns.some((checkIn) => checkIn.date === today)) {
+      const checkIns = ensureArray(habit?.checkIns);
+      if (habit) {
+        habit.checkIns = checkIns;
+      }
+
+      if (habit && !checkIns.some((checkIn) => checkIn?.date === today)) {
         habit.checkIns.push({date: today, completed: true});
         state.score += 10;
         state.lastCongratulation = congratulations[Math.floor(Math.random() * congratulations.length)];
@@ -61,18 +135,24 @@ const productivitySlice = createSlice({
       syncProgress(state);
     },
     recordFocusSession(state, action) {
+      const payload = action.payload && typeof action.payload === "object" ? action.payload : {};
+      const durationMinutes = Number(payload.durationMinutes);
+      const safeDurationMinutes = Number.isFinite(durationMinutes) && durationMinutes > 0 ? durationMinutes : 0;
+
       state.focusSessions.unshift({
         id: `focus-${Date.now()}`,
-        ...action.payload
+        ...payload,
+        durationMinutes: safeDurationMinutes,
+        completedTask: Boolean(payload.completedTask)
       });
-      state.score += action.payload.durationMinutes;
+      state.score += safeDurationMinutes;
       if (state.score >= state.level * 120) {
         state.level += 1;
         if (!state.badges.includes("Level up")) {
           state.badges.push("Level up");
         }
       }
-      if (action.payload.completedTask && !state.badges.includes("Closer")) {
+      if (payload.completedTask && !state.badges.includes("Closer")) {
         state.badges.push("Closer");
       }
       state.lastCongratulation = congratulations[Math.floor(Math.random() * congratulations.length)];
@@ -90,5 +170,12 @@ const productivitySlice = createSlice({
 });
 
 export const {addHabit, awardCompletion, checkInHabit, recordFocusSession} = productivitySlice.actions;
-export const selectProductivity = (state) => state.productivity;
+export const selectProductivity = (state) => ({
+  habits: ensureArray(state?.productivity?.habits),
+  focusSessions: ensureArray(state?.productivity?.focusSessions),
+  badges: ensureArray(state?.productivity?.badges),
+  level: Number.isFinite(state?.productivity?.level) ? state.productivity.level : 1,
+  score: Number.isFinite(state?.productivity?.score) ? state.productivity.score : 0,
+  lastCongratulation: state?.productivity?.lastCongratulation ?? ""
+});
 export default productivitySlice.reducer;

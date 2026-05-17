@@ -90,6 +90,26 @@
     "latest": "Ultimes actualitzacions",
     "rate": "{{rate}} per cent completat"
   },
+  "status": {
+    "actions": {
+      "home": "Torna a l'inici",
+      "retry": "Torna-ho a provar"
+    },
+    "notFound": {
+      "kicker": "Error 404",
+      "title": "Aquesta pagina no existeix",
+      "subtitle": "L'adreca que has obert no coincideix amb cap pagina d'aquest espai de treball.",
+      "note": "Torna al tauler de tasques i continua. Les teves dades no han canviat.",
+      "illustration": "Il-lustracio de pagina 404 no trobada"
+    },
+    "serverDown": {
+      "kicker": "Error 500",
+      "title": "El servidor esta fora de servei",
+      "subtitle": "L'API ha respost amb un error intern i l'app t'ha mogut a una pagina segura.",
+      "note": "Revisa els logs del servidor o reinicia els serveis i torna a provar quan el backend estigui estable.",
+      "illustration": "Il-lustracio de servidor 500 no disponible"
+    }
+  },
   "quotes": [
     "Les tasques petites acabades avui superen els plans perfectes de dema.",
     "La claredat es una funcio de rendiment.",

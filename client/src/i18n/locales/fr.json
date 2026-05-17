@@ -90,6 +90,26 @@
     "latest": "Dernieres mises a jour",
     "rate": "{{rate}} pour cent termine"
   },
+  "status": {
+    "actions": {
+      "home": "Retour a l'accueil",
+      "retry": "Reessayer"
+    },
+    "notFound": {
+      "kicker": "Erreur 404",
+      "title": "Cette page est introuvable",
+      "subtitle": "L'adresse ouverte ne correspond a aucune page de cet espace de travail.",
+      "note": "Revenez au tableau Todo et continuez. Aucune donnee n'a ete modifiee.",
+      "illustration": "Illustration de page 404 introuvable"
+    },
+    "serverDown": {
+      "kicker": "Erreur 500",
+      "title": "Le serveur est indisponible",
+      "subtitle": "L'API a renvoye une erreur interne et l'application vous a deplace vers une page sure.",
+      "note": "Verifiez les logs du serveur ou redemarrez les services, puis reessayez quand le backend repond de nouveau.",
+      "illustration": "Illustration de serveur 500 indisponible"
+    }
+  },
   "quotes": [
     "Les petites taches finies aujourd'hui battent les plans parfaits de demain.",
     "La clarte est une fonction de performance.",

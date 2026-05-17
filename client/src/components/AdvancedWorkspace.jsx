@@ -22,6 +22,8 @@ import Button from "./Button.jsx";
 import Card from "./Card.jsx";
 import Input from "./Input.jsx";
 
+const ensureArray = (value) => (Array.isArray(value) ? value : []);
+
 const matrixGroups = [
   {key: "do", label: "advanced.matrixDo"},
   {key: "schedule", label: "advanced.matrixSchedule"},
@@ -44,16 +46,20 @@ const weekDays = Array.from({length: 7}, (_, index) => {
 });
 
 function MiniTask({todo}) {
+  if (!todo) {
+    return null;
+  }
+
   return (
     <span className={`mini-task mini-task--${getPriority(todo)} ${isOverdue(todo) ? "mini-task--overdue" : ""}`}>
-      {todo.title}
+      {todo.title || ""}
     </span>
   );
 }
 
 function DailyPlanner({todos}) {
   const {t} = useTranslation();
-  const plan = getDailyPlan(todos);
+  const plan = getDailyPlan(ensureArray(todos));
 
   return (
     <Card className="advanced-card">
@@ -72,9 +78,11 @@ function EisenhowerMatrix({todos}) {
   const {t} = useTranslation();
   const groups = useMemo(() => {
     return matrixGroups.reduce((acc, group) => {
-      acc[group.key] = todos.filter((todo) => getMatrixKey(todo) === group.key).slice(0, 6);
+      acc[group.key] = ensureArray(todos)
+        .filter((todo) => getMatrixKey(todo) === group.key)
+        .slice(0, 6);
       return acc;
-    }, {});
+    }, {do: [], schedule: [], delegate: [], eliminate: []});
   }, [todos]);
 
   return (
@@ -84,7 +92,7 @@ function EisenhowerMatrix({todos}) {
         {matrixGroups.map((group) => (
           <section key={group.key}>
             <h3>{t(group.label)}</h3>
-            {groups[group.key].map((todo) => (
+            {(groups[group.key] || []).map((todo) => (
               <MiniTask key={todo.id} todo={todo}/>
             ))}
           </section>
@@ -96,6 +104,7 @@ function EisenhowerMatrix({todos}) {
 
 function KanbanBoard({todos, onMove}) {
   const {t} = useTranslation();
+  const items = ensureArray(todos);
 
   return (
     <Card className="advanced-card advanced-card--wide">
@@ -106,17 +115,22 @@ function KanbanBoard({todos, onMove}) {
             className="kanban-column"
             key={column.key}
             onDragOver={(event) => event.preventDefault()}
-            onDrop={(event) => onMove(event.dataTransfer.getData("text/plain"), {status: column.key})}
+            onDrop={(event) => {
+              const id = event.dataTransfer?.getData("text/plain");
+              if (id) {
+                onMove?.(id, {status: column.key});
+              }
+            }}
           >
             <h3>{t(column.label)}</h3>
-            {todos
+            {items
               .filter((todo) => (todo.status || "TODO") === column.key)
               .slice(0, 8)
               .map((todo) => (
                 <div className="kanban-card" draggable key={todo.id}
-                     onDragStart={(event) => event.dataTransfer.setData("text/plain", todo.id)}>
+                     onDragStart={(event) => event.dataTransfer?.setData("text/plain", todo.id || "")}>
                   <GripVertical size={14}/>
-                  <span>{todo.title}</span>
+                  <span>{todo.title || ""}</span>
                 </div>
               ))}
           </section>
@@ -128,6 +142,7 @@ function KanbanBoard({todos, onMove}) {
 
 function CalendarView({todos, onMove}) {
   const {t} = useTranslation();
+  const items = ensureArray(todos);
 
   return (
     <Card className="advanced-card advanced-card--wide">
@@ -135,20 +150,25 @@ function CalendarView({todos, onMove}) {
       <div className="calendar-strip">
         {weekDays.map((day) => {
           const key = day.toISOString().slice(0, 10);
-          const tasks = todos.filter((todo) => todo.dueDate?.slice(0, 10) === key);
+          const tasks = items.filter((todo) => String(todo?.dueDate ?? "").slice(0, 10) === key);
           return (
             <section
               className={`calendar-day ${day.toDateString() === new Date().toDateString() ? "calendar-day--today" : ""}`}
               key={key}
               onDragOver={(event) => event.preventDefault()}
-              onDrop={(event) => onMove(event.dataTransfer.getData("text/plain"), {dueDate: day.toISOString()})}
+              onDrop={(event) => {
+                const id = event.dataTransfer?.getData("text/plain");
+                if (id) {
+                  onMove?.(id, {dueDate: day.toISOString()});
+                }
+              }}
             >
               <h3>{new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric"}).format(day)}</h3>
               {tasks.slice(0, 5).map((todo) => (
                 <div className="calendar-task" draggable key={todo.id}
-                     onDragStart={(event) => event.dataTransfer.setData("text/plain", todo.id)}>
+                     onDragStart={(event) => event.dataTransfer?.setData("text/plain", todo.id || "")}>
                   {isToday(todo) ? <CalendarDays size={14}/> : null}
-                  {todo.title}
+                  {todo.title || ""}
                 </div>
               ))}
               {tasks.length === 0 ? <span className="muted">{t("advanced.dropHere")}</span> : null}
@@ -171,7 +191,7 @@ function AiTaskBreakdown({onApply}) {
     setLoading(true);
     try {
       const response = await todoApi.aiBreakdown({title}, language);
-      setResult(response.data);
+      setResult(response?.data ?? null);
     } catch {
       setResult({
         title,
@@ -197,13 +217,13 @@ function AiTaskBreakdown({onApply}) {
       </Button>
       {result ? (
         <div className="ai-result">
-          <p>{t("advanced.aiEstimate", {minutes: result.estimatedMinutes, priority: result.priority})}</p>
+          <p>{t("advanced.aiEstimate", {minutes: result?.estimatedMinutes ?? 0, priority: result?.priority ?? ""})}</p>
           <ul>
-            {result.subtasks.map((item) => (
+            {ensureArray(result?.subtasks).map((item) => (
               <li key={item}>{item}</li>
             ))}
           </ul>
-          <Button variant="secondary" onClick={() => onApply(result)}>
+          <Button variant="secondary" onClick={() => onApply?.(result)}>
             {t("advanced.applyAi")}
           </Button>
         </div>
@@ -228,20 +248,26 @@ function HabitTracker() {
         <Input id="habit-title" label={t("advanced.habitName")} value={title}
                onChange={(event) => setTitle(event.target.value)}/>
         <Button onClick={() => {
-          dispatch(addHabit({title}));
+          const nextTitle = title.trim();
+          if (!nextTitle) {
+            return;
+          }
+
+          dispatch(addHabit({title: nextTitle}));
           setTitle("");
         }} disabled={!title.trim()}>
           {t("advanced.addHabit")}
         </Button>
       </div>
-      {habits.map((habit) => {
-        const checked = habit.checkIns.some((checkIn) => checkIn.date === today);
-        const rate = Math.min(100, Math.round((habit.checkIns.length / 7) * 100));
+      {ensureArray(habits).map((habit) => {
+        const checkIns = ensureArray(habit?.checkIns);
+        const checked = checkIns.some((checkIn) => checkIn?.date === today);
+        const rate = Math.min(100, Math.round((checkIns.length / 7) * 100));
         return (
           <div className="habit-row" key={habit.id}>
             <div>
-              <strong>{habit.title}</strong>
-              <span>{t("advanced.streak", {streak: habit.checkIns.length})} - {rate}%</span>
+              <strong>{habit.title || ""}</strong>
+              <span>{t("advanced.streak", {streak: checkIns.length})} - {rate}%</span>
             </div>
             <Button variant={checked ? "secondary" : "primary"} onClick={() => dispatch(checkInHabit(habit.id))}
                     disabled={checked}>
@@ -257,10 +283,11 @@ function HabitTracker() {
 function ProductivityDashboard({todos}) {
   const {t} = useTranslation();
   const {badges, focusSessions, habits, level, score, lastCongratulation} = useSelector(selectProductivity);
-  const completed = todos.filter((todo) => todo.completed).length;
-  const overdue = todos.filter(isOverdue).length;
-  const focusTime = focusSessions.reduce((sum, session) => sum + session.durationMinutes, 0);
-  const rate = getCompletionRate(todos);
+  const items = ensureArray(todos);
+  const completed = items.filter((todo) => todo.completed).length;
+  const overdue = items.filter(isOverdue).length;
+  const focusTime = ensureArray(focusSessions).reduce((sum, session) => sum + (Number(session?.durationMinutes) || 0), 0);
+  const rate = getCompletionRate(items);
 
   return (
     <Card className="advanced-card advanced-card--wide">
@@ -272,13 +299,13 @@ function ProductivityDashboard({todos}) {
         <span>{t("advanced.overdueCount", {count: overdue})}</span>
         <span>{t("advanced.completionRate", {rate})}</span>
         <span>{t("advanced.focusMinutes", {minutes: focusTime})}</span>
-        <span>{t("advanced.habitCount", {count: habits.length})}</span>
+        <span>{t("advanced.habitCount", {count: ensureArray(habits).length})}</span>
       </div>
       <div className="score-card">
         <Trophy size={20}/>
         <strong>{t("advanced.level", {level})}</strong>
         <span>{t("advanced.score", {score})}</span>
-        {badges.map((badge) => (
+        {ensureArray(badges).map((badge) => (
           <em key={badge}>{badge}</em>
         ))}
       </div>
@@ -311,6 +338,7 @@ function CollaborationPlaceholders() {
 function GamificationCard() {
   const {t} = useTranslation();
   const {badges, level, score} = useSelector(selectProductivity);
+  const badgeItems = ensureArray(badges);
 
   return (
     <Card className="advanced-card">
@@ -320,7 +348,7 @@ function GamificationCard() {
       <p>{t("advanced.level", {level})}</p>
       <p>{t("advanced.score", {score})}</p>
       <div className="badge-list">
-        {(badges.length ? badges : [t("advanced.firstBadge")]).map((badge) => (
+        {(badgeItems.length ? badgeItems : [t("advanced.firstBadge")]).map((badge) => (
           <span key={badge}>
             <CheckCircle2 size={14}/> {badge}
           </span>

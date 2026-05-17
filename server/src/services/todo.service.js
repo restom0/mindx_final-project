@@ -4,9 +4,10 @@ const {HttpError} = require("../common/httpError");
 const {todoRepository} = require("../repositories/todo.repository");
 
 const TODO_CACHE_PREFIX = "todos:";
+const translate = (t, key) => (typeof t === "function" ? t(key) : key);
 
 const throwNotFound = (t) => {
-  throw new HttpError(404, t("todo.notFound"));
+  throw new HttpError(404, translate(t, "todo.notFound"));
 };
 
 const invalidateTodos = () => cache.purgeByPrefix(TODO_CACHE_PREFIX);
@@ -77,7 +78,7 @@ const applyCompletionRules = async (id, data, t) => {
   };
 };
 
-const buildAiBreakdown = ({title = "", description = ""}) => {
+const buildAiBreakdown = ({title = "", description = ""} = {}) => {
   const source = `${title} ${description}`.toLowerCase();
   const estimatedMinutes = source.includes("project") || source.includes("launch") ? 180 : 75;
   const priority = source.includes("urgent") || source.includes("deadline") ? "URGENT" : "HIGH";
@@ -152,7 +153,7 @@ const todoService = {
     return result;
   },
 
-  async createFocusSession(data) {
+  async createFocusSession(data = {}) {
     const session = await todoRepository.createFocusSession({
       ...data,
       mode: data.mode || "FOCUS"
@@ -171,6 +172,10 @@ const todoService = {
 
   checkInHabit(habitId, date) {
     const checkInDate = new Date(date);
+    if (Number.isNaN(checkInDate.getTime())) {
+      return todoRepository.checkInHabit(habitId, new Date());
+    }
+
     checkInDate.setHours(0, 0, 0, 0);
     return todoRepository.checkInHabit(habitId, checkInDate);
   },

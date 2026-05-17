@@ -7,6 +7,14 @@ import es from "./locales/es.json";
 import fr from "./locales/fr.json";
 import it from "./locales/it.json";
 
+const getStoredLanguage = () => {
+  try {
+    return localStorage.getItem("mindx-language") || "en";
+  } catch {
+    return "en";
+  }
+};
+
 i18n.use(initReactI18next).init({
   resources: {
     en: {translation: en},
@@ -16,7 +24,7 @@ i18n.use(initReactI18next).init({
     es: {translation: es},
     it: {translation: it}
   },
-  lng: localStorage.getItem("mindx-language") || "en",
+  lng: getStoredLanguage(),
   fallbackLng: "en",
   interpolation: {
     escapeValue: false

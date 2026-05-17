@@ -14,7 +14,20 @@ function MusicPlayer() {
   const [volume, setVolume] = useState(0.18);
 
   const start = async () => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
     const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) {
+      return;
+    }
+
+    if (oscillatorsRef.current.length > 0) {
+      setPlaying(true);
+      return;
+    }
+
     const context = audioContextRef.current || new AudioContext();
     audioContextRef.current = context;
     await context.resume();
@@ -37,7 +50,13 @@ function MusicPlayer() {
   };
 
   const stop = () => {
-    oscillatorsRef.current.forEach((oscillator) => oscillator.stop());
+    oscillatorsRef.current.forEach((oscillator) => {
+      try {
+        oscillator?.stop();
+      } catch {
+        // Ignore oscillator shutdown errors from already stopped nodes.
+      }
+    });
     oscillatorsRef.current = [];
     gainRef.current?.disconnect();
     gainRef.current = null;
@@ -45,9 +64,10 @@ function MusicPlayer() {
   };
 
   const updateVolume = (nextVolume) => {
-    setVolume(nextVolume);
+    const safeVolume = Number.isFinite(nextVolume) ? nextVolume : 0.18;
+    setVolume(safeVolume);
     if (gainRef.current) {
-      gainRef.current.gain.value = nextVolume;
+      gainRef.current.gain.value = safeVolume;
     }
   };
 

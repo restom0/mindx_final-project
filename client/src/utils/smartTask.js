@@ -8,9 +8,10 @@ const priorityWords = {
 };
 
 const pad = (value) => String(value).padStart(2, "0");
+const isValidDate = (value) => value instanceof Date && !Number.isNaN(value.getTime());
 
 const toLocalInputValue = (date) => {
-  if (!date) {
+  if (!isValidDate(date)) {
     return "";
   }
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(
@@ -40,7 +41,7 @@ const parseTime = (text, date) => {
 };
 
 export function parseSmartTask(input) {
-  const raw = input.trim();
+  const raw = String(input ?? "").trim();
   const lower = raw.toLowerCase();
   const now = new Date();
   let dueDate = null;
@@ -112,9 +113,15 @@ export function parseSmartTask(input) {
 }
 
 export function toDateInputValue(value) {
-  return value ? toLocalInputValue(new Date(value)) : "";
+  const date = value ? new Date(value) : null;
+  return isValidDate(date) ? toLocalInputValue(date) : "";
 }
 
 export function fromDateInputValue(value) {
-  return value ? new Date(value).toISOString() : null;
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  return isValidDate(date) ? date.toISOString() : null;
 }

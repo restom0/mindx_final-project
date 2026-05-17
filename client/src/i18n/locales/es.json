@@ -90,6 +90,26 @@
     "latest": "Ultimas actualizaciones",
     "rate": "{{rate}} por ciento completado"
   },
+  "status": {
+    "actions": {
+      "home": "Volver al inicio",
+      "retry": "Reintentar conexion"
+    },
+    "notFound": {
+      "kicker": "Error 404",
+      "title": "Esa pagina no existe",
+      "subtitle": "La direccion que abriste no coincide con ninguna pagina de este espacio de trabajo.",
+      "note": "Vuelve al panel de tareas y sigue. Tus datos no se han modificado.",
+      "illustration": "Ilustracion de pagina 404 no encontrada"
+    },
+    "serverDown": {
+      "kicker": "Error 500",
+      "title": "El servidor no esta disponible",
+      "subtitle": "La API devolvio un error interno y la app te movio a una pagina segura.",
+      "note": "Revisa los logs del servidor o reinicia los servicios y vuelve a intentarlo cuando el backend este estable otra vez.",
+      "illustration": "Ilustracion de servidor 500 no disponible"
+    }
+  },
   "quotes": [
     "Las tareas pequenas terminadas hoy vencen a los planes perfectos de manana.",
     "La claridad es una funcion de rendimiento.",

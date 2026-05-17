@@ -1,30 +1,44 @@
+const ensureArray = (value) => (Array.isArray(value) ? value : []);
+const toValidDate = (value) => {
+  if (!value) {
+    return null;
+  }
+
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
 export const getSubtaskProgress = (todo) => {
-  const subtasks = todo.subtasks || [];
+  const subtasks = ensureArray(todo?.subtasks);
   if (subtasks.length === 0) {
-    return todo.completed ? 100 : 0;
+    return todo?.completed ? 100 : 0;
   }
   const completed = subtasks.filter((subtask) => subtask.completed).length;
   return Math.round((completed / subtasks.length) * 100);
 };
 
 export const isOverdue = (todo) => {
-  return Boolean(todo.dueDate && !todo.completed && new Date(todo.dueDate) < new Date());
+  const dueDate = toValidDate(todo?.dueDate);
+  return Boolean(dueDate && !todo?.completed && dueDate < new Date());
 };
 
 export const isToday = (todo) => {
-  if (!todo.dueDate) {
+  const due = toValidDate(todo?.dueDate);
+  if (!due) {
     return false;
   }
-  const due = new Date(todo.dueDate);
   const now = new Date();
   return due.toDateString() === now.toDateString();
 };
 
-export const getPriority = (todo) => (todo.priority || "MEDIUM").toLowerCase();
+export const getPriority = (todo) => {
+  const priority = typeof todo?.priority === "string" ? todo.priority.toLowerCase() : "medium";
+  return ["low", "medium", "high", "urgent"].includes(priority) ? priority : "medium";
+};
 
 export const getMatrixKey = (todo) => {
   const urgent = ["urgent", "high"].includes(getPriority(todo)) || isOverdue(todo) || isToday(todo);
-  const important = Boolean(todo.important);
+  const important = Boolean(todo?.important);
 
   if (urgent && important) {
     return "do";
@@ -39,7 +53,7 @@ export const getMatrixKey = (todo) => {
 };
 
 export const getDailyPlan = (todos) => {
-  return [...todos]
+  return [...ensureArray(todos)]
     .filter((todo) => !todo.completed)
     .sort((a, b) => {
       const aScore = (isOverdue(a) ? 5 : 0) + (isToday(a) ? 4 : 0) + (getPriority(a) === "urgent" ? 3 : 0);
@@ -50,8 +64,9 @@ export const getDailyPlan = (todos) => {
 };
 
 export const getCompletionRate = (todos) => {
-  if (todos.length === 0) {
+  const items = ensureArray(todos);
+  if (items.length === 0) {
     return 0;
   }
-  return Math.round((todos.filter((todo) => todo.completed).length / todos.length) * 100);
+  return Math.round((items.filter((todo) => todo.completed).length / items.length) * 100);
 };

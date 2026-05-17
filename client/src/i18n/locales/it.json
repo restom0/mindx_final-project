@@ -90,6 +90,26 @@
     "latest": "Ultimi aggiornamenti",
     "rate": "{{rate}} percento completato"
   },
+  "status": {
+    "actions": {
+      "home": "Torna alla home",
+      "retry": "Riprova connessione"
+    },
+    "notFound": {
+      "kicker": "Errore 404",
+      "title": "Questa pagina non esiste",
+      "subtitle": "L'indirizzo aperto non corrisponde a nessuna pagina di questo workspace.",
+      "note": "Torna alla dashboard Todo e continua. I tuoi dati non sono stati modificati.",
+      "illustration": "Illustrazione pagina 404 non trovata"
+    },
+    "serverDown": {
+      "kicker": "Errore 500",
+      "title": "Il server non e disponibile",
+      "subtitle": "L'API ha restituito un errore interno e l'app ti ha spostato su una pagina sicura.",
+      "note": "Controlla i log del server o riavvia i servizi, poi riprova quando il backend torna stabile.",
+      "illustration": "Illustrazione server 500 non disponibile"
+    }
+  },
   "quotes": [
     "Le piccole attivita finite oggi battono i piani perfetti di domani.",
     "La chiarezza e una funzione di performance.",

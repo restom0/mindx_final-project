@@ -90,6 +90,26 @@
     "latest": "Letzte Updates",
     "rate": "{{rate}} Prozent erledigt"
   },
+  "status": {
+    "actions": {
+      "home": "Zur Startseite",
+      "retry": "Verbindung erneut versuchen"
+    },
+    "notFound": {
+      "kicker": "Fehler 404",
+      "title": "Diese Seite gibt es nicht",
+      "subtitle": "Die geoeffnete Adresse passt zu keiner Seite in diesem Arbeitsbereich.",
+      "note": "Geh zur Todo-Startseite zurueck und mach weiter. An deinen Daten wurde nichts geaendert.",
+      "illustration": "404 Seite nicht gefunden Illustration"
+    },
+    "serverDown": {
+      "kicker": "Fehler 500",
+      "title": "Der Server ist gerade nicht erreichbar",
+      "subtitle": "Die API hat einen internen Fehler geliefert, daher wurde die App auf eine sichere Seite umgeleitet.",
+      "note": "Pruefe die Server-Logs oder starte die Dienste neu und versuche es erneut, wenn das Backend wieder stabil ist.",
+      "illustration": "500 Server nicht verfuegbar Illustration"
+    }
+  },
   "quotes": [
     "Kleine erledigte Aufgaben heute schlagen perfekte Plaene morgen.",
     "Klarheit ist ein Performance-Feature.",

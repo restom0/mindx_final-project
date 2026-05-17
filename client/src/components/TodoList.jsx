@@ -6,13 +6,14 @@ const ROW_HEIGHT = 168;
 
 function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
   const {t} = useTranslation();
+  const items = Array.isArray(todos) ? todos : [];
   const {containerRef, onScroll, totalHeight, virtualItems} = useVirtualList({
-    itemCount: todos.length,
+    itemCount: items.length,
     itemHeight: ROW_HEIGHT,
     overscan: 6
   });
 
-  if (todos.length === 0) {
+  if (items.length === 0) {
     return (
       <div className="empty-state">
         <h2>{t("todo.emptyTitle")}</h2>
@@ -25,11 +26,15 @@ function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
     <div className="todo-list" ref={containerRef} onScroll={onScroll} role="list" aria-label={t("todo.list")}>
       <div className="todo-list__spacer" style={{height: totalHeight}}>
         {virtualItems.map((virtualItem) => {
-          const todo = todos[virtualItem.index];
+          const todo = items[virtualItem.index];
+          if (!todo) {
+            return null;
+          }
+
           return (
             <div
               className="todo-list__row"
-              key={todo.id}
+              key={todo.id ?? `todo-row-${virtualItem.index}`}
               role="listitem"
               style={{transform: `translateY(${virtualItem.offsetTop}px)`}}
             >

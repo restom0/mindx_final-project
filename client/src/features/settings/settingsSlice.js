@@ -1,6 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit";
 
-const getStoredValue = (key, fallback) => localStorage.getItem(key) || fallback;
+const getStoredValue = (key, fallback) => {
+  try {
+    return localStorage.getItem(key) || fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const setStoredValue = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Ignore storage write failures and keep the in-memory state.
+  }
+};
 
 const initialState = {
   theme: getStoredValue("mindx-theme", "light"),
@@ -13,16 +27,16 @@ const settingsSlice = createSlice({
   reducers: {
     toggleTheme(state) {
       state.theme = state.theme === "light" ? "dark" : "light";
-      localStorage.setItem("mindx-theme", state.theme);
+      setStoredValue("mindx-theme", state.theme);
     },
     setLanguage(state, action) {
-      state.language = action.payload;
-      localStorage.setItem("mindx-language", action.payload);
+      state.language = action.payload || "en";
+      setStoredValue("mindx-language", state.language);
     }
   }
 });
 
 export const {setLanguage, toggleTheme} = settingsSlice.actions;
-export const selectTheme = (state) => state.settings.theme;
-export const selectLanguage = (state) => state.settings.language;
+export const selectTheme = (state) => state?.settings?.theme ?? "light";
+export const selectLanguage = (state) => state?.settings?.language ?? "en";
 export default settingsSlice.reducer;

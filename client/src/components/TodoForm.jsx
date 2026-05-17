@@ -5,6 +5,8 @@ import {fromDateInputValue, parseSmartTask, toDateInputValue} from "../utils/sma
 import Button from "./Button.jsx";
 import Input from "./Input.jsx";
 
+const ensureArray = (value) => (Array.isArray(value) ? value : []);
+
 function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
   const {t} = useTranslation();
   const [smartInput, setSmartInput] = useState("");
@@ -26,6 +28,13 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
   const [locationText, setLocationText] = useState("");
 
   useEffect(() => {
+    const subtasks = ensureArray(initialTodo?.subtasks);
+    const attachments = ensureArray(initialTodo?.attachments);
+    const firstAttachment = attachments[0];
+    const locationReminder = initialTodo?.locationReminder;
+    const hasLocation =
+      Number.isFinite(locationReminder?.latitude) && Number.isFinite(locationReminder?.longitude);
+
     setTitle(initialTodo?.title || "");
     setDescription(initialTodo?.description || "");
     setPriority((initialTodo?.priority || "medium").toLowerCase());
@@ -35,16 +44,15 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
     setDueDate(toDateInputValue(initialTodo?.dueDate));
     setReminderAt(toDateInputValue(initialTodo?.reminderAt));
     setRecurrenceType((initialTodo?.recurrenceType || "none").toLowerCase());
-    setEstimatedMinutes(initialTodo?.estimatedMinutes || 25);
-    setSubtasksText((initialTodo?.subtasks || []).map((subtask) => subtask.title).join("\n"));
-    const firstAttachment = initialTodo?.attachments?.[0];
+    setEstimatedMinutes(Number(initialTodo?.estimatedMinutes) || 25);
+    setSubtasksText(subtasks.map((subtask) => subtask?.title || "").filter(Boolean).join("\n"));
     setAttachmentLabel(firstAttachment?.label || "");
     setAttachmentUrl(firstAttachment?.url || "");
     setOwnerId(initialTodo?.ownerId || "owner-1");
     setAssigneeId(initialTodo?.assigneeId || "");
     setLocationText(
-      initialTodo?.locationReminder
-        ? `${initialTodo.locationReminder.latitude}, ${initialTodo.locationReminder.longitude}, ${initialTodo.locationReminder.radius}`
+      hasLocation
+        ? `${locationReminder.latitude}, ${locationReminder.longitude}, ${locationReminder.radius || 250}`
         : ""
     );
   }, [initialTodo]);
@@ -61,13 +69,23 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle || typeof onSubmit !== "function") {
+      return;
+    }
+
+    const initialSubtasks = ensureArray(initialTodo?.subtasks);
+    const trimmedAttachmentLabel = attachmentLabel.trim();
+    const trimmedAttachmentUrl = attachmentUrl.trim();
+    const normalizedOwnerId = ownerId.trim() || "owner-1";
+    const normalizedAssigneeId = assigneeId.trim();
     const [latitude, longitude, radius] = locationText
       .split(",")
       .map((item) => Number(item.trim()))
       .filter((item) => Number.isFinite(item));
 
     onSubmit({
-      title: title.trim(),
+      title: trimmedTitle,
       description: description.trim(),
       priority,
       important,
@@ -83,15 +101,15 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
         .filter(Boolean)
         .map((item, index) => ({
           title: item,
-          completed: initialTodo?.subtasks?.[index]?.completed || false,
+          completed: initialSubtasks[index]?.completed || false,
           sortOrder: index
         })),
-      attachments: attachmentLabel
+      attachments: trimmedAttachmentLabel
         ? [
           {
-            type: attachmentUrl ? "link" : "note",
-            label: attachmentLabel.trim(),
-            url: attachmentUrl.trim(),
+            type: trimmedAttachmentUrl ? "link" : "note",
+            label: trimmedAttachmentLabel,
+            url: trimmedAttachmentUrl,
             metadata: {uploadStatus: "placeholder"}
           }
         ]
@@ -106,9 +124,9 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           }
           : null,
       collaboration: {
-        ownerId,
-        assigneeId: assigneeId || null,
-        sharedWith: assigneeId ? [{userId: assigneeId, role: "editor"}] : []
+        ownerId: normalizedOwnerId,
+        assigneeId: normalizedAssigneeId || null,
+        sharedWith: normalizedAssigneeId ? [{userId: normalizedAssigneeId, role: "editor"}] : []
       }
     });
   };

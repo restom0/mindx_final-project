@@ -90,6 +90,26 @@
     "latest": "Latest updates",
     "rate": "{{rate}} percent completed"
   },
+  "status": {
+    "actions": {
+      "home": "Back to home",
+      "retry": "Retry connection"
+    },
+    "notFound": {
+      "kicker": "404 error",
+      "title": "That page is not here",
+      "subtitle": "The address you opened does not match a page in this workspace.",
+      "note": "Go back to the Todo dashboard and keep moving. Nothing in your data was changed.",
+      "illustration": "404 page not found illustration"
+    },
+    "serverDown": {
+      "kicker": "500 error",
+      "title": "The server is taking a break",
+      "subtitle": "The API returned an internal server error, so the app moved you to a safe page.",
+      "note": "Check the server logs or restart the services, then retry the connection when the backend is healthy again.",
+      "illustration": "500 server unavailable illustration"
+    }
+  },
   "advanced": {
     "smartInput": "Smart task input",
     "smartPlaceholder": "Example: Submit report tomorrow 8pm high priority",

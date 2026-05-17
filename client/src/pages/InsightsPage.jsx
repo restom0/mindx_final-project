@@ -5,11 +5,18 @@ import Card from "../components/Card.jsx";
 import QuoteCard from "../components/QuoteCard.jsx";
 import {fetchTodos, selectTodos, selectTodoStatus} from "../features/todos/todosSlice.js";
 
+const toTimestamp = (value) => {
+  const date = new Date(value);
+  const time = date.getTime();
+  return Number.isNaN(time) ? 0 : time;
+};
+
 function InsightsPage() {
   const dispatch = useDispatch();
   const {t} = useTranslation();
   const todos = useSelector(selectTodos);
   const status = useSelector(selectTodoStatus);
+  const todoItems = Array.isArray(todos) ? todos : [];
 
   useEffect(() => {
     if (status === "idle") {
@@ -18,15 +25,15 @@ function InsightsPage() {
   }, [dispatch, status]);
 
   const insights = useMemo(() => {
-    const total = todos.length;
-    const completed = todos.filter((todo) => todo.completed).length;
+    const total = todoItems.length;
+    const completed = todoItems.filter((todo) => todo.completed).length;
     const completionRate = total ? Math.round((completed / total) * 100) : 0;
-    const latest = [...todos]
-      .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
+    const latest = [...todoItems]
+      .sort((a, b) => toTimestamp(b?.updatedAt) - toTimestamp(a?.updatedAt))
       .slice(0, 5);
 
     return {completed, completionRate, latest, total};
-  }, [todos]);
+  }, [todoItems]);
 
   return (
     <div className="page page--insights">
@@ -52,9 +59,11 @@ function InsightsPage() {
           <ul>
             {insights.latest.map((todo) => (
               <li key={todo.id}>
-                <span>{todo.title}</span>
-                <time dateTime={todo.updatedAt}>
-                  {new Intl.DateTimeFormat(undefined, {dateStyle: "medium"}).format(new Date(todo.updatedAt))}
+                <span>{todo.title || ""}</span>
+                <time dateTime={todo.updatedAt || ""}>
+                  {toTimestamp(todo?.updatedAt)
+                    ? new Intl.DateTimeFormat(undefined, {dateStyle: "medium"}).format(new Date(todo.updatedAt))
+                    : ""}
                 </time>
               </li>
             ))}
