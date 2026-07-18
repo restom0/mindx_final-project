@@ -245,8 +245,9 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           <option value="custom">{t("advanced.repeatCustom")}</option>
         </Select>
 
-        <label className="field field--checkbox">
+        <label className="field field--checkbox" htmlFor="todo-important">
           <input
+            id="todo-important"
             type="checkbox"
             checked={important}
             onChange={(event) => setImportant(event.target.checked)}

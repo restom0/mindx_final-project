@@ -18,10 +18,11 @@ function LanguageSwitcher() {
   const {t} = useTranslation();
 
   return (
-    <label className="select-control" title={t("settings.language")}>
+    <label className="select-control" htmlFor="settings-language" title={t("settings.language")}>
       <Languages size={18} aria-hidden="true" />
+      <span className="sr-only">{t("settings.language")}</span>
       <select
-        aria-label={t("settings.language")}
+        id="settings-language"
         value={language}
         onChange={(event) => dispatch(setLanguage(event.target.value))}
       >

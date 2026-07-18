@@ -28,19 +28,21 @@ function TodoToolbar() {
         ))}
       </div>
 
-      <label className="search-field">
+      <label className="search-field" htmlFor="todo-search">
         <Search size={18} aria-hidden="true" />
         <span className="sr-only">{t("todo.search")}</span>
         <input
+          id="todo-search"
           value={filters.search}
           placeholder={t("todo.searchPlaceholder")}
           onChange={(event) => dispatch(setSearch(event.target.value))}
         />
       </label>
 
-      <label className="select-control select-control--wide">
+      <label className="select-control select-control--wide" htmlFor="todo-sort">
         <span>{t("todo.sort.label")}</span>
         <select
+          id="todo-sort"
           value={filters.sort}
           onChange={(event) => dispatch(setSort({sort: event.target.value, order: filters.order}))}
         >

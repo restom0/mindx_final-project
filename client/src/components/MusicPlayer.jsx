@@ -82,10 +82,10 @@ function MusicPlayer() {
       >
         {playing ? t("music.pause") : t("music.play")}
       </Button>
-      <label className="music-player__volume">
+      <label className="music-player__volume" htmlFor="music-volume">
         <span>{t("music.volume")}</span>
         <input
-          aria-label={t("music.volume")}
+          id="music-volume"
           type="range"
           min="0"
           max="0.5"

@@ -3,23 +3,40 @@
   "name": "MindX Todo App",
   "icons": [
     {
+      "src": "mindx-icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "mindx-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "mindx-icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    },
+    {
       "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
-    },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#d95f59",
-  "background_color": "#f8f5ef"
+  "theme_color": "#4f46e5",
+  "background_color": "#f5f6fb",
+  "screenshots": [
+    {
+      "src": "mindx-thumbnail.png",
+      "type": "image/png",
+      "sizes": "1200x630",
+      "form_factor": "wide",
+      "label": "MindX Todo dashboard preview"
+    }
+  ]
 }
