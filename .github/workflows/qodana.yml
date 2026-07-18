@@ -1,33 +1,42 @@
-name: Qodana
+name: Qodana (Client)
 
 on:
   push:
-    branches: [main]
+    branches: ["main"]
   pull_request:
-    branches: [main]
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
 
 jobs:
-  gate:
-    name: Check token
-    runs-on: ubuntu-latest
-    outputs:
-      run: ${{ steps.check.outputs.run }}
-    steps:
-      - id: check
-        env:
-          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-        # Skip the scan cleanly when QODANA_TOKEN is not configured.
-        run: echo "run=${QODANA_TOKEN:+true}" >> "$GITHUB_OUTPUT"
-
   qodana:
-    name: Qodana scan
-    needs: gate
-    if: needs.gate.outputs.run == 'true'
+    name: Qodana Quality Scan
     runs-on: ubuntu-latest
+    env:
+      QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
+      - name: Guard (token present?)
+        id: guard
+        run: |
+          if [ -n "${QODANA_TOKEN}" ]; then
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::QODANA_TOKEN not configured — skipping Qodana scan."
+          fi
+
+      - name: Checkout
+        if: steps.guard.outputs.enabled == 'true'
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
-      - uses: JetBrains/qodana-action@v2024.3
+
+      - name: Qodana Scan
+        if: steps.guard.outputs.enabled == 'true'
+        uses: JetBrains/qodana-action@107939d10e5ddbffb88bc5dd279934314937ed7a # v2026.1.3
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
