@@ -7,14 +7,35 @@ const toNumber = (value, fallback) => {
   return Number.isFinite(parsed) ? parsed : fallback;
 };
 
+const toBoolean = (value, fallback = false) => {
+  if (value === undefined || value === null || value === "") {
+    return fallback;
+  }
+
+  return ["1", "true", "yes"].includes(String(value).toLowerCase());
+};
+
+const toOriginList = (value) =>
+  String(value || "")
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter((origin) => origin && origin !== "*");
+
+const defaultCorsOrigins = "http://localhost,http://localhost:8080,http://localhost:5173";
+
 const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: toNumber(process.env.PORT, 3000),
   apiPrefix: process.env.API_PREFIX || "/api",
-  corsOrigin: process.env.CORS_ORIGIN || "*",
+  corsOrigins: toOriginList(process.env.CORS_ORIGIN || defaultCorsOrigins),
   databaseUrl: process.env.DATABASE_URL,
   redisUrl: process.env.REDIS_URL || "",
-  cacheTtlSeconds: toNumber(process.env.CACHE_TTL_SECONDS, 60)
+  cacheTtlSeconds: toNumber(process.env.CACHE_TTL_SECONDS, 60),
+  rateLimitWindowMs: toNumber(process.env.RATE_LIMIT_WINDOW_MS, 15 * 60 * 1000),
+  rateLimitMax: toNumber(process.env.RATE_LIMIT_MAX, 300),
+  healthRateLimitWindowMs: toNumber(process.env.HEALTH_RATE_LIMIT_WINDOW_MS, 60 * 1000),
+  healthRateLimitMax: toNumber(process.env.HEALTH_RATE_LIMIT_MAX, 60),
+  trustProxy: toBoolean(process.env.TRUST_PROXY)
 };
 
 module.exports = {env};

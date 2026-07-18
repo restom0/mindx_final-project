@@ -50,6 +50,30 @@ Open:
 
 The server container runs Prisma migrations and an idempotent seed before startup. The seed creates 100 deterministic todos, so repeated starts do not duplicate rows.
 
+## Publish Docker packages
+
+Docker images are published to GitHub Container Registry by the `Docker Publish` workflow:
+
+- `ghcr.io/restom0/mindx-final-project-client`
+- `ghcr.io/restom0/mindx-final-project-server`
+
+The workflow runs on pushes to `main`, semantic version tags such as `v2.0.0`, and manual dispatch. It publishes branch, version, `latest`, and short-SHA tags for both images.
+
+To deploy from published packages:
+
+```bash
+docker compose -f docker-compose.deploy.yml pull
+docker compose -f docker-compose.deploy.yml up -d
+```
+
+To deploy a specific image tag:
+
+```bash
+set MINDX_CLIENT_IMAGE=ghcr.io/restom0/mindx-final-project-client:v2.0.0
+set MINDX_SERVER_IMAGE=ghcr.io/restom0/mindx-final-project-server:v2.0.0
+docker compose -f docker-compose.deploy.yml up -d
+```
+
 ## Local development
 
 Start the API:
@@ -86,14 +110,19 @@ Client:
 
 Server:
 
-| Variable            | Purpose                                      |
-| ------------------- | -------------------------------------------- |
-| `PORT`              | Express server port.                         |
-| `API_PREFIX`        | API route prefix, usually `/api`.            |
-| `CORS_ORIGIN`       | Allowed browser origins.                     |
-| `DATABASE_URL`      | PostgreSQL connection string used by Prisma. |
-| `REDIS_URL`         | Redis connection string for cached reads.    |
-| `CACHE_TTL_SECONDS` | Cache TTL for supported API responses.       |
+| Variable                      | Purpose                                                                                              |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `PORT`                        | Express server port.                                                                                 |
+| `API_PREFIX`                  | API route prefix, usually `/api`.                                                                    |
+| `CORS_ORIGIN`                 | Comma-separated list of allowed browser origins. Wildcard `*` is ignored for credentialed requests.  |
+| `DATABASE_URL`                | PostgreSQL connection string used by Prisma.                                                         |
+| `REDIS_URL`                   | Redis connection string for cached reads.                                                            |
+| `CACHE_TTL_SECONDS`           | Cache TTL for supported API responses.                                                               |
+| `RATE_LIMIT_WINDOW_MS`        | General API rate-limit window in milliseconds.                                                       |
+| `RATE_LIMIT_MAX`              | Maximum requests per general API rate-limit window.                                                  |
+| `HEALTH_RATE_LIMIT_WINDOW_MS` | Health-check rate-limit window in milliseconds.                                                      |
+| `HEALTH_RATE_LIMIT_MAX`       | Maximum health-check requests per window.                                                            |
+| `TRUST_PROXY`                 | Set to `true` when the API runs behind a trusted reverse proxy such as the bundled Nginx service.     |
 
 ## Useful commands
 

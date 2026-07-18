@@ -28,21 +28,20 @@ services:
     restart: unless-stopped
 
   server:
-    build:
-      context: ./server
+    image: ${MINDX_SERVER_IMAGE:-ghcr.io/restom0/mindx-final-project-server:latest}
     environment:
       NODE_ENV: production
       PORT: 3000
       API_PREFIX: /api
-      CORS_ORIGIN: http://localhost,http://localhost:8080,http://localhost:5173
-      DATABASE_URL: postgresql://todo:todo@postgres:5432/todo_app?schema=public
-      REDIS_URL: redis://redis:6379
-      CACHE_TTL_SECONDS: 60
-      RATE_LIMIT_WINDOW_MS: 900000
-      RATE_LIMIT_MAX: 300
-      HEALTH_RATE_LIMIT_WINDOW_MS: 60000
-      HEALTH_RATE_LIMIT_MAX: 60
-      TRUST_PROXY: true
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost,http://localhost:8080}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://todo:todo@postgres:5432/todo_app?schema=public}
+      REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-60}
+      RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
+      RATE_LIMIT_MAX: ${RATE_LIMIT_MAX:-300}
+      HEALTH_RATE_LIMIT_WINDOW_MS: ${HEALTH_RATE_LIMIT_WINDOW_MS:-60000}
+      HEALTH_RATE_LIMIT_MAX: ${HEALTH_RATE_LIMIT_MAX:-60}
+      TRUST_PROXY: ${TRUST_PROXY:-true}
     depends_on:
       postgres:
         condition: service_healthy
@@ -54,16 +53,10 @@ services:
       timeout: 5s
       retries: 6
       start_period: 30s
-    ports:
-      - "3000:3000"
     restart: unless-stopped
 
   client:
-    build:
-      context: ./client
-      args:
-        VITE_API_BASE_URL: /api
-        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
+    image: ${MINDX_CLIENT_IMAGE:-ghcr.io/restom0/mindx-final-project-client:latest}
     depends_on:
       server:
         condition: service_healthy

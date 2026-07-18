@@ -6,9 +6,13 @@ on:
   pull_request:
     branches: [main]
 
+permissions: {}
+
 jobs:
   client:
     name: Client (lint / format / build)
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -27,6 +31,8 @@ jobs:
 
   server:
     name: Server (lint / format / prisma / syntax)
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     defaults:
       run:
