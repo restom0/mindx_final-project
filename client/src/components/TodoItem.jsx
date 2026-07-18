@@ -50,7 +50,14 @@ function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
           {recurrenceType && recurrenceType !== "none" ? <span>{recurrenceType}</span> : null}
           {todo.assigneeId ? <span>@{todo.assigneeId}</span> : null}
         </div>
-        <div className="progress-bar" aria-label={t("advanced.progress", {progress})}>
+        <div
+          className="progress-bar"
+          role="progressbar"
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label={t("advanced.progress", {progress})}
+        >
           <span style={{width: `${progress}%`}} />
         </div>
       </div>

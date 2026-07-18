@@ -4,6 +4,8 @@ import {useTranslation} from "react-i18next";
 import {fromDateInputValue, parseSmartTask, toDateInputValue} from "../utils/smartTask.js";
 import Button from "./Button.jsx";
 import Input from "./Input.jsx";
+import Select from "./Select.jsx";
+import Textarea from "./Textarea.jsx";
 
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 
@@ -166,48 +168,39 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
         required
       />
 
-      <label className="field" htmlFor="todo-description">
-        <span className="field__label">{t("todo.fields.description")}</span>
-        <textarea
-          className="field__control field__control--textarea"
-          id="todo-description"
-          placeholder={t("todo.fields.descriptionPlaceholder")}
-          value={description}
-          maxLength={1000}
-          onChange={(event) => setDescription(event.target.value)}
-        />
-      </label>
+      <Textarea
+        id="todo-description"
+        label={t("todo.fields.description")}
+        placeholder={t("todo.fields.descriptionPlaceholder")}
+        value={description}
+        maxLength={1000}
+        onChange={(event) => setDescription(event.target.value)}
+      />
 
       <div className="form-grid">
-        <label className="field" htmlFor="todo-priority">
-          <span className="field__label">{t("advanced.priority")}</span>
-          <select
-            className="field__control"
-            id="todo-priority"
-            value={priority}
-            onChange={(event) => setPriority(event.target.value)}
-          >
-            <option value="low">{t("advanced.priorityLow")}</option>
-            <option value="medium">{t("advanced.priorityMedium")}</option>
-            <option value="high">{t("advanced.priorityHigh")}</option>
-            <option value="urgent">{t("advanced.priorityUrgent")}</option>
-          </select>
-        </label>
+        <Select
+          id="todo-priority"
+          label={t("advanced.priority")}
+          value={priority}
+          onChange={(event) => setPriority(event.target.value)}
+        >
+          <option value="low">{t("advanced.priorityLow")}</option>
+          <option value="medium">{t("advanced.priorityMedium")}</option>
+          <option value="high">{t("advanced.priorityHigh")}</option>
+          <option value="urgent">{t("advanced.priorityUrgent")}</option>
+        </Select>
 
-        <label className="field" htmlFor="todo-status">
-          <span className="field__label">{t("advanced.status")}</span>
-          <select
-            className="field__control"
-            id="todo-status"
-            value={status}
-            onChange={(event) => setStatus(event.target.value)}
-          >
-            <option value="backlog">{t("advanced.backlog")}</option>
-            <option value="todo">{t("advanced.todo")}</option>
-            <option value="in_progress">{t("advanced.inProgress")}</option>
-            <option value="done">{t("advanced.done")}</option>
-          </select>
-        </label>
+        <Select
+          id="todo-status"
+          label={t("advanced.status")}
+          value={status}
+          onChange={(event) => setStatus(event.target.value)}
+        >
+          <option value="backlog">{t("advanced.backlog")}</option>
+          <option value="todo">{t("advanced.todo")}</option>
+          <option value="in_progress">{t("advanced.inProgress")}</option>
+          <option value="done">{t("advanced.done")}</option>
+        </Select>
 
         <Input
           id="todo-category"
@@ -239,21 +232,18 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           onChange={(event) => setReminderAt(event.target.value)}
         />
 
-        <label className="field" htmlFor="todo-repeat">
-          <span className="field__label">{t("advanced.repeat")}</span>
-          <select
-            className="field__control"
-            id="todo-repeat"
-            value={recurrenceType}
-            onChange={(event) => setRecurrenceType(event.target.value)}
-          >
-            <option value="none">{t("advanced.repeatNone")}</option>
-            <option value="daily">{t("advanced.repeatDaily")}</option>
-            <option value="weekly">{t("advanced.repeatWeekly")}</option>
-            <option value="monthly">{t("advanced.repeatMonthly")}</option>
-            <option value="custom">{t("advanced.repeatCustom")}</option>
-          </select>
-        </label>
+        <Select
+          id="todo-repeat"
+          label={t("advanced.repeat")}
+          value={recurrenceType}
+          onChange={(event) => setRecurrenceType(event.target.value)}
+        >
+          <option value="none">{t("advanced.repeatNone")}</option>
+          <option value="daily">{t("advanced.repeatDaily")}</option>
+          <option value="weekly">{t("advanced.repeatWeekly")}</option>
+          <option value="monthly">{t("advanced.repeatMonthly")}</option>
+          <option value="custom">{t("advanced.repeatCustom")}</option>
+        </Select>
 
         <label className="field field--checkbox">
           <input
@@ -265,16 +255,13 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
         </label>
       </div>
 
-      <label className="field" htmlFor="todo-subtasks">
-        <span className="field__label">{t("advanced.subtasks")}</span>
-        <textarea
-          className="field__control field__control--textarea"
-          id="todo-subtasks"
-          placeholder={t("advanced.subtasksPlaceholder")}
-          value={subtasksText}
-          onChange={(event) => setSubtasksText(event.target.value)}
-        />
-      </label>
+      <Textarea
+        id="todo-subtasks"
+        label={t("advanced.subtasks")}
+        placeholder={t("advanced.subtasksPlaceholder")}
+        value={subtasksText}
+        onChange={(event) => setSubtasksText(event.target.value)}
+      />
 
       <div className="form-grid">
         <Input

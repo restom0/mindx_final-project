@@ -8,7 +8,8 @@
   "nav": {
     "primary": "Navegacio principal",
     "todos": "Tasques",
-    "insights": "Analisi"
+    "insights": "Analisi",
+    "skipToContent": "Vés al contingut principal"
   },
   "common": {
     "cancel": "Cancel-la",

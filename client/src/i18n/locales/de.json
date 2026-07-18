@@ -8,7 +8,8 @@
   "nav": {
     "primary": "Hauptnavigation",
     "todos": "Todos",
-    "insights": "Einblicke"
+    "insights": "Einblicke",
+    "skipToContent": "Zum Hauptinhalt springen"
   },
   "common": {
     "cancel": "Abbrechen",
