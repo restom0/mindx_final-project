@@ -19,7 +19,12 @@ function QuoteCard() {
   return (
     <Card className="quote-card">
       <p>{quote}</p>
-      <Button icon={<RefreshCcw size={16}/>} variant="ghost" size="sm" onClick={() => setSeed(seed + 1)}>
+      <Button
+        icon={<RefreshCcw size={16} />}
+        variant="ghost"
+        size="sm"
+        onClick={() => setSeed(seed + 1)}
+      >
         {t("quotes.next")}
       </Button>
     </Card>

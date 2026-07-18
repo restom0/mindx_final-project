@@ -29,7 +29,7 @@ function TodoToolbar() {
       </div>
 
       <label className="search-field">
-        <Search size={18} aria-hidden="true"/>
+        <Search size={18} aria-hidden="true" />
         <span className="sr-only">{t("todo.search")}</span>
         <input
           value={filters.search}
@@ -51,7 +51,7 @@ function TodoToolbar() {
       </label>
 
       <Button
-        icon={isAscending ? <ArrowUpAZ size={18}/> : <ArrowDownAZ size={18}/>}
+        icon={isAscending ? <ArrowUpAZ size={18} /> : <ArrowDownAZ size={18} />}
         variant="secondary"
         onClick={() => dispatch(setSort({sort: filters.sort, order: isAscending ? "desc" : "asc"}))}
       >

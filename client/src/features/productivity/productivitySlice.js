@@ -130,14 +130,16 @@ const productivitySlice = createSlice({
       if (habit && !checkIns.some((checkIn) => checkIn?.date === today)) {
         habit.checkIns.push({date: today, completed: true});
         state.score += 10;
-        state.lastCongratulation = congratulations[Math.floor(Math.random() * congratulations.length)];
+        state.lastCongratulation =
+          congratulations[Math.floor(Math.random() * congratulations.length)];
       }
       syncProgress(state);
     },
     recordFocusSession(state, action) {
       const payload = action.payload && typeof action.payload === "object" ? action.payload : {};
       const durationMinutes = Number(payload.durationMinutes);
-      const safeDurationMinutes = Number.isFinite(durationMinutes) && durationMinutes > 0 ? durationMinutes : 0;
+      const safeDurationMinutes =
+        Number.isFinite(durationMinutes) && durationMinutes > 0 ? durationMinutes : 0;
 
       state.focusSessions.unshift({
         id: `focus-${Date.now()}`,
@@ -155,7 +157,8 @@ const productivitySlice = createSlice({
       if (payload.completedTask && !state.badges.includes("Closer")) {
         state.badges.push("Closer");
       }
-      state.lastCongratulation = congratulations[Math.floor(Math.random() * congratulations.length)];
+      state.lastCongratulation =
+        congratulations[Math.floor(Math.random() * congratulations.length)];
       syncProgress(state);
     },
     awardCompletion(state) {
@@ -163,13 +166,15 @@ const productivitySlice = createSlice({
       if (!state.badges.includes("Task finisher")) {
         state.badges.push("Task finisher");
       }
-      state.lastCongratulation = congratulations[Math.floor(Math.random() * congratulations.length)];
+      state.lastCongratulation =
+        congratulations[Math.floor(Math.random() * congratulations.length)];
       syncProgress(state);
     }
   }
 });
 
-export const {addHabit, awardCompletion, checkInHabit, recordFocusSession} = productivitySlice.actions;
+export const {addHabit, awardCompletion, checkInHabit, recordFocusSession} =
+  productivitySlice.actions;
 export const selectProductivity = (state) => ({
   habits: ensureArray(state?.productivity?.habits),
   focusSessions: ensureArray(state?.productivity?.focusSessions),

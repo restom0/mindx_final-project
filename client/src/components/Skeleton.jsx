@@ -14,11 +14,11 @@ function Skeleton({rows = 4}) {
   return (
     <div className="skeleton" aria-live="polite" aria-busy="true">
       <div className="skeleton__header">
-        <span className="skeleton__pulse skeleton__title"/>
+        <span className="skeleton__pulse skeleton__title" />
         <p>{fact}</p>
       </div>
       {Array.from({length: rows}, (_, index) => (
-        <span className="skeleton__pulse skeleton__row" key={index}/>
+        <span className="skeleton__pulse skeleton__row" key={index} />
       ))}
     </div>
   );

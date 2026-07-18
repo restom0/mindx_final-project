@@ -49,16 +49,16 @@ router.patch(
   asyncHandler(todoController.update)
 );
 
-router.delete(
-  "/:id",
-  validate(todoIdParamsSchema, "params"),
-  asyncHandler(todoController.remove)
-);
+router.delete("/:id", validate(todoIdParamsSchema, "params"), asyncHandler(todoController.remove));
 
 const habitRouter = express.Router();
 
 habitRouter.get("/", asyncHandler(todoController.listHabits));
-habitRouter.post("/", validate(createHabitSchema, "body"), asyncHandler(todoController.createHabit));
+habitRouter.post(
+  "/",
+  validate(createHabitSchema, "body"),
+  asyncHandler(todoController.createHabit)
+);
 habitRouter.post(
   "/:habitId/check-ins",
   validate(habitIdParamsSchema, "params"),

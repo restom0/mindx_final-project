@@ -19,14 +19,19 @@ function GoogleLoginInner() {
 
   if (auth.accessToken) {
     return (
-      <Button icon={<LogOut size={18}/>} variant="secondary" size="sm" onClick={() => dispatch(logout())}>
+      <Button
+        icon={<LogOut size={18} />}
+        variant="secondary"
+        size="sm"
+        onClick={() => dispatch(logout())}
+      >
         {t("auth.logout")}
       </Button>
     );
   }
 
   return (
-    <Button icon={<LogIn size={18}/>} variant="secondary" size="sm" onClick={() => login()}>
+    <Button icon={<LogIn size={18} />} variant="secondary" size="sm" onClick={() => login()}>
       {t("auth.google")}
     </Button>
   );
@@ -38,7 +43,13 @@ function GoogleLoginButton() {
 
   if (!clientId) {
     return (
-      <Button icon={<LogIn size={18}/>} variant="secondary" size="sm" disabled title={t("auth.googleMissing")}>
+      <Button
+        icon={<LogIn size={18} />}
+        variant="secondary"
+        size="sm"
+        disabled
+        title={t("auth.googleMissing")}
+      >
         {t("auth.google")}
       </Button>
     );
@@ -46,7 +57,7 @@ function GoogleLoginButton() {
 
   return (
     <GoogleOAuthProvider clientId={clientId}>
-      <GoogleLoginInner/>
+      <GoogleLoginInner />
     </GoogleOAuthProvider>
   );
 }

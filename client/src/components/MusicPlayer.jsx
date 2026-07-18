@@ -73,9 +73,9 @@ function MusicPlayer() {
 
   return (
     <div className="music-player">
-      <Music size={18} aria-hidden="true"/>
+      <Music size={18} aria-hidden="true" />
       <Button
-        icon={playing ? <Pause size={16}/> : <Play size={16}/>}
+        icon={playing ? <Pause size={16} /> : <Play size={16} />}
         variant="ghost"
         size="sm"
         onClick={playing ? stop : start}

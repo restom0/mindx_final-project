@@ -5,25 +5,37 @@
   "type": "module",
   "dependencies": {
     "@react-oauth/google": "^0.13.5",
-    "@reduxjs/toolkit": "^2.11.2",
-    "i18next": "^26.0.8",
-    "lucide-react": "^1.14.0",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "react-i18next": "^17.0.6",
-    "react-redux": "^9.2.0",
-    "react-router-dom": "^7.14.2"
+    "@reduxjs/toolkit": "^2.12.0",
+    "i18next": "^26.3.6",
+    "lucide-react": "^1.25.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-i18next": "^17.0.10",
+    "react-redux": "^9.3.0",
+    "react-router-dom": "^7.18.1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^6.0.1",
-    "sass": "^1.99.0",
-    "vite": "^8.0.10"
+    "@eslint/js": "^10.0.1",
+    "@vitejs/plugin-react": "^6.0.3",
+    "eslint": "^10.7.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0",
+    "prettier": "^3.9.5",
+    "sass": "^1.101.0",
+    "vite": "^8.1.5"
   },
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "start": "vite --host 0.0.0.0",
     "build": "vite build",
-    "preview": "vite preview --host 0.0.0.0"
+    "preview": "vite preview --host 0.0.0.0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,scss,json}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,scss,json}\""
   },
   "engines": {
     "node": ">=20.19.0"

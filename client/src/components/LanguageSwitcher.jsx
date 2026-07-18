@@ -19,7 +19,7 @@ function LanguageSwitcher() {
 
   return (
     <label className="select-control" title={t("settings.language")}>
-      <Languages size={18} aria-hidden="true"/>
+      <Languages size={18} aria-hidden="true" />
       <select
         aria-label={t("settings.language")}
         value={language}

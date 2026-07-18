@@ -1,0 +1,13 @@
+# Normalize line endings to LF in the repo so Prettier (endOfLine: lf) and the
+# Ubuntu CI runners stay consistent with Windows checkouts.
+* text=auto eol=lf
+
+# Binary assets git should never touch
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.mp3 binary

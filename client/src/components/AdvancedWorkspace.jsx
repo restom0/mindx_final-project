@@ -15,9 +15,20 @@ import {useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
 import {selectLanguage} from "../features/settings/settingsSlice.js";
-import {addHabit, checkInHabit, selectProductivity} from "../features/productivity/productivitySlice.js";
+import {
+  addHabit,
+  checkInHabit,
+  selectProductivity
+} from "../features/productivity/productivitySlice.js";
 import {todoApi} from "../services/todoApi.js";
-import {getCompletionRate, getDailyPlan, getMatrixKey, getPriority, isOverdue, isToday} from "../utils/productivity.js";
+import {
+  getCompletionRate,
+  getDailyPlan,
+  getMatrixKey,
+  getPriority,
+  isOverdue,
+  isToday
+} from "../utils/productivity.js";
 import Button from "./Button.jsx";
 import Card from "./Card.jsx";
 import Input from "./Input.jsx";
@@ -51,7 +62,9 @@ function MiniTask({todo}) {
   }
 
   return (
-    <span className={`mini-task mini-task--${getPriority(todo)} ${isOverdue(todo) ? "mini-task--overdue" : ""}`}>
+    <span
+      className={`mini-task mini-task--${getPriority(todo)} ${isOverdue(todo) ? "mini-task--overdue" : ""}`}
+    >
       {todo.title || ""}
     </span>
   );
@@ -67,7 +80,7 @@ function DailyPlanner({todos}) {
       <p>{t("advanced.myDayHint")}</p>
       <div className="task-chip-list">
         {plan.map((todo) => (
-          <MiniTask key={todo.id} todo={todo}/>
+          <MiniTask key={todo.id} todo={todo} />
         ))}
       </div>
     </Card>
@@ -77,12 +90,15 @@ function DailyPlanner({todos}) {
 function EisenhowerMatrix({todos}) {
   const {t} = useTranslation();
   const groups = useMemo(() => {
-    return matrixGroups.reduce((acc, group) => {
-      acc[group.key] = ensureArray(todos)
-        .filter((todo) => getMatrixKey(todo) === group.key)
-        .slice(0, 6);
-      return acc;
-    }, {do: [], schedule: [], delegate: [], eliminate: []});
+    return matrixGroups.reduce(
+      (acc, group) => {
+        acc[group.key] = ensureArray(todos)
+          .filter((todo) => getMatrixKey(todo) === group.key)
+          .slice(0, 6);
+        return acc;
+      },
+      {do: [], schedule: [], delegate: [], eliminate: []}
+    );
   }, [todos]);
 
   return (
@@ -93,7 +109,7 @@ function EisenhowerMatrix({todos}) {
           <section key={group.key}>
             <h3>{t(group.label)}</h3>
             {(groups[group.key] || []).map((todo) => (
-              <MiniTask key={todo.id} todo={todo}/>
+              <MiniTask key={todo.id} todo={todo} />
             ))}
           </section>
         ))}
@@ -127,9 +143,13 @@ function KanbanBoard({todos, onMove}) {
               .filter((todo) => (todo.status || "TODO") === column.key)
               .slice(0, 8)
               .map((todo) => (
-                <div className="kanban-card" draggable key={todo.id}
-                     onDragStart={(event) => event.dataTransfer?.setData("text/plain", todo.id || "")}>
-                  <GripVertical size={14}/>
+                <div
+                  className="kanban-card"
+                  draggable
+                  key={todo.id}
+                  onDragStart={(event) => event.dataTransfer?.setData("text/plain", todo.id || "")}
+                >
+                  <GripVertical size={14} />
                   <span>{todo.title || ""}</span>
                 </div>
               ))}
@@ -163,11 +183,17 @@ function CalendarView({todos, onMove}) {
                 }
               }}
             >
-              <h3>{new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric"}).format(day)}</h3>
+              <h3>
+                {new Intl.DateTimeFormat(undefined, {weekday: "short", day: "numeric"}).format(day)}
+              </h3>
               {tasks.slice(0, 5).map((todo) => (
-                <div className="calendar-task" draggable key={todo.id}
-                     onDragStart={(event) => event.dataTransfer?.setData("text/plain", todo.id || "")}>
-                  {isToday(todo) ? <CalendarDays size={14}/> : null}
+                <div
+                  className="calendar-task"
+                  draggable
+                  key={todo.id}
+                  onDragStart={(event) => event.dataTransfer?.setData("text/plain", todo.id || "")}
+                >
+                  {isToday(todo) ? <CalendarDays size={14} /> : null}
                   {todo.title || ""}
                 </div>
               ))}
@@ -208,16 +234,25 @@ function AiTaskBreakdown({onApply}) {
   return (
     <Card className="advanced-card">
       <h2>
-        <Bot size={18}/> {t("advanced.ai")}
+        <Bot size={18} /> {t("advanced.ai")}
       </h2>
-      <Input id="ai-title" label={t("advanced.bigTask")} value={title}
-             onChange={(event) => setTitle(event.target.value)}/>
-      <Button icon={<Sparkles size={16}/>} onClick={generate} disabled={!title.trim() || loading}>
+      <Input
+        id="ai-title"
+        label={t("advanced.bigTask")}
+        value={title}
+        onChange={(event) => setTitle(event.target.value)}
+      />
+      <Button icon={<Sparkles size={16} />} onClick={generate} disabled={!title.trim() || loading}>
         {loading ? t("common.refreshing") : t("advanced.generate")}
       </Button>
       {result ? (
         <div className="ai-result">
-          <p>{t("advanced.aiEstimate", {minutes: result?.estimatedMinutes ?? 0, priority: result?.priority ?? ""})}</p>
+          <p>
+            {t("advanced.aiEstimate", {
+              minutes: result?.estimatedMinutes ?? 0,
+              priority: result?.priority ?? ""
+            })}
+          </p>
           <ul>
             {ensureArray(result?.subtasks).map((item) => (
               <li key={item}>{item}</li>
@@ -242,20 +277,27 @@ function HabitTracker() {
   return (
     <Card className="advanced-card">
       <h2>
-        <Flame size={18}/> {t("advanced.habits")}
+        <Flame size={18} /> {t("advanced.habits")}
       </h2>
       <div className="inline-form">
-        <Input id="habit-title" label={t("advanced.habitName")} value={title}
-               onChange={(event) => setTitle(event.target.value)}/>
-        <Button onClick={() => {
-          const nextTitle = title.trim();
-          if (!nextTitle) {
-            return;
-          }
+        <Input
+          id="habit-title"
+          label={t("advanced.habitName")}
+          value={title}
+          onChange={(event) => setTitle(event.target.value)}
+        />
+        <Button
+          onClick={() => {
+            const nextTitle = title.trim();
+            if (!nextTitle) {
+              return;
+            }
 
-          dispatch(addHabit({title: nextTitle}));
-          setTitle("");
-        }} disabled={!title.trim()}>
+            dispatch(addHabit({title: nextTitle}));
+            setTitle("");
+          }}
+          disabled={!title.trim()}
+        >
           {t("advanced.addHabit")}
         </Button>
       </div>
@@ -267,10 +309,15 @@ function HabitTracker() {
           <div className="habit-row" key={habit.id}>
             <div>
               <strong>{habit.title || ""}</strong>
-              <span>{t("advanced.streak", {streak: checkIns.length})} - {rate}%</span>
+              <span>
+                {t("advanced.streak", {streak: checkIns.length})} - {rate}%
+              </span>
             </div>
-            <Button variant={checked ? "secondary" : "primary"} onClick={() => dispatch(checkInHabit(habit.id))}
-                    disabled={checked}>
+            <Button
+              variant={checked ? "secondary" : "primary"}
+              onClick={() => dispatch(checkInHabit(habit.id))}
+              disabled={checked}
+            >
               {checked ? t("advanced.checked") : t("advanced.checkIn")}
             </Button>
           </div>
@@ -282,17 +329,21 @@ function HabitTracker() {
 
 function ProductivityDashboard({todos}) {
   const {t} = useTranslation();
-  const {badges, focusSessions, habits, level, score, lastCongratulation} = useSelector(selectProductivity);
+  const {badges, focusSessions, habits, level, score, lastCongratulation} =
+    useSelector(selectProductivity);
   const items = ensureArray(todos);
   const completed = items.filter((todo) => todo.completed).length;
   const overdue = items.filter(isOverdue).length;
-  const focusTime = ensureArray(focusSessions).reduce((sum, session) => sum + (Number(session?.durationMinutes) || 0), 0);
+  const focusTime = ensureArray(focusSessions).reduce(
+    (sum, session) => sum + (Number(session?.durationMinutes) || 0),
+    0
+  );
   const rate = getCompletionRate(items);
 
   return (
     <Card className="advanced-card advanced-card--wide">
       <h2>
-        <LayoutDashboard size={18}/> {t("advanced.productivity")}
+        <LayoutDashboard size={18} /> {t("advanced.productivity")}
       </h2>
       <div className="dashboard-metrics">
         <span>{t("advanced.completedCount", {count: completed})}</span>
@@ -302,7 +353,7 @@ function ProductivityDashboard({todos}) {
         <span>{t("advanced.habitCount", {count: ensureArray(habits).length})}</span>
       </div>
       <div className="score-card">
-        <Trophy size={20}/>
+        <Trophy size={20} />
         <strong>{t("advanced.level", {level})}</strong>
         <span>{t("advanced.score", {score})}</span>
         {ensureArray(badges).map((badge) => (
@@ -320,7 +371,7 @@ function CollaborationPlaceholders() {
   return (
     <Card className="advanced-card">
       <h2>
-        <MessageSquare size={18}/> {t("advanced.collaboration")}
+        <MessageSquare size={18} /> {t("advanced.collaboration")}
       </h2>
       <ul className="placeholder-list">
         <li>{t("advanced.sharedLists")}</li>
@@ -329,7 +380,7 @@ function CollaborationPlaceholders() {
         <li>{t("advanced.roles")}</li>
       </ul>
       <p className="muted">
-        <MapPin size={14}/> {t("advanced.locationNote")}
+        <MapPin size={14} /> {t("advanced.locationNote")}
       </p>
     </Card>
   );
@@ -343,14 +394,14 @@ function GamificationCard() {
   return (
     <Card className="advanced-card">
       <h2>
-        <Crown size={18}/> {t("advanced.gamification")}
+        <Crown size={18} /> {t("advanced.gamification")}
       </h2>
       <p>{t("advanced.level", {level})}</p>
       <p>{t("advanced.score", {score})}</p>
       <div className="badge-list">
         {(badgeItems.length ? badgeItems : [t("advanced.firstBadge")]).map((badge) => (
           <span key={badge}>
-            <CheckCircle2 size={14}/> {badge}
+            <CheckCircle2 size={14} /> {badge}
           </span>
         ))}
       </div>
@@ -361,15 +412,15 @@ function GamificationCard() {
 function AdvancedWorkspace({todos, onApplyAi, onMoveTask}) {
   return (
     <div className="advanced-grid">
-      <DailyPlanner todos={todos}/>
-      <AiTaskBreakdown onApply={onApplyAi}/>
-      <HabitTracker/>
-      <ProductivityDashboard todos={todos}/>
-      <EisenhowerMatrix todos={todos}/>
-      <CalendarView todos={todos} onMove={onMoveTask}/>
-      <KanbanBoard todos={todos} onMove={onMoveTask}/>
-      <CollaborationPlaceholders/>
-      <GamificationCard/>
+      <DailyPlanner todos={todos} />
+      <AiTaskBreakdown onApply={onApplyAi} />
+      <HabitTracker />
+      <ProductivityDashboard todos={todos} />
+      <EisenhowerMatrix todos={todos} />
+      <CalendarView todos={todos} onMove={onMoveTask} />
+      <KanbanBoard todos={todos} onMove={onMoveTask} />
+      <CollaborationPlaceholders />
+      <GamificationCard />
     </div>
   );
 }

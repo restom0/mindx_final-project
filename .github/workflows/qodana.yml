@@ -1,0 +1,33 @@
+name: Qodana
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  gate:
+    name: Check token
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - id: check
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        # Skip the scan cleanly when QODANA_TOKEN is not configured.
+        run: echo "run=${QODANA_TOKEN:+true}" >> "$GITHUB_OUTPUT"
+
+  qodana:
+    name: Qodana scan
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: JetBrains/qodana-action@v2024.3
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}

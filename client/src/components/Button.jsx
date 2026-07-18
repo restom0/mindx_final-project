@@ -1,12 +1,12 @@
 function Button({
-                  children,
-                  className = "",
-                  icon,
-                  type = "button",
-                  variant = "primary",
-                  size = "md",
-                  ...props
-                }) {
+  children,
+  className = "",
+  icon,
+  type = "button",
+  variant = "primary",
+  size = "md",
+  ...props
+}) {
   return (
     <button
       className={`button button--${variant} button--${size} ${className}`.trim()}

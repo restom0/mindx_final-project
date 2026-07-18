@@ -18,7 +18,7 @@ const cacheResponse = (keyFactory, ttlSeconds = env.cacheTtlSeconds) => {
       return next();
     }
 
-    let cached = null;
+    let cached;
     try {
       cached = await cache.get(key);
     } catch {
@@ -27,7 +27,9 @@ const cacheResponse = (keyFactory, ttlSeconds = env.cacheTtlSeconds) => {
 
     if (isCachedResponse(cached)) {
       res.setHeader("X-Cache", "HIT");
-      return res.status(Number.isInteger(cached.statusCode) ? cached.statusCode : 200).json(cached.body);
+      return res
+        .status(Number.isInteger(cached.statusCode) ? cached.statusCode : 200)
+        .json(cached.body);
     }
 
     const originalJson = res.json.bind(res);

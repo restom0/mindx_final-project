@@ -73,29 +73,44 @@ function FocusMode({task, onRecord}) {
       <div className="focus-mode__timer">
         <strong>{formatTime(secondsLeft)}</strong>
         <div className="progress-bar">
-          <span style={{width: `${progress}%`}}/>
+          <span style={{width: `${progress}%`}} />
         </div>
       </div>
 
       <div className="segmented-control">
-        <button type="button" aria-pressed={mode === "focus"} className="segmented-control__item"
-                onClick={() => setMode("focus")}>
+        <button
+          type="button"
+          aria-pressed={mode === "focus"}
+          className="segmented-control__item"
+          onClick={() => setMode("focus")}
+        >
           {t("advanced.focus25")}
         </button>
-        <button type="button" aria-pressed={mode === "break"} className="segmented-control__item"
-                onClick={() => setMode("break")}>
+        <button
+          type="button"
+          aria-pressed={mode === "break"}
+          className="segmented-control__item"
+          onClick={() => setMode("break")}
+        >
           {t("advanced.break5")}
         </button>
       </div>
 
       <div className="focus-mode__actions">
-        <Button icon={running ? <Pause size={16}/> : <Play size={16}/>} onClick={() => setRunning(!running)}>
+        <Button
+          icon={running ? <Pause size={16} /> : <Play size={16} />}
+          onClick={() => setRunning(!running)}
+        >
           {running ? t("music.pause") : t("music.play")}
         </Button>
-        <Button icon={<RotateCcw size={16}/>} variant="secondary" onClick={() => {
-          setRunning(false);
-          setSecondsLeft(getModeSeconds(mode));
-        }}>
+        <Button
+          icon={<RotateCcw size={16} />}
+          variant="secondary"
+          onClick={() => {
+            setRunning(false);
+            setSecondsLeft(getModeSeconds(mode));
+          }}
+        >
           {t("advanced.reset")}
         </Button>
         <Button

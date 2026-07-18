@@ -1,0 +1,10 @@
+version: "1.0"
+linter: jetbrains/qodana-js:latest
+profile:
+  name: qodana.recommended
+exclude:
+  - name: All
+    paths:
+      - "**/node_modules/**"
+      - client/dist
+      - server/prisma/migrations

@@ -17,9 +17,18 @@ body {
   min-width: 320px;
   min-height: 100vh;
   margin: 0;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--color-primary-soft) 45%, transparent), transparent 34rem),
-  radial-gradient(circle at top right, color-mix(in srgb, var(--color-accent-soft) 40%, transparent), transparent 30rem),
-  var(--color-bg);
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-primary-soft) 45%, transparent),
+      transparent 34rem
+    ),
+    radial-gradient(
+      circle at top right,
+      color-mix(in srgb, var(--color-accent-soft) 40%, transparent),
+      transparent 30rem
+    ),
+    var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans), serif;
 }

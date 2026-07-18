@@ -65,11 +65,11 @@ async function main() {
       locationReminder:
         index % 12 === 0
           ? {
-            latitude: 10.7769,
-            longitude: 106.7009,
-            radius: 250,
-            triggerType: "arrive"
-          }
+              latitude: 10.7769,
+              longitude: 106.7009,
+              radius: 250,
+              triggerType: "arrive"
+            }
           : null,
       ownerId: "owner-1",
       assigneeId: index % 3 === 0 ? "editor-1" : null,

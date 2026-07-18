@@ -23,7 +23,13 @@ function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
   }
 
   return (
-    <div className="todo-list" ref={containerRef} onScroll={onScroll} role="list" aria-label={t("todo.list")}>
+    <div
+      className="todo-list"
+      ref={containerRef}
+      onScroll={onScroll}
+      role="list"
+      aria-label={t("todo.list")}
+    >
       <div className="todo-list__spacer" style={{height: totalHeight}}>
         {virtualItems.map((virtualItem) => {
           const todo = items[virtualItem.index];
@@ -38,7 +44,13 @@ function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
               role="listitem"
               style={{transform: `translateY(${virtualItem.offsetTop}px)`}}
             >
-              <TodoItem todo={todo} onDelete={onDelete} onEdit={onEdit} onFocus={onFocus} onToggle={onToggle}/>
+              <TodoItem
+                todo={todo}
+                onDelete={onDelete}
+                onEdit={onEdit}
+                onFocus={onFocus}
+                onToggle={onToggle}
+              />
             </div>
           );
         })}

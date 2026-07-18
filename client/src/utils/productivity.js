@@ -56,8 +56,10 @@ export const getDailyPlan = (todos) => {
   return [...ensureArray(todos)]
     .filter((todo) => !todo.completed)
     .sort((a, b) => {
-      const aScore = (isOverdue(a) ? 5 : 0) + (isToday(a) ? 4 : 0) + (getPriority(a) === "urgent" ? 3 : 0);
-      const bScore = (isOverdue(b) ? 5 : 0) + (isToday(b) ? 4 : 0) + (getPriority(b) === "urgent" ? 3 : 0);
+      const aScore =
+        (isOverdue(a) ? 5 : 0) + (isToday(a) ? 4 : 0) + (getPriority(a) === "urgent" ? 3 : 0);
+      const bScore =
+        (isOverdue(b) ? 5 : 0) + (isToday(b) ? 4 : 0) + (getPriority(b) === "urgent" ? 3 : 0);
       return bScore - aScore;
     })
     .slice(0, 5);

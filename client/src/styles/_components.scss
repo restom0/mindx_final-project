@@ -12,9 +12,10 @@
   background: var(--color-primary);
   color: #ffffff;
   font-weight: 700;
-  transition: transform var(--transition-fast),
-  background var(--transition-fast),
-  border-color var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
 
   &:hover:not(:disabled) {
     transform: translateY(-1px);

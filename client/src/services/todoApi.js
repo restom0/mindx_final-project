@@ -22,7 +22,10 @@ const parseJson = async (response) => {
 
   if (!response.ok) {
     if (response.status >= 500) {
-      redirectToServerDown({status: response.status, message: body.message || "Server unavailable"});
+      redirectToServerDown({
+        status: response.status,
+        message: body.message || "Server unavailable"
+      });
     }
 
     throw new Error(body.message || "Request failed");

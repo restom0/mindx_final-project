@@ -45,7 +45,12 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
     setReminderAt(toDateInputValue(initialTodo?.reminderAt));
     setRecurrenceType((initialTodo?.recurrenceType || "none").toLowerCase());
     setEstimatedMinutes(Number(initialTodo?.estimatedMinutes) || 25);
-    setSubtasksText(subtasks.map((subtask) => subtask?.title || "").filter(Boolean).join("\n"));
+    setSubtasksText(
+      subtasks
+        .map((subtask) => subtask?.title || "")
+        .filter(Boolean)
+        .join("\n")
+    );
     setAttachmentLabel(firstAttachment?.label || "");
     setAttachmentUrl(firstAttachment?.url || "");
     setOwnerId(initialTodo?.ownerId || "owner-1");
@@ -106,22 +111,22 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
         })),
       attachments: trimmedAttachmentLabel
         ? [
-          {
-            type: trimmedAttachmentUrl ? "link" : "note",
-            label: trimmedAttachmentLabel,
-            url: trimmedAttachmentUrl,
-            metadata: {uploadStatus: "placeholder"}
-          }
-        ]
+            {
+              type: trimmedAttachmentUrl ? "link" : "note",
+              label: trimmedAttachmentLabel,
+              url: trimmedAttachmentUrl,
+              metadata: {uploadStatus: "placeholder"}
+            }
+          ]
         : [],
       locationReminder:
         Number.isFinite(latitude) && Number.isFinite(longitude)
           ? {
-            latitude,
-            longitude,
-            radius: radius || 250,
-            triggerType: "arrive"
-          }
+              latitude,
+              longitude,
+              radius: radius || 250,
+              triggerType: "arrive"
+            }
           : null,
       collaboration: {
         ownerId: normalizedOwnerId,
@@ -141,8 +146,12 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           value={smartInput}
           onChange={(event) => setSmartInput(event.target.value)}
         />
-        <Button icon={<Sparkles size={18}/>} variant="secondary" onClick={applySmartInput}
-                disabled={!smartInput.trim()}>
+        <Button
+          icon={<Sparkles size={18} />}
+          variant="secondary"
+          onClick={applySmartInput}
+          disabled={!smartInput.trim()}
+        >
           {t("advanced.parse")}
         </Button>
       </div>
@@ -172,8 +181,12 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
       <div className="form-grid">
         <label className="field" htmlFor="todo-priority">
           <span className="field__label">{t("advanced.priority")}</span>
-          <select className="field__control" id="todo-priority" value={priority}
-                  onChange={(event) => setPriority(event.target.value)}>
+          <select
+            className="field__control"
+            id="todo-priority"
+            value={priority}
+            onChange={(event) => setPriority(event.target.value)}
+          >
             <option value="low">{t("advanced.priorityLow")}</option>
             <option value="medium">{t("advanced.priorityMedium")}</option>
             <option value="high">{t("advanced.priorityHigh")}</option>
@@ -183,8 +196,12 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
 
         <label className="field" htmlFor="todo-status">
           <span className="field__label">{t("advanced.status")}</span>
-          <select className="field__control" id="todo-status" value={status}
-                  onChange={(event) => setStatus(event.target.value)}>
+          <select
+            className="field__control"
+            id="todo-status"
+            value={status}
+            onChange={(event) => setStatus(event.target.value)}
+          >
             <option value="backlog">{t("advanced.backlog")}</option>
             <option value="todo">{t("advanced.todo")}</option>
             <option value="in_progress">{t("advanced.inProgress")}</option>
@@ -192,8 +209,12 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           </select>
         </label>
 
-        <Input id="todo-category" label={t("advanced.category")} value={category}
-               onChange={(event) => setCategory(event.target.value)}/>
+        <Input
+          id="todo-category"
+          label={t("advanced.category")}
+          value={category}
+          onChange={(event) => setCategory(event.target.value)}
+        />
         <Input
           id="todo-estimate"
           label={t("advanced.estimate")}
@@ -203,15 +224,29 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           onChange={(event) => setEstimatedMinutes(event.target.value)}
         />
 
-        <Input id="todo-due" label={t("advanced.dueDate")} type="datetime-local" value={dueDate}
-               onChange={(event) => setDueDate(event.target.value)}/>
-        <Input id="todo-reminder" label={t("advanced.reminder")} type="datetime-local" value={reminderAt}
-               onChange={(event) => setReminderAt(event.target.value)}/>
+        <Input
+          id="todo-due"
+          label={t("advanced.dueDate")}
+          type="datetime-local"
+          value={dueDate}
+          onChange={(event) => setDueDate(event.target.value)}
+        />
+        <Input
+          id="todo-reminder"
+          label={t("advanced.reminder")}
+          type="datetime-local"
+          value={reminderAt}
+          onChange={(event) => setReminderAt(event.target.value)}
+        />
 
         <label className="field" htmlFor="todo-repeat">
           <span className="field__label">{t("advanced.repeat")}</span>
-          <select className="field__control" id="todo-repeat" value={recurrenceType}
-                  onChange={(event) => setRecurrenceType(event.target.value)}>
+          <select
+            className="field__control"
+            id="todo-repeat"
+            value={recurrenceType}
+            onChange={(event) => setRecurrenceType(event.target.value)}
+          >
             <option value="none">{t("advanced.repeatNone")}</option>
             <option value="daily">{t("advanced.repeatDaily")}</option>
             <option value="weekly">{t("advanced.repeatWeekly")}</option>
@@ -221,7 +256,11 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
         </label>
 
         <label className="field field--checkbox">
-          <input type="checkbox" checked={important} onChange={(event) => setImportant(event.target.checked)}/>
+          <input
+            type="checkbox"
+            checked={important}
+            onChange={(event) => setImportant(event.target.checked)}
+          />
           <span>{t("advanced.important")}</span>
         </label>
       </div>
@@ -238,14 +277,30 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
       </label>
 
       <div className="form-grid">
-        <Input id="attachment-label" label={t("advanced.attachment")} value={attachmentLabel}
-               onChange={(event) => setAttachmentLabel(event.target.value)}/>
-        <Input id="attachment-url" label={t("advanced.attachmentUrl")} value={attachmentUrl}
-               onChange={(event) => setAttachmentUrl(event.target.value)}/>
-        <Input id="owner-id" label={t("advanced.owner")} value={ownerId}
-               onChange={(event) => setOwnerId(event.target.value)}/>
-        <Input id="assignee-id" label={t("advanced.assignee")} value={assigneeId}
-               onChange={(event) => setAssigneeId(event.target.value)}/>
+        <Input
+          id="attachment-label"
+          label={t("advanced.attachment")}
+          value={attachmentLabel}
+          onChange={(event) => setAttachmentLabel(event.target.value)}
+        />
+        <Input
+          id="attachment-url"
+          label={t("advanced.attachmentUrl")}
+          value={attachmentUrl}
+          onChange={(event) => setAttachmentUrl(event.target.value)}
+        />
+        <Input
+          id="owner-id"
+          label={t("advanced.owner")}
+          value={ownerId}
+          onChange={(event) => setOwnerId(event.target.value)}
+        />
+        <Input
+          id="assignee-id"
+          label={t("advanced.assignee")}
+          value={assigneeId}
+          onChange={(event) => setAssigneeId(event.target.value)}
+        />
       </div>
 
       <Input
@@ -262,8 +317,10 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
             {t("common.cancel")}
           </Button>
         ) : null}
-        <Button icon={<Save size={18}/>} disabled={!title.trim() || isSaving} type="submit">
-          {isSaving ? t("common.saving") : t(initialTodo ? "todo.actions.save" : "todo.actions.add")}
+        <Button icon={<Save size={18} />} disabled={!title.trim() || isSaving} type="submit">
+          {isSaving
+            ? t("common.saving")
+            : t(initialTodo ? "todo.actions.save" : "todo.actions.add")}
         </Button>
       </div>
     </form>

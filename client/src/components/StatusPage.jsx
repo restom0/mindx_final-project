@@ -20,12 +20,12 @@ function StatusPage({variant = "notFound"}) {
           <p className="status-card__note">{t(`${prefix}.note`)}</p>
 
           <div className="status-card__actions">
-            <Button icon={<ArrowLeft size={18}/>} onClick={() => navigate("/")}>
+            <Button icon={<ArrowLeft size={18} />} onClick={() => navigate("/")}>
               {t("status.actions.home")}
             </Button>
             {variant === "serverDown" ? (
               <Button
-                icon={<RefreshCcw size={18}/>}
+                icon={<RefreshCcw size={18} />}
                 variant="secondary"
                 onClick={() => globalThis.window?.location?.reload()}
               >
@@ -36,7 +36,7 @@ function StatusPage({variant = "notFound"}) {
         </div>
 
         <div className="status-card__visual">
-          <StatusIllustration title={t(`${prefix}.illustration`)} variant={variant}/>
+          <StatusIllustration title={t(`${prefix}.illustration`)} variant={variant} />
         </div>
       </Card>
     </section>

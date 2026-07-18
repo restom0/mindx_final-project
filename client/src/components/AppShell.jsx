@@ -13,7 +13,7 @@ function AppShell({children}) {
     <div className="app-shell">
       <header className="topbar">
         <a className="brand" href="/" aria-label={t("app.title")}>
-          <CheckCircle2 size={28} aria-hidden="true"/>
+          <CheckCircle2 size={28} aria-hidden="true" />
           <span>{t("app.title")}</span>
         </a>
 
@@ -23,16 +23,16 @@ function AppShell({children}) {
         </nav>
 
         <div className="topbar__actions">
-          <LanguageSwitcher/>
-          <ThemeSwitcher/>
-          <GoogleLoginButton/>
+          <LanguageSwitcher />
+          <ThemeSwitcher />
+          <GoogleLoginButton />
         </div>
       </header>
 
       <main className="app-shell__main">{children}</main>
 
       <aside className="app-shell__music" aria-label={t("music.label")}>
-        <MusicPlayer/>
+        <MusicPlayer />
       </aside>
     </div>
   );

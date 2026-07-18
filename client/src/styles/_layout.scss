@@ -83,8 +83,13 @@
   padding: var(--space-6);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: linear-gradient(120deg, color-mix(in srgb, var(--color-primary-soft) 72%, transparent), transparent),
-  var(--color-surface);
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--color-primary-soft) 72%, transparent),
+      transparent
+    ),
+    var(--color-surface);
 
   @include tablet {
     grid-template-columns: minmax(0, 1fr) auto;

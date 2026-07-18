@@ -16,7 +16,7 @@ function InsightsPage() {
   const {t} = useTranslation();
   const todos = useSelector(selectTodos);
   const status = useSelector(selectTodoStatus);
-  const todoItems = Array.isArray(todos) ? todos : [];
+  const todoItems = useMemo(() => (Array.isArray(todos) ? todos : []), [todos]);
 
   useEffect(() => {
     if (status === "idle") {
@@ -48,7 +48,10 @@ function InsightsPage() {
       <div className="insights-grid">
         <Card className="metrics-card">
           <h2>{t("insights.progress")}</h2>
-          <div className="progress-ring" aria-label={t("insights.rate", {rate: insights.completionRate})}>
+          <div
+            className="progress-ring"
+            aria-label={t("insights.rate", {rate: insights.completionRate})}
+          >
             <span>{insights.completionRate}%</span>
           </div>
           <p>{t("insights.completed", {completed: insights.completed, total: insights.total})}</p>
@@ -62,7 +65,9 @@ function InsightsPage() {
                 <span>{todo.title || ""}</span>
                 <time dateTime={todo.updatedAt || ""}>
                   {toTimestamp(todo?.updatedAt)
-                    ? new Intl.DateTimeFormat(undefined, {dateStyle: "medium"}).format(new Date(todo.updatedAt))
+                    ? new Intl.DateTimeFormat(undefined, {dateStyle: "medium"}).format(
+                        new Date(todo.updatedAt)
+                      )
                     : ""}
                 </time>
               </li>
@@ -70,7 +75,7 @@ function InsightsPage() {
           </ul>
         </Card>
 
-        <QuoteCard/>
+        <QuoteCard />
       </div>
     </div>
   );

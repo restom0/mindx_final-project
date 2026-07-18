@@ -41,7 +41,7 @@ function TodoPage() {
   const [editingTodo, setEditingTodo] = useState(null);
   const [focusTask, setFocusTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const todoItems = Array.isArray(todos) ? todos : [];
+  const todoItems = useMemo(() => (Array.isArray(todos) ? todos : []), [todos]);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -137,7 +137,11 @@ function TodoPage() {
           description: checklist.join("\n"),
           priority: typeof result?.priority === "string" ? result.priority.toLowerCase() : "medium",
           estimatedMinutes: Number(result?.estimatedMinutes) || 25,
-          subtasks: subtasks.map((item, index) => ({title: item, completed: false, sortOrder: index}))
+          subtasks: subtasks.map((item, index) => ({
+            title: item,
+            completed: false,
+            sortOrder: index
+          }))
         })
       ).unwrap();
       dispatch(fetchTodos());
@@ -163,7 +167,7 @@ function TodoPage() {
           <h1>{t("app.headline")}</h1>
           <p>{t("app.subtitle")}</p>
         </div>
-        <Button icon={<Plus size={18}/>} onClick={openCreateModal}>
+        <Button icon={<Plus size={18} />} onClick={openCreateModal}>
           {t("todo.actions.add")}
         </Button>
       </section>
@@ -175,14 +179,16 @@ function TodoPage() {
               <h2>{t("todo.title")}</h2>
               <p>{t("todo.summary", {active: stats.active, completed: stats.completed})}</p>
             </div>
-            {meta ? <span className="meta-pill">{t("todo.total", {total: meta?.total ?? 0})}</span> : null}
+            {meta ? (
+              <span className="meta-pill">{t("todo.total", {total: meta?.total ?? 0})}</span>
+            ) : null}
           </div>
 
-          <TodoToolbar/>
+          <TodoToolbar />
 
           {error ? <p className="alert alert--danger">{error}</p> : null}
           {status === "loading" ? (
-            <Skeleton rows={5}/>
+            <Skeleton rows={5} />
           ) : (
             <TodoList
               todos={todoItems}
@@ -198,8 +204,8 @@ function TodoPage() {
         </Card>
 
         <aside className="side-stack">
-          <FocusMode task={focusTask} onRecord={handleRecordFocus}/>
-          <QuoteCard/>
+          <FocusMode task={focusTask} onRecord={handleRecordFocus} />
+          <QuoteCard />
           <Card className="metrics-card">
             <h2>{t("metrics.title")}</h2>
             <dl>
@@ -220,14 +226,19 @@ function TodoPage() {
         </aside>
       </div>
 
-      <AdvancedWorkspace todos={todos} onApplyAi={handleApplyAi} onMoveTask={handleMoveTask}/>
+      <AdvancedWorkspace todos={todos} onApplyAi={handleApplyAi} onMoveTask={handleMoveTask} />
 
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
         title={editingTodo ? t("todo.editTitle") : t("todo.createTitle")}
       >
-        <TodoForm initialTodo={editingTodo} isSaving={saving} onCancel={closeModal} onSubmit={handleSubmit}/>
+        <TodoForm
+          initialTodo={editingTodo}
+          isSaving={saving}
+          onCancel={closeModal}
+          onSubmit={handleSubmit}
+        />
       </Modal>
     </div>
   );

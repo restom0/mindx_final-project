@@ -63,12 +63,12 @@ function App() {
 
   return (
     <AppShell>
-      <Suspense fallback={<Skeleton rows={6}/>}>
+      <Suspense fallback={<Skeleton rows={6} />}>
         <Routes>
-          <Route path="/" element={<TodoPage/>}/>
-          <Route path="/insights" element={<InsightsPage/>}/>
-          <Route path={SERVER_DOWN_PATH} element={<ServerDownPage/>}/>
-          <Route path="*" element={<NotFoundPage/>}/>
+          <Route path="/" element={<TodoPage />} />
+          <Route path="/insights" element={<InsightsPage />} />
+          <Route path={SERVER_DOWN_PATH} element={<ServerDownPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </AppShell>

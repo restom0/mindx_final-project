@@ -14,17 +14,20 @@ function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
   const priorityLabel = `advanced.priority${priority[0].toUpperCase()}${priority.slice(1)}`;
   const dueDate = todo.dueDate ? new Date(todo.dueDate) : null;
   const hasDueDate = Boolean(dueDate && !Number.isNaN(dueDate.getTime()));
-  const recurrenceType = typeof todo.recurrenceType === "string" ? todo.recurrenceType.toLowerCase() : "";
+  const recurrenceType =
+    typeof todo.recurrenceType === "string" ? todo.recurrenceType.toLowerCase() : "";
 
   return (
-    <article className={`todo-item todo-item--${priority} ${todo.completed ? "todo-item--done" : ""}`}>
+    <article
+      className={`todo-item todo-item--${priority} ${todo.completed ? "todo-item--done" : ""}`}
+    >
       <button
         className="todo-item__check"
         type="button"
         aria-label={todo.completed ? t("todo.actions.markActive") : t("todo.actions.complete")}
         onClick={() => onToggle?.(todo)}
       >
-        {todo.completed ? <Check size={18}/> : <Circle size={18}/>}
+        {todo.completed ? <Check size={18} /> : <Circle size={18} />}
       </button>
 
       <div className="todo-item__content">
@@ -37,28 +40,44 @@ function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
           <span>{t("todo.version", {version: todo.version ?? 1})}</span>
           {hasDueDate ? (
             <span className={isOverdue(todo) ? "meta-danger" : isToday(todo) ? "meta-accent" : ""}>
-              <AlarmClock size={14}/> {new Intl.DateTimeFormat(undefined, {
-              dateStyle: "medium",
-              timeStyle: "short"
-            }).format(dueDate)}
+              <AlarmClock size={14} />{" "}
+              {new Intl.DateTimeFormat(undefined, {
+                dateStyle: "medium",
+                timeStyle: "short"
+              }).format(dueDate)}
             </span>
           ) : null}
           {recurrenceType && recurrenceType !== "none" ? <span>{recurrenceType}</span> : null}
           {todo.assigneeId ? <span>@{todo.assigneeId}</span> : null}
         </div>
         <div className="progress-bar" aria-label={t("advanced.progress", {progress})}>
-          <span style={{width: `${progress}%`}}/>
+          <span style={{width: `${progress}%`}} />
         </div>
       </div>
 
       <div className="todo-item__actions">
-        <Button icon={<Play size={16}/>} variant="secondary" size="sm" onClick={() => onFocus?.(todo)}>
+        <Button
+          icon={<Play size={16} />}
+          variant="secondary"
+          size="sm"
+          onClick={() => onFocus?.(todo)}
+        >
           {t("advanced.focus")}
         </Button>
-        <Button icon={<Pencil size={16}/>} variant="ghost" size="sm" onClick={() => onEdit?.(todo)}>
+        <Button
+          icon={<Pencil size={16} />}
+          variant="ghost"
+          size="sm"
+          onClick={() => onEdit?.(todo)}
+        >
           {t("todo.actions.edit")}
         </Button>
-        <Button icon={<Trash2 size={16}/>} variant="danger" size="sm" onClick={() => onDelete?.(todo.id)}>
+        <Button
+          icon={<Trash2 size={16} />}
+          variant="danger"
+          size="sm"
+          onClick={() => onDelete?.(todo.id)}
+        >
           {t("todo.actions.delete")}
         </Button>
       </div>

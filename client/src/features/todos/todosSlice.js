@@ -11,31 +11,38 @@ const initialFilters = {
 const getLanguage = (state) => state?.settings?.language ?? "en";
 const getErrorMessage = (action) => action?.payload ?? action?.error?.message ?? "Request failed";
 const getResponseItems = (payload) => (Array.isArray(payload?.data) ? payload.data : []);
-const getResponseMeta = (payload) => (payload?.meta && typeof payload.meta === "object" ? payload.meta : null);
+const getResponseMeta = (payload) =>
+  payload?.meta && typeof payload.meta === "object" ? payload.meta : null;
 
-export const fetchTodos = createAsyncThunk("todos/fetch", async (_, {getState, rejectWithValue}) => {
-  const state = getState();
-  try {
-    return await todoApi.list(
-      {
-        ...state.todos.filters,
-        page: "1",
-        limit: "100"
-      },
-      getLanguage(state)
-    );
-  } catch (error) {
-    return rejectWithValue(error.message);
+export const fetchTodos = createAsyncThunk(
+  "todos/fetch",
+  async (_, {getState, rejectWithValue}) => {
+    const state = getState();
+    try {
+      return await todoApi.list(
+        {
+          ...state.todos.filters,
+          page: "1",
+          limit: "100"
+        },
+        getLanguage(state)
+      );
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
-export const createTodo = createAsyncThunk("todos/create", async (payload, {getState, rejectWithValue}) => {
-  try {
-    return await todoApi.create(payload, getLanguage(getState()));
-  } catch (error) {
-    return rejectWithValue(error.message);
+export const createTodo = createAsyncThunk(
+  "todos/create",
+  async (payload, {getState, rejectWithValue}) => {
+    try {
+      return await todoApi.create(payload, getLanguage(getState()));
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 export const updateTodo = createAsyncThunk(
   "todos/update",
@@ -48,14 +55,17 @@ export const updateTodo = createAsyncThunk(
   }
 );
 
-export const deleteTodo = createAsyncThunk("todos/delete", async (id, {getState, rejectWithValue}) => {
-  try {
-    const response = await todoApi.remove(id, getLanguage(getState()));
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.message);
+export const deleteTodo = createAsyncThunk(
+  "todos/delete",
+  async (id, {getState, rejectWithValue}) => {
+    try {
+      const response = await todoApi.remove(id, getLanguage(getState()));
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 const todosSlice = createSlice({
   name: "todos",

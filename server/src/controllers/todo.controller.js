@@ -21,17 +21,12 @@ const todoController = {
   async list(req, res) {
     const result = await todoService.list(req.validated.query);
 
-    return sendSuccess(
-      res,
-      translate(req, "todo.list.success"),
-      result.items,
-      {
-        page: result.page,
-        limit: result.limit,
-        total: result.total,
-        totalPages: result.totalPages
-      }
-    );
+    return sendSuccess(res, translate(req, "todo.list.success"), result.items, {
+      page: result.page,
+      limit: result.limit,
+      total: result.total,
+      totalPages: result.totalPages
+    });
   },
 
   async detail(req, res) {

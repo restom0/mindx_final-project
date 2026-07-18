@@ -12,7 +12,7 @@ function ThemeSwitcher() {
 
   return (
     <Button
-      icon={isDark ? <Moon size={18}/> : <Sun size={18}/>}
+      icon={isDark ? <Moon size={18} /> : <Sun size={18} />}
       variant="secondary"
       size="sm"
       aria-pressed={isDark}

@@ -26,11 +26,16 @@ function Modal({children, isOpen, onClose, title}) {
 
   return (
     <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <button className="modal__backdrop" type="button" aria-label={t("common.close")} onClick={onClose}/>
+      <button
+        className="modal__backdrop"
+        type="button"
+        aria-label={t("common.close")}
+        onClick={onClose}
+      />
       <div className="modal__panel">
         <header className="modal__header">
           <h2 id="modal-title">{title}</h2>
-          <Button icon={<X size={18}/>} variant="ghost" size="sm" onClick={onClose}>
+          <Button icon={<X size={18} />} variant="ghost" size="sm" onClick={onClose}>
             {t("common.close")}
           </Button>
         </header>

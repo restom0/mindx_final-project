@@ -67,16 +67,27 @@ export function parseSmartTask(input) {
     dueDate.setHours(18, 0, 0, 0);
     title = title.replace(/\btoday\b/gi, "");
   } else {
-    const nextMatch = lower.match(/\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/);
+    const nextMatch = lower.match(
+      /\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/
+    );
     if (nextMatch) {
-      const dayIndex = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"].indexOf(
-        nextMatch[1]
-      );
+      const dayIndex = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday"
+      ].indexOf(nextMatch[1]);
       dueDate = new Date(now);
       const distance = (dayIndex + 7 - now.getDay()) % 7 || 7;
       dueDate.setDate(now.getDate() + distance);
       dueDate.setHours(18, 0, 0, 0);
-      title = title.replace(/\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi, "");
+      title = title.replace(
+        /\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi,
+        ""
+      );
     }
   }
 

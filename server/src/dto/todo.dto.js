@@ -26,7 +26,18 @@ const statusSchema = z
   .transform((value) => (value ? value.toUpperCase() : undefined));
 
 const recurrenceSchema = z
-  .enum(["none", "daily", "weekly", "monthly", "custom", "NONE", "DAILY", "WEEKLY", "MONTHLY", "CUSTOM"])
+  .enum([
+    "none",
+    "daily",
+    "weekly",
+    "monthly",
+    "custom",
+    "NONE",
+    "DAILY",
+    "WEEKLY",
+    "MONTHLY",
+    "CUSTOM"
+  ])
   .optional()
   .transform((value) => (value ? value.toUpperCase() : undefined));
 
