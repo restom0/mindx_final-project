@@ -99,6 +99,22 @@ npm run dev
 
 By default, the client expects the API at `/api`. For local split-terminal development, set `VITE_API_BASE_URL` in `client/.env` if you want to point directly at the server.
 
+## Demo mode
+
+Demo mode adds a guarded `/api/demo/seed` endpoint and a "Load demo flow" button in the client. It creates deterministic `demo-*` todos, subtasks, comments, activities, focus sessions, habits, and habit check-ins for a presentation flow: capture, AI breakdown, prioritization, calendar planning, focus, habits, and review.
+
+Local Docker Compose enables demo mode by default. For manual development, set:
+
+```bash
+# server/.env
+DEMO_MODE_ENABLED=true
+
+# client/.env
+VITE_DEMO_MODE=true
+```
+
+If the client was built without `VITE_DEMO_MODE=true`, you can still reveal the button at runtime by opening `/?demo=1`; the server must still have `DEMO_MODE_ENABLED=true`. Published/deploy Compose keeps `DEMO_MODE_ENABLED=false` by default.
+
 ## Environment variables
 
 Client:
@@ -107,6 +123,7 @@ Client:
 | ----------------------- | ------------------------------------------------ |
 | `VITE_API_BASE_URL`     | API prefix. Defaults to `/api`.                  |
 | `VITE_GOOGLE_CLIENT_ID` | Enables the Google OAuth button when configured. |
+| `VITE_DEMO_MODE`        | Shows the guarded demo data loader when `true`.  |
 
 Server:
 
@@ -123,6 +140,7 @@ Server:
 | `HEALTH_RATE_LIMIT_WINDOW_MS` | Health-check rate-limit window in milliseconds.                                                      |
 | `HEALTH_RATE_LIMIT_MAX`       | Maximum health-check requests per window.                                                            |
 | `TRUST_PROXY`                 | Set to `true` when the API runs behind a trusted reverse proxy such as the bundled Nginx service.     |
+| `DEMO_MODE_ENABLED`           | Enables the guarded `/api/demo/seed` endpoint. Keep `false` outside demo/local environments.          |
 
 ## Useful commands
 

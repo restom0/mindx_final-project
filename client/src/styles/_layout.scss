@@ -127,6 +127,16 @@
       line-height: 1.65;
     }
   }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+
+    @include tablet {
+      justify-content: flex-end;
+    }
+  }
 }
 
 .dashboard-grid,

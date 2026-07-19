@@ -76,6 +76,12 @@
       "desc": "Desc"
     }
   },
+  "demo": {
+    "load": "Carrega demo",
+    "loading": "Carregant demo...",
+    "loaded": "Demo carregada amb {{todos}} tasques i {{habits}} habits.",
+    "failed": "No s'han pogut carregar les dades de demo."
+  },
   "metrics": {
     "title": "Vista rapida",
     "active": "Actives",

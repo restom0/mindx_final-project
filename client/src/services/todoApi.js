@@ -108,6 +108,14 @@ export const todoApi = {
     });
   },
 
+  async seedDemoData(payload, language) {
+    return requestJson("/demo/seed", {
+      method: "POST",
+      headers: buildHeaders(language),
+      body: JSON.stringify(payload ?? {reset: true})
+    });
+  },
+
   async aiBreakdown(payload, language) {
     return requestJson("/ai/task-breakdown", {
       method: "POST",

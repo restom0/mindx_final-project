@@ -8,7 +8,7 @@ function Skeleton({rows = 4}) {
     if (!Array.isArray(facts) || facts.length === 0) {
       return "";
     }
-    return facts[Math.floor(Math.random() * facts.length)];
+    return facts[0];
   }, [facts]);
 
   return (

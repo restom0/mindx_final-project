@@ -42,6 +42,7 @@ services:
       HEALTH_RATE_LIMIT_WINDOW_MS: ${HEALTH_RATE_LIMIT_WINDOW_MS:-60000}
       HEALTH_RATE_LIMIT_MAX: ${HEALTH_RATE_LIMIT_MAX:-60}
       TRUST_PROXY: ${TRUST_PROXY:-true}
+      DEMO_MODE_ENABLED: ${DEMO_MODE_ENABLED:-false}
     depends_on:
       postgres:
         condition: service_healthy

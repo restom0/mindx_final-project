@@ -12,6 +12,8 @@
   "habit.created": "Habitude creee.",
   "habit.checked": "Pointage d'habitude enregistre.",
   "ai.breakdown.success": "Decoupage de tache genere.",
+  "demo.seeded": "Donnees de demo chargees.",
+  "demo.disabled": "Le mode demo est desactive.",
   "errors.validation": "La validation de la requete a echoue.",
   "errors.invalidField": "Valeur de champ invalide.",
   "errors.notFound": "Route introuvable.",

@@ -12,6 +12,8 @@
   "habit.created": "Habit creat.",
   "habit.checked": "Check-in de l'habit desat.",
   "ai.breakdown.success": "Desglossament de tasca generat.",
+  "demo.seeded": "Dades de demo carregades.",
+  "demo.disabled": "El mode demo esta desactivat.",
   "errors.validation": "La validacio de la peticio ha fallat.",
   "errors.invalidField": "Valor de camp invalid.",
   "errors.notFound": "Ruta no trobada.",

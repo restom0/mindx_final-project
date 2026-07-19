@@ -13,7 +13,7 @@ function QuoteCard() {
     if (!Array.isArray(quotes) || quotes.length === 0) {
       return "";
     }
-    return quotes[(Math.floor(Math.random() * quotes.length) + seed) % quotes.length];
+    return quotes[seed % quotes.length];
   }, [quotes, seed]);
 
   return (

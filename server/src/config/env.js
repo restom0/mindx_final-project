@@ -21,13 +21,11 @@ const toOriginList = (value) =>
     .map((origin) => origin.trim())
     .filter((origin) => origin && origin !== "*");
 
-const defaultCorsOrigins = "http://localhost,http://localhost:8080,http://localhost:5173";
-
 const env = {
   nodeEnv: process.env.NODE_ENV || "development",
   port: toNumber(process.env.PORT, 3000),
   apiPrefix: process.env.API_PREFIX || "/api",
-  corsOrigins: toOriginList(process.env.CORS_ORIGIN || defaultCorsOrigins),
+  corsOrigins: toOriginList(process.env.CORS_ORIGIN),
   databaseUrl: process.env.DATABASE_URL,
   redisUrl: process.env.REDIS_URL || "",
   cacheTtlSeconds: toNumber(process.env.CACHE_TTL_SECONDS, 60),
@@ -35,7 +33,8 @@ const env = {
   rateLimitMax: toNumber(process.env.RATE_LIMIT_MAX, 300),
   healthRateLimitWindowMs: toNumber(process.env.HEALTH_RATE_LIMIT_WINDOW_MS, 60 * 1000),
   healthRateLimitMax: toNumber(process.env.HEALTH_RATE_LIMIT_MAX, 60),
-  trustProxy: toBoolean(process.env.TRUST_PROXY)
+  trustProxy: toBoolean(process.env.TRUST_PROXY),
+  demoModeEnabled: toBoolean(process.env.DEMO_MODE_ENABLED)
 };
 
 module.exports = {env};

@@ -617,3 +617,18 @@
   border-color: color-mix(in srgb, var(--color-danger) 42%, var(--color-border));
   color: var(--color-danger-strong);
 }
+
+.demo-banner {
+  margin: calc(-1 * var(--space-3)) 0 var(--space-5);
+  font-weight: 800;
+
+  &--success {
+    border-color: color-mix(in srgb, var(--color-accent) 42%, var(--color-border));
+    color: var(--color-accent);
+  }
+
+  &--error {
+    border-color: color-mix(in srgb, var(--color-danger) 42%, var(--color-border));
+    color: var(--color-danger-strong);
+  }
+}

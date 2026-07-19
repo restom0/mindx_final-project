@@ -12,6 +12,8 @@
   "habit.created": "Habito creado.",
   "habit.checked": "Check-in de habito guardado.",
   "ai.breakdown.success": "Desglose de tarea generado.",
+  "demo.seeded": "Datos de demo cargados.",
+  "demo.disabled": "El modo demo esta desactivado.",
   "errors.validation": "La validacion de la solicitud fallo.",
   "errors.invalidField": "Valor de campo no valido.",
   "errors.notFound": "Ruta no encontrada.",

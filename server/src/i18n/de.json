@@ -12,6 +12,8 @@
   "habit.created": "Gewohnheit erstellt.",
   "habit.checked": "Gewohnheits-Check-in gespeichert.",
   "ai.breakdown.success": "Aufgabenaufschluesselung erstellt.",
+  "demo.seeded": "Demo-Daten geladen.",
+  "demo.disabled": "Demo-Modus ist deaktiviert.",
   "errors.validation": "Die Anfragevalidierung ist fehlgeschlagen.",
   "errors.invalidField": "Ungueltiger Feldwert.",
   "errors.notFound": "Route nicht gefunden.",

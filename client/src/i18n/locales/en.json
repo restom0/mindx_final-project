@@ -76,6 +76,12 @@
       "desc": "Desc"
     }
   },
+  "demo": {
+    "load": "Load demo flow",
+    "loading": "Loading demo...",
+    "loaded": "Demo flow loaded with {{todos}} todos and {{habits}} habits.",
+    "failed": "Could not load demo data."
+  },
   "metrics": {
     "title": "Today at a glance",
     "active": "Active",

@@ -37,7 +37,12 @@ const save = (key, value) => {
 
 const ensureArray = (value) => (Array.isArray(value) ? value : []);
 const readNumber = (key, fallback) => {
-  const value = Number(readStorage(key));
+  const rawValue = readStorage(key);
+  if (rawValue === null) {
+    return fallback;
+  }
+
+  const value = Number(rawValue);
   return Number.isFinite(value) ? value : fallback;
 };
 const normalizeHabits = (value) => {
@@ -79,6 +84,7 @@ const congratulations = [
   "Clean work. Keep the loop short.",
   "Another small win stacked."
 ];
+const getCongratulations = (index) => congratulations[index % congratulations.length];
 
 const initialState = {
   habits: normalizeHabits(readJson("mindx-habits", defaultHabits)),
@@ -130,8 +136,7 @@ const productivitySlice = createSlice({
       if (habit && !checkIns.some((checkIn) => checkIn?.date === today)) {
         habit.checkIns.push({date: today, completed: true});
         state.score += 10;
-        state.lastCongratulation =
-          congratulations[Math.floor(Math.random() * congratulations.length)];
+        state.lastCongratulation = getCongratulations(checkIns.length + state.score);
       }
       syncProgress(state);
     },
@@ -157,8 +162,7 @@ const productivitySlice = createSlice({
       if (payload.completedTask && !state.badges.includes("Closer")) {
         state.badges.push("Closer");
       }
-      state.lastCongratulation =
-        congratulations[Math.floor(Math.random() * congratulations.length)];
+      state.lastCongratulation = getCongratulations(state.focusSessions.length + state.score);
       syncProgress(state);
     },
     awardCompletion(state) {
@@ -166,8 +170,7 @@ const productivitySlice = createSlice({
       if (!state.badges.includes("Task finisher")) {
         state.badges.push("Task finisher");
       }
-      state.lastCongratulation =
-        congratulations[Math.floor(Math.random() * congratulations.length)];
+      state.lastCongratulation = getCongratulations(state.badges.length + state.score);
       syncProgress(state);
     }
   }

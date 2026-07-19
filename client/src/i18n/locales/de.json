@@ -76,6 +76,12 @@
       "desc": "Desc"
     }
   },
+  "demo": {
+    "load": "Demo laden",
+    "loading": "Demo wird geladen...",
+    "loaded": "Demo mit {{todos}} Todos und {{habits}} Gewohnheiten geladen.",
+    "failed": "Demo-Daten konnten nicht geladen werden."
+  },
   "metrics": {
     "title": "Schneller Blick",
     "active": "Aktiv",

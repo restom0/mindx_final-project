@@ -76,6 +76,12 @@
       "desc": "Desc"
     }
   },
+  "demo": {
+    "load": "Carica demo",
+    "loading": "Caricamento demo...",
+    "loaded": "Demo caricata con {{todos}} todo e {{habits}} abitudini.",
+    "failed": "Impossibile caricare i dati demo."
+  },
   "metrics": {
     "title": "Vista rapida",
     "active": "Attive",

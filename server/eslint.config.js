@@ -3,7 +3,7 @@ const globals = require("globals");
 const prettier = require("eslint-config-prettier");
 
 module.exports = [
-  {ignores: ["node_modules/**", "prisma/migrations/**"]},
+  {ignores: ["coverage/**", "node_modules/**", "prisma/migrations/**"]},
   js.configs.recommended,
   {
     files: ["**/*.js"],
@@ -14,6 +14,12 @@ module.exports = [
     },
     rules: {
       "no-unused-vars": ["warn", {argsIgnorePattern: "^_"}]
+    }
+  },
+  {
+    files: ["**/*.test.js"],
+    languageOptions: {
+      globals: {...globals.jest}
     }
   },
   prettier

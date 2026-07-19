@@ -1,4 +1,4 @@
-import {Plus} from "lucide-react";
+import {Plus, Sparkles} from "lucide-react";
 import {useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useDispatch, useSelector} from "react-redux";
@@ -28,6 +28,14 @@ import {selectLanguage} from "../features/settings/settingsSlice.js";
 import {awardCompletion, recordFocusSession} from "../features/productivity/productivitySlice.js";
 import {todoApi} from "../services/todoApi.js";
 
+const truthy = (value) => ["1", "true", "yes", "on"].includes(String(value).toLowerCase());
+
+const isDemoModeEnabled = () => {
+  const search = globalThis.window?.location?.search ?? "";
+  const demoParam = new URLSearchParams(search).get("demo");
+  return truthy(import.meta.env.VITE_DEMO_MODE) || truthy(demoParam);
+};
+
 function TodoPage() {
   const dispatch = useDispatch();
   const {t} = useTranslation();
@@ -41,7 +49,10 @@ function TodoPage() {
   const [editingTodo, setEditingTodo] = useState(null);
   const [focusTask, setFocusTask] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [demoStatus, setDemoStatus] = useState("idle");
+  const [demoMessage, setDemoMessage] = useState("");
   const todoItems = useMemo(() => (Array.isArray(todos) ? todos : []), [todos]);
+  const demoModeEnabled = useMemo(() => isDemoModeEnabled(), []);
 
   useEffect(() => {
     const handle = window.setTimeout(() => {
@@ -159,6 +170,26 @@ function TodoPage() {
     todoApi.createFocusSession(session, language).catch(() => undefined);
   };
 
+  const handleLoadDemoData = async () => {
+    setDemoStatus("loading");
+    setDemoMessage("");
+
+    try {
+      const response = await todoApi.seedDemoData({reset: true}, language);
+      await dispatch(fetchTodos()).unwrap();
+      setDemoStatus("success");
+      setDemoMessage(
+        t("demo.loaded", {
+          todos: response?.data?.totals?.todos ?? 0,
+          habits: response?.data?.totals?.habits ?? 0
+        })
+      );
+    } catch (loadError) {
+      setDemoStatus("error");
+      setDemoMessage(loadError?.message || t("demo.failed"));
+    }
+  };
+
   return (
     <div className="page page--todos">
       <section className="hero">
@@ -167,10 +198,26 @@ function TodoPage() {
           <h1>{t("app.headline")}</h1>
           <p>{t("app.subtitle")}</p>
         </div>
-        <Button icon={<Plus size={18} />} onClick={openCreateModal}>
-          {t("todo.actions.add")}
-        </Button>
+        <div className="hero__actions">
+          {demoModeEnabled ? (
+            <Button
+              icon={<Sparkles size={18} />}
+              onClick={handleLoadDemoData}
+              variant="secondary"
+              disabled={demoStatus === "loading"}
+            >
+              {demoStatus === "loading" ? t("demo.loading") : t("demo.load")}
+            </Button>
+          ) : null}
+          <Button icon={<Plus size={18} />} onClick={openCreateModal}>
+            {t("todo.actions.add")}
+          </Button>
+        </div>
       </section>
+
+      {demoMessage ? (
+        <p className={`alert demo-banner demo-banner--${demoStatus}`}>{demoMessage}</p>
+      ) : null}
 
       <div className="dashboard-grid">
         <Card className="todo-panel">

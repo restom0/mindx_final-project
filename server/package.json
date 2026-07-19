@@ -16,6 +16,8 @@
     "check": "node --check index.js && node --check src/server.js && node --check src/app.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
+    "test": "jest --runInBand",
+    "test:coverage": "jest --runInBand --coverage",
     "format": "prettier --write \"src/**/*.js\" \"prisma/**/*.js\" \"*.js\"",
     "format:check": "prettier --check \"src/**/*.js\" \"prisma/**/*.js\" \"*.js\""
   },
@@ -45,9 +47,11 @@
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.7.0",
+    "jest": "^30.4.2",
     "nodemon": "^3.1.14",
     "prettier": "^3.9.5",
-    "prisma": "^7.8.0"
+    "prisma": "^7.8.0",
+    "supertest": "^7.2.2"
   },
   "overrides": {
     "@hono/node-server": "^2.0.1"

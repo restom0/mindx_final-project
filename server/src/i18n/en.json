@@ -12,6 +12,8 @@
   "habit.created": "Habit created.",
   "habit.checked": "Habit check-in saved.",
   "ai.breakdown.success": "Task breakdown generated.",
+  "demo.seeded": "Demo data loaded.",
+  "demo.disabled": "Demo mode is disabled.",
   "errors.validation": "Request validation failed.",
   "errors.invalidField": "Invalid field value.",
   "errors.notFound": "Route not found.",

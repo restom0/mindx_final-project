@@ -12,6 +12,8 @@
   "habit.created": "Abitudine creata.",
   "habit.checked": "Check-in abitudine salvato.",
   "ai.breakdown.success": "Scomposizione attivita generata.",
+  "demo.seeded": "Dati demo caricati.",
+  "demo.disabled": "La modalita demo e disattivata.",
   "errors.validation": "La validazione della richiesta non e riuscita.",
   "errors.invalidField": "Valore del campo non valido.",
   "errors.notFound": "Route non trovata.",
