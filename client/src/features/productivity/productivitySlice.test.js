@@ -49,6 +49,13 @@ describe("productivitySlice", () => {
     expect(second.lastCongratulation).toBe("Another small win stacked.");
   });
 
+  it("syncs safely when checking in an unknown habit", () => {
+    const state = reducer(undefined, checkInHabit("missing-habit"));
+
+    expect(state.score).toBe(0);
+    expect(state.habits).toHaveLength(2);
+  });
+
   it("records focus sessions, levels up, and awards closer badge", () => {
     const state = reducer(
       {...reducer(undefined, {type: "init"}), score: 119},
@@ -65,6 +72,44 @@ describe("productivitySlice", () => {
     );
     expect(state.level).toBe(2);
     expect(state.badges).toEqual(["Level up", "Closer"]);
+  });
+
+  it("records defensive focus sessions without duplicating existing badges", () => {
+    const state = reducer(
+      {...reducer(undefined, {type: "init"}), badges: ["Level up", "Closer"], score: 120},
+      recordFocusSession({durationMinutes: 1, completedTask: true})
+    );
+
+    expect(state.focusSessions[0]).toEqual(
+      expect.objectContaining({
+        durationMinutes: 1,
+        completedTask: true
+      })
+    );
+    expect(state.level).toBe(2);
+    expect(state.badges).toEqual(["Level up", "Closer"]);
+  });
+
+  it("keeps the current level and closer badge when focus work is below thresholds", () => {
+    const state = reducer(
+      reducer(undefined, {type: "init"}),
+      recordFocusSession({durationMinutes: -5, completedTask: false})
+    );
+
+    expect(state.level).toBe(1);
+    expect(state.badges).toEqual([]);
+    expect(state.score).toBe(0);
+  });
+
+  it("records a null focus payload as a zero-minute defensive session", () => {
+    const state = reducer(reducer(undefined, {type: "init"}), recordFocusSession(null));
+
+    expect(state.focusSessions[0]).toEqual(
+      expect.objectContaining({
+        durationMinutes: 0,
+        completedTask: false
+      })
+    );
   });
 
   it("awards completion points and selects fallback state safely", () => {
@@ -93,6 +138,15 @@ describe("productivitySlice", () => {
     );
   });
 
+  it("does not duplicate the completion badge", () => {
+    const state = reducer(
+      {...reducer(undefined, {type: "init"}), badges: ["Task finisher"]},
+      awardCompletion()
+    );
+
+    expect(state.badges).toEqual(["Task finisher"]);
+  });
+
   it("normalizes persisted productivity data on module load", async () => {
     window.localStorage.setItem(
       "mindx-habits",
@@ -105,7 +159,7 @@ describe("productivitySlice", () => {
     );
     window.localStorage.setItem(
       "mindx-focus-sessions",
-      JSON.stringify([{durationMinutes: "15", completedTask: 1}])
+      JSON.stringify([{durationMinutes: "15", completedTask: 1}, {completedTask: 0}])
     );
     window.localStorage.setItem("mindx-badges", JSON.stringify(["  Alpha  ", "", 2]));
     window.localStorage.setItem("mindx-level", "3");
@@ -134,6 +188,15 @@ describe("productivitySlice", () => {
             completedTask: true,
             startedAt: null,
             completedAt: null
+          },
+          {
+            id: "focus-2",
+            todoId: null,
+            mode: "focus",
+            durationMinutes: 0,
+            completedTask: false,
+            startedAt: null,
+            completedAt: null
           }
         ],
         badges: ["Alpha"],
@@ -141,6 +204,23 @@ describe("productivitySlice", () => {
         score: 0
       })
     );
+  });
+
+  it("falls back for null JSON and empty normalized persisted habits", async () => {
+    window.localStorage.setItem("mindx-habits", JSON.stringify([{}]));
+    window.localStorage.setItem("mindx-focus-sessions", "null");
+    window.localStorage.setItem("mindx-badges", "null");
+
+    vi.resetModules();
+    const {default: loadedReducer} = await import("./productivitySlice.js");
+    const loadedState = loadedReducer(undefined, {type: "init"});
+
+    expect(loadedState.habits).toEqual([
+      {id: "habit-focus", title: "Deep work", checkIns: [], cadence: "daily"},
+      {id: "habit-review", title: "Daily review", checkIns: [], cadence: "daily"}
+    ]);
+    expect(loadedState.focusSessions).toEqual([]);
+    expect(loadedState.badges).toEqual([]);
   });
 
   it("falls back when persisted storage cannot be read or parsed", async () => {

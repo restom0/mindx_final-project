@@ -1,4 +1,5 @@
 const request = require("supertest");
+const express = require("express");
 
 const originalEnv = {...process.env};
 
@@ -113,6 +114,12 @@ describe("Express app integration", () => {
     expect(app.get("trust proxy")).toBe(1);
   });
 
+  test("uses production request logging mode when configured", async () => {
+    const {app} = loadApp({NODE_ENV: "production"});
+
+    await request(app).get("/api/missing").expect(404);
+  });
+
   test("handles missing routes", async () => {
     const {app} = loadApp();
 
@@ -159,5 +166,31 @@ describe("Express app integration", () => {
     expect(tx.todo.deleteMany).toHaveBeenCalledWith({where: {id: {startsWith: "demo-"}}});
     expect(tx.todo.upsert).toHaveBeenCalledTimes(8);
     expect(tx.habit.upsert).toHaveBeenCalledTimes(3);
+  });
+
+  test("health route falls back to the translation key without i18n middleware", async () => {
+    jest.resetModules();
+    process.env = {
+      ...originalEnv,
+      NODE_ENV: "test",
+      HEALTH_RATE_LIMIT_WINDOW_MS: "60000",
+      HEALTH_RATE_LIMIT_MAX: "20",
+      REDIS_URL: ""
+    };
+    const query = jest.fn().mockResolvedValue({rows: [{ok: 1}]});
+    jest.doMock("./config/prisma", () => ({
+      pool: {query},
+      prisma: {}
+    }));
+    const {healthRouter} = require("./routes/health.routes");
+    const app = express().use("/health", healthRouter);
+
+    const response = await request(app).get("/health");
+
+    expect(response.status).toBe(200);
+    expect(response.body).toEqual({
+      message: "health.ok",
+      data: {status: "ok"}
+    });
   });
 });

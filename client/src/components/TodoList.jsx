@@ -23,14 +23,8 @@ function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
   }
 
   return (
-    <div
-      className="todo-list"
-      ref={containerRef}
-      onScroll={onScroll}
-      role="list"
-      aria-label={t("todo.list")}
-    >
-      <div className="todo-list__spacer" style={{height: totalHeight}}>
+    <div className="todo-list" ref={containerRef} onScroll={onScroll}>
+      <ul className="todo-list__spacer" style={{height: totalHeight}} aria-label={t("todo.list")}>
         {virtualItems.map((virtualItem) => {
           const todo = items[virtualItem.index];
           if (!todo) {
@@ -38,10 +32,9 @@ function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
           }
 
           return (
-            <div
+            <li
               className="todo-list__row"
               key={todo.id ?? `todo-row-${virtualItem.index}`}
-              role="listitem"
               style={{transform: `translateY(${virtualItem.offsetTop}px)`}}
             >
               <TodoItem
@@ -51,10 +44,10 @@ function TodoList({todos, onDelete, onEdit, onFocus, onToggle}) {
                 onFocus={onFocus}
                 onToggle={onToggle}
               />
-            </div>
+            </li>
           );
         })}
-      </div>
+      </ul>
     </div>
   );
 }

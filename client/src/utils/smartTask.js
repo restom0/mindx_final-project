@@ -7,6 +7,8 @@ const priorityWords = {
   low: "low"
 };
 
+const nextWeekdayPattern = String.raw`\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b`;
+const timePattern = String.raw`\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b`;
 const pad = (value) => String(value).padStart(2, "0");
 const isValidDate = (value) => value instanceof Date && !Number.isNaN(value.getTime());
 
@@ -20,7 +22,7 @@ const toLocalInputValue = (date) => {
 };
 
 const parseTime = (text, date) => {
-  const timeMatch = text.match(/\b(\d{1,2})(?::(\d{2}))?\s*(am|pm)\b/i);
+  const timeMatch = new RegExp(timePattern, "i").exec(text);
   if (!timeMatch) {
     return date;
   }
@@ -51,9 +53,13 @@ export function parseSmartTask(input) {
   let title = raw;
 
   Object.entries(priorityWords).forEach(([word, value]) => {
-    if (new RegExp(`\\b${word}\\b`, "i").test(raw)) {
+    const wordPattern = String.raw`\b${word}\b`;
+    if (new RegExp(wordPattern, "i").test(raw)) {
       priority = value;
-      title = title.replace(new RegExp(`\\b${word}\\s+priority\\b|\\b${word}\\b`, "gi"), "");
+      title = title.replace(
+        new RegExp(String.raw`\b${word}\s+priority\b|${wordPattern}`, "gi"),
+        ""
+      );
     }
   });
 
@@ -67,9 +73,7 @@ export function parseSmartTask(input) {
     dueDate.setHours(18, 0, 0, 0);
     title = title.replace(/\btoday\b/gi, "");
   } else {
-    const nextMatch = lower.match(
-      /\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/
-    );
+    const nextMatch = new RegExp(nextWeekdayPattern).exec(lower);
     if (nextMatch) {
       const dayIndex = [
         "sunday",
@@ -84,16 +88,13 @@ export function parseSmartTask(input) {
       const distance = (dayIndex + 7 - now.getDay()) % 7 || 7;
       dueDate.setDate(now.getDate() + distance);
       dueDate.setHours(18, 0, 0, 0);
-      title = title.replace(
-        /\bnext\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/gi,
-        ""
-      );
+      title = title.replace(new RegExp(nextWeekdayPattern, "gi"), "");
     }
   }
 
   if (dueDate) {
     dueDate = parseTime(raw, dueDate);
-    title = title.replace(/\b\d{1,2}(?::\d{2})?\s*(am|pm)\b/gi, "");
+    title = title.replace(new RegExp(timePattern, "gi"), "");
   }
 
   if (/\bdaily\b/i.test(raw)) {

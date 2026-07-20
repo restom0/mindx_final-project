@@ -103,6 +103,77 @@ describe("todoApi", () => {
     await expect(todoApi.create(null, "")).rejects.toThrow("Request failed");
   });
 
+  it("uses defensive defaults for optional query, id, payload, and server messages", async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValueOnce(new Response(JSON.stringify("ok"), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({data: {}}), {status: 200}))
+      .mockResolvedValueOnce(new Response(JSON.stringify({}), {status: 500}));
+
+    await expect(todoApi.list(null, undefined)).resolves.toEqual({});
+    await expect(todoApi.update(null, null, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.seedDemoData(undefined, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.remove(null, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.createFocusSession(null, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.createHabit(null, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.checkInHabit(null, null, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.aiBreakdown(null, undefined)).resolves.toEqual({data: {}});
+    await expect(todoApi.remove("missing", "en")).rejects.toThrow("Request failed");
+
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      1,
+      "/api/todos?",
+      expect.objectContaining({
+        headers: expect.objectContaining({"Accept-Language": "en"})
+      })
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      "/api/todos/",
+      expect.objectContaining({
+        body: JSON.stringify({})
+      })
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      3,
+      "/api/demo/seed",
+      expect.objectContaining({
+        body: JSON.stringify({reset: true})
+      })
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      4,
+      "/api/todos/",
+      expect.objectContaining({method: "DELETE"})
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      5,
+      "/api/todos/focus-sessions",
+      expect.objectContaining({body: JSON.stringify({})})
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      6,
+      "/api/habits",
+      expect.objectContaining({body: JSON.stringify({})})
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      7,
+      "/api/habits//check-ins",
+      expect.objectContaining({body: JSON.stringify({})})
+    );
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      8,
+      "/api/ai/task-breakdown",
+      expect.objectContaining({body: JSON.stringify({})})
+    );
+  });
+
   it("notifies the app when a server response fails with 5xx", async () => {
     const listener = vi.fn();
     window.addEventListener(SERVER_DOWN_EVENT, listener);
@@ -127,6 +198,16 @@ describe("todoApi", () => {
     await expect(todoApi.list({}, "en")).rejects.toThrow("Failed to fetch");
 
     expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it("uses the network fallback message when TypeError has no message", async () => {
+    const listener = vi.fn();
+    window.addEventListener(SERVER_DOWN_EVENT, listener);
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new TypeError());
+
+    await expect(todoApi.list({}, "en")).rejects.toThrow(TypeError);
+
+    expect(listener.mock.calls[0][0].detail).toEqual({message: "Network request failed"});
   });
 
   it("does not dispatch another server-down event when already on the server-down page", async () => {

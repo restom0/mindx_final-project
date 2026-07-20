@@ -27,19 +27,16 @@ function Modal({children, isOpen, onClose, title}) {
     };
   }, [isOpen]);
 
-  const handleBackdropClick = (event) => {
-    if (event.target === dialogRef.current) {
-      onClose?.();
-    }
-  };
-
   return (
     <dialog
       className="modal"
       ref={dialogRef}
       aria-labelledby="modal-title"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose?.();
+      }}
       onClose={() => onClose?.()}
-      onClick={handleBackdropClick}
     >
       {isOpen ? (
         <div className="modal__panel">

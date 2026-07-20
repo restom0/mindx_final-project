@@ -3,6 +3,37 @@ import {useTranslation} from "react-i18next";
 import {getPriority, getSubtaskProgress, isOverdue, isToday} from "../utils/productivity.js";
 import Button from "./Button.jsx";
 
+const getPriorityLabel = (priority) =>
+  `advanced.priority${priority[0].toUpperCase()}${priority.slice(1)}`;
+
+const getDueDate = (todo) => {
+  if (!todo?.dueDate) {
+    return null;
+  }
+
+  const date = new Date(todo.dueDate);
+  return Number.isNaN(date.getTime()) ? null : date;
+};
+
+const getDueDateClassName = (todo) => {
+  if (isOverdue(todo)) {
+    return "meta-danger";
+  }
+
+  return isToday(todo) ? "meta-accent" : "";
+};
+
+const getRecurrenceType = (todo) =>
+  typeof todo?.recurrenceType === "string" ? todo.recurrenceType.toLowerCase() : "";
+
+const getTodoItemClassName = (priority, completed) => {
+  const classes = ["todo-item", `todo-item--${priority}`];
+  if (completed) {
+    classes.push("todo-item--done");
+  }
+  return classes.join(" ");
+};
+
 function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
   const {t} = useTranslation();
   if (!todo) {
@@ -11,16 +42,11 @@ function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
 
   const progress = getSubtaskProgress(todo);
   const priority = getPriority(todo);
-  const priorityLabel = `advanced.priority${priority[0].toUpperCase()}${priority.slice(1)}`;
-  const dueDate = todo.dueDate ? new Date(todo.dueDate) : null;
-  const hasDueDate = Boolean(dueDate && !Number.isNaN(dueDate.getTime()));
-  const recurrenceType =
-    typeof todo.recurrenceType === "string" ? todo.recurrenceType.toLowerCase() : "";
+  const dueDate = getDueDate(todo);
+  const recurrenceType = getRecurrenceType(todo);
 
   return (
-    <article
-      className={`todo-item todo-item--${priority} ${todo.completed ? "todo-item--done" : ""}`}
-    >
+    <article className={getTodoItemClassName(priority, todo.completed)}>
       <button
         className="todo-item__check"
         type="button"
@@ -33,13 +59,15 @@ function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
       <div className="todo-item__content">
         <div className="todo-item__title-row">
           <h3>{todo.title || ""}</h3>
-          <span className={`priority-pill priority-pill--${priority}`}>{t(priorityLabel)}</span>
+          <span className={`priority-pill priority-pill--${priority}`}>
+            {t(getPriorityLabel(priority))}
+          </span>
         </div>
         <p>{todo.description || t("todo.noDescription")}</p>
         <div className="todo-item__meta">
           <span>{t("todo.version", {version: todo.version ?? 1})}</span>
-          {hasDueDate ? (
-            <span className={isOverdue(todo) ? "meta-danger" : isToday(todo) ? "meta-accent" : ""}>
+          {dueDate ? (
+            <span className={getDueDateClassName(todo)}>
               <AlarmClock size={14} />{" "}
               {new Intl.DateTimeFormat(undefined, {
                 dateStyle: "medium",
@@ -50,16 +78,14 @@ function TodoItem({todo, onDelete, onEdit, onFocus, onToggle}) {
           {recurrenceType && recurrenceType !== "none" ? <span>{recurrenceType}</span> : null}
           {todo.assigneeId ? <span>@{todo.assigneeId}</span> : null}
         </div>
-        <div
+        <progress
           className="progress-bar"
-          role="progressbar"
-          aria-valuenow={progress}
-          aria-valuemin={0}
-          aria-valuemax={100}
+          max={100}
+          value={progress}
           aria-label={t("advanced.progress", {progress})}
         >
-          <span style={{width: `${progress}%`}} />
-        </div>
+          {progress}%
+        </progress>
       </div>
 
       <div className="todo-item__actions">

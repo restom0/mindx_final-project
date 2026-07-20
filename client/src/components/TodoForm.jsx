@@ -138,6 +138,10 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
     });
   };
 
+  const submitLabel = isSaving
+    ? t("common.saving")
+    : t(initialTodo ? "todo.actions.save" : "todo.actions.add");
+
   return (
     <form className="todo-form" onSubmit={handleSubmit}>
       <div className="smart-input">
@@ -306,9 +310,7 @@ function TodoForm({initialTodo, isSaving, onCancel, onSubmit}) {
           </Button>
         ) : null}
         <Button icon={<Save size={18} />} disabled={!title.trim() || isSaving} type="submit">
-          {isSaving
-            ? t("common.saving")
-            : t(initialTodo ? "todo.actions.save" : "todo.actions.add")}
+          {submitLabel}
         </Button>
       </div>
     </form>

@@ -2,8 +2,10 @@ const {z} = require("zod");
 
 const nonEmptyText = (max) => z.string().trim().min(1).max(max);
 const optionalText = (max) => z.string().trim().max(max).optional();
+const isoDateTime = z.iso.datetime();
+const isoDate = z.iso.date();
 const optionalDate = z
-  .union([z.string().datetime(), z.string().date(), z.literal(""), z.null()])
+  .union([isoDateTime, isoDate, z.literal(""), z.null()])
   .optional()
   .transform((value) => {
     if (value === undefined) {
@@ -82,7 +84,7 @@ const repeatRuleSchema = z
   .object({
     interval: z.number().int().min(1).max(365).optional().default(1),
     unit: z.enum(["day", "week", "month"]).optional().default("day"),
-    until: z.union([z.string().datetime(), z.string().date(), z.literal(""), z.null()]).optional()
+    until: z.union([isoDateTime, isoDate, z.literal(""), z.null()]).optional()
   })
   .nullable()
   .optional();
@@ -166,7 +168,7 @@ const habitIdParamsSchema = z.object({
 
 const habitCheckInSchema = z.object({
   date: z
-    .union([z.string().datetime(), z.string().date()])
+    .union([isoDateTime, isoDate])
     .optional()
     .transform((value) => (value ? new Date(value) : new Date()))
 });
